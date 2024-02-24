@@ -1,0 +1,28 @@
+Features
+1. Direct payments and requests (i.e., Venmo)
+2. Bill splitting/split payments and requests (i.e., Splitwise)
+3. AA (ERC-4337) for ERC-20 gas
+4. ENS integration (ex. sreevanth.eth)
+
+TBD
+1. Address book (maps wallet addresses to nicknames)
+2. Metadata for payments (i.e., Venmo GIFs, text) 
+
+
+
+
+Bounties
+1. Linea - Build on Linea (mainnet or testnet)
+2. Coinbase (Base) - Build a Consumer Product
+3. Linea - Unleash your creativity with MetaMask SDK
+4. Injective - Building with Injective inEVM
+5. Arbitrum - Best DeFi Project
+6. Arbitrum - Stylus Project
+
+
+TBD
+1. Coinbase (Base) - Build on Account Abstraction / Paymaster
+2. 0x Protocol - Simplify DeFi with 0x APIs (on/off-ramps)
+3. Quicknode - Best Use of Token API (ex. past payments, token balances)
+4. Quicknode - Best use of QuickNode's QuickAlerts
+5. Quicknode - Best use case of QuickNode's IPFS
