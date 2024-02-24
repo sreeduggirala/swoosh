@@ -89,20 +89,31 @@ contract Swoosh is SwooshStorage {
     // @notice: Add address/ENS to address book
     // @params: Address of friend
     function addFriend(address friend) public {
+        for (uint256 i = 0; i < friends[msg.sender].length; i++) {
+            if (friends[msg.sender][i] == friend) {
+                revert("This user is already your friend");
+            }
+        }
         friends[msg.sender].push(friend);
     }
 
     // @notice: Remove address/ENS from address book
     // @params: Address of friend
     function removeFriend(address friend) public {
+        uint256 totalFriends = friends[msg.sender].length;
         for (uint256 i = 0; i < friends[msg.sender].length; i++) {
             if (friends[msg.sender][i] == friend) {
-                friends[msg.sender][i] = friends[msg.sender][
-                    friends[msg.sender].length - 1
-                ];
+                friends[msg.sender][i] = friends[msg.sender][totalFriends - 1];
                 friends[msg.sender].pop();
+            } else if (i == totalFriends - 1) {
+                revert("This user is not your friend");
             }
         }
+    }
+
+    // @notice: Get address book
+    function getFriends() public view returns (address[] memory) {
+        return friends[msg.sender];
     }
 
     // @notice: Get payment history
