@@ -49,6 +49,20 @@ contract Swoosh is SwooshStorage {
                 false
             )
         );
+
+        for (uint256 i = 0; i < debtors.length; i++) {
+            requestsIn[debtors[i]].push(
+                Request(
+                    msg.sender,
+                    debtors,
+                    amount,
+                    block.timestamp,
+                    false,
+                    false,
+                    false
+                )
+            );
+        }
     }
 
     // @notice: Create a new payment
