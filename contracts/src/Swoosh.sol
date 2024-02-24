@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 
 contract SwooshStorage {
     struct Request {
+        uint256 id;
         address sender;
         address[] receivers;
         uint256 amount;
@@ -14,16 +15,20 @@ contract SwooshStorage {
     }
 
     struct Payment {
+        uint256 id;
         address sender;
         address[] receivers;
         uint256 amount;
         uint256 timestamp;
     }
 
+    Request[] public requests;
+    Payment[] public payments;
+
     mapping(address => uint256) public balance;
-    mapping(address => Request[]) public requestsOut;
-    mapping(address => Request[]) public requestsIn;
-    mapping(address => Payment[]) public payments;
+    mapping(address => uint256[]) public requestsOut;
+    mapping(address => uint256[]) public requestsIn;
+    mapping(address => uint256[]) public paymentsOut;
     mapping(address => address[]) public friends;
 }
 
@@ -38,8 +43,10 @@ contract Swoosh is SwooshStorage {
     // @notice: Create a new request
     // @params: debtor(s), amount
     function request(address[] memory debtors, uint256 amount) public {
-        requestsOut[msg.sender].push(
+        uint256 id = requests.length;
+        requests.push(
             Request(
+                id,
                 msg.sender,
                 debtors,
                 amount,
@@ -51,17 +58,7 @@ contract Swoosh is SwooshStorage {
         );
 
         for (uint256 i = 0; i < debtors.length; i++) {
-            requestsIn[debtors[i]].push(
-                Request(
-                    msg.sender,
-                    debtors,
-                    amount,
-                    block.timestamp,
-                    false,
-                    false,
-                    false
-                )
-            );
+            requestsIn[debtors[i]].push(id);
         }
     }
 
@@ -71,10 +68,12 @@ contract Swoosh is SwooshStorage {
         address[] memory creditors,
         uint256 amount
     ) public sufficientBalance(amount) {
-        balance[msg.sender] -= amount;
-        payments[msg.sender].push(
-            Payment(msg.sender, creditors, amount, block.timestamp)
+        uint256 id = payments.length;
+        payments.push(
+            Payment(id, msg.sender, creditors, amount, block.timestamp)
         );
+        paymentsOut[msg.sender].push(id);
+        balance[msg.sender] -= amount;
     }
 
     // @notice: Approve an incoming request
@@ -132,15 +131,15 @@ contract Swoosh is SwooshStorage {
 
     // @notice: Get payment history
     // @params: User's address
-    function getHistory(address user) public view returns (Payment[] memory) {
-        return payments[user];
+    function getHistory(address user) public view returns (uint256[] memory) {
+        return paymentsOut[user];
     }
 
     // @notice: Get pending incoming requests
     // @params: User's address
     function getRequestsIn(
         address user
-    ) public view returns (Request[] memory) {
+    ) public view returns (uint256[] memory) {
         return requestsIn[user];
     }
 
@@ -148,7 +147,7 @@ contract Swoosh is SwooshStorage {
     // @params: User's address
     function getRequestsOut(
         address user
-    ) public view returns (Request[] memory) {
+    ) public view returns (uint256[] memory) {
         return requestsOut[user];
     }
 
