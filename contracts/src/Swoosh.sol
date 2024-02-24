@@ -38,7 +38,7 @@ contract Swoosh is SwooshStorage {
     // @notice: Create a new request
     // @params: debtor(s), amount
     function request(address[] memory debtors, uint256 amount) public {
-        requests[msg.sender].push(
+        requestsOut[msg.sender].push(
             Request(
                 msg.sender,
                 debtors,
