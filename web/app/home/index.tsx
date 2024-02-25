@@ -14,6 +14,7 @@ export default function HomePage() {
       <HomeHeader />
       <main className="container mx-auto flex flex-col px-8 py-16">
         <WhyUseIt />
+        <p>test</p>
         <Guide />
       </main>
       <Footer />

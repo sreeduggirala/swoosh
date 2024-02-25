@@ -25,8 +25,11 @@ contract SwooshTest is Test {
         assertEq(swoosh.getBalance(mainUser), 5);
     }
 
-    function testAddFriend() external {
-        swoosh.addFriend(0x9fEF0fD65A488D806b6433186A117e8Ac9a775DF);
+    function testRequest() public {}
 
-    }
+    function testPay() public {}
+
+    function testReject() public {}
+
+    function testAccept() public {}
 }

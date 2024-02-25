@@ -7,9 +7,13 @@ contract SwooshStorage {
         address creditor; // the person requesting the money
         address[] debtors; // people who owe the money
         address[] paid;
+        address[] rejected;
         uint256 amount;
+        string message;
+        string imageURI;
         uint256 timestamp;
         bool fulfilled; //if everyone pays back
+        bool cancelled; // if issues decides to cancel
     }
 
     struct Payment {
@@ -17,6 +21,8 @@ contract SwooshStorage {
         address creditor;
         address debtors;
         uint256 amount;
+        string message;
+        string imageURI;
         uint256 timestamp;
     }
 
@@ -27,7 +33,6 @@ contract SwooshStorage {
     mapping(address => uint256[]) public requestsOut;
     mapping(address => uint256[]) public requestsIn;
     mapping(address => uint256[]) public paymentsOut;
-    mapping(address => address[]) public friends;
 
     event newRequest(
         address creditor,
@@ -70,7 +75,12 @@ contract Swoosh is SwooshStorage {
 
     // @notice: Create a new request
     // @params: debtor(s), amount
-    function request(address[] memory from, uint256 amount) public {
+    function request(
+        address[] memory from,
+        uint256 amount,
+        string memory message,
+        string memory imageURI
+    ) public {
         for (uint256 i = 0; i < from.length; i++) {
             if (from[i] == address(0)) {
                 revert("Invalid address");
@@ -78,15 +88,20 @@ contract Swoosh is SwooshStorage {
         }
 
         uint256 id = requests.length;
-        address[] memory reimbursed;
+        address[] memory paid;
+        address[] memory rejected;
         requests.push(
             Request(
                 id,
                 msg.sender,
                 from,
-                reimbursed,
+                paid,
+                rejected,
                 amount,
+                message,
+                imageURI,
                 block.timestamp,
+                false,
                 false
             )
         );
@@ -96,14 +111,28 @@ contract Swoosh is SwooshStorage {
         }
     }
 
+    function cancel() public {}
+
     // @notice: Create a new payment
     // @params: creditor, amount
     function pay(
         address to,
-        uint256 amount
+        uint256 amount,
+        string memory message,
+        string memory imageURI
     ) public sufficientBalance(amount) validAddress(to) {
         uint256 id = payments.length;
-        payments.push(Payment(id, msg.sender, to, amount, block.timestamp));
+        payments.push(
+            Payment(
+                id,
+                msg.sender,
+                to,
+                amount,
+                message,
+                imageURI,
+                block.timestamp
+            )
+        );
         paymentsOut[msg.sender].push(id);
         balance[msg.sender] -= amount;
         balance[to] += amount;
@@ -130,6 +159,7 @@ contract Swoosh is SwooshStorage {
                     ];
                 }
                 currentRequest.debtors.pop();
+                break;
             }
         }
 
@@ -141,12 +171,12 @@ contract Swoosh is SwooshStorage {
 
         balance[msg.sender] -= currentRequest.amount;
         balance[currentRequest.creditor] += currentRequest.amount;
-        currentRequest.fulfilled = true;
+
+        if (currentRequest.debtors.length == 0) {
+            currentRequest.fulfilled = true;
+        }
 
         emit accepted(currentRequest.creditor, msg.sender, currentRequest.id);
-
-        // have all users reimbursed the sender? if so, isApproved = true
-        // if not, keep track of who has reimbursed the sender
     }
 
     // @notice: Reject an incoming request
@@ -160,10 +190,13 @@ contract Swoosh is SwooshStorage {
         for (uint256 i = 0; i < currentRequest.debtors.length; i++) {
             if (currentRequest.debtors[i] == msg.sender) {
                 found = true;
-                currentRequest.debtors[i] = currentRequest.debtors[
-                    currentRequest.debtors.length
-                ];
+                if (currentRequest.debtors.length != 1) {
+                    currentRequest.debtors[i] = currentRequest.debtors[
+                        currentRequest.debtors.length
+                    ];
+                }
                 currentRequest.debtors.pop();
+                break;
             }
         }
 
@@ -172,13 +205,6 @@ contract Swoosh is SwooshStorage {
         }
 
         emit rejected(currentRequest.creditor, msg.sender, currentRequest.id);
-    }
-
-    // @notice: Reminds debtor to pay via push notification
-    // @params: Request ID, debtor's address
-    function nudge(uint256 requestId, address debtor) public {
-        // initiate push notification reminder for repayment
-        emit nudged(msg.sender, debtor);
     }
 
     // @notice: Deposit funds to app
@@ -196,36 +222,6 @@ contract Swoosh is SwooshStorage {
         balance[msg.sender] -= amount;
         payable(msg.sender).transfer(amount);
         emit withdrew(msg.sender, amount);
-    }
-
-    // @notice: Add address/ENS to address book
-    // @params: Address of friend
-    function addFriend(address friend) public {
-        for (uint256 i = 0; i < friends[msg.sender].length; i++) {
-            if (friends[msg.sender][i] == friend) {
-                revert("This user is already your friend");
-            }
-        }
-        friends[msg.sender].push(friend);
-    }
-
-    // @notice: Remove address/ENS from address book
-    // @params: Address of friend
-    function removeFriend(address friend) public {
-        uint256 totalFriends = friends[msg.sender].length;
-        for (uint256 i = 0; i < friends[msg.sender].length; i++) {
-            if (friends[msg.sender][i] == friend) {
-                friends[msg.sender][i] = friends[msg.sender][totalFriends - 1];
-                friends[msg.sender].pop();
-            } else if (i == totalFriends - 1) {
-                revert("This user is not your friend");
-            }
-        }
-    }
-
-    // @notice: Get address book
-    function getFriends() public view returns (address[] memory) {
-        return friends[msg.sender];
     }
 
     // @notice: Get payment history
