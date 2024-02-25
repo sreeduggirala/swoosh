@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { AccountDropdown } from './AccountDropdown';
@@ -10,6 +11,16 @@ import { AccountInfoPanel } from './AccountInfoPanel';
  *  - Displays the wallet network
  */
 function AccountConnect() {
+  const router = useRouter();
+
+  const redirectToAnotherPage = () => {
+    // Check if running in the client-side environment
+    if (typeof window !== 'undefined') {
+      // Redirect to the desired page after successful authentication
+      router.push('/home');
+    }
+  };
+
   return (
     <ConnectButton.Custom>
       {({ account, chain, openChainModal, openConnectModal, authenticationStatus, mounted }) => {
@@ -38,9 +49,9 @@ function AccountConnect() {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="inline-flex h-10 flex-grow items-center justify-center gap-2 rounded-3xl bg-white px-4 py-2"
+                    className="inline-flex flex-grow items-center justify-center gap-2 rounded-3xl bg-white px-4 py-4"
                   >
-                    <div className="text-sm font-medium leading-normal text-black">
+                    <div className=" text-lg font-medium leading-normal text-black">
                       Connect wallet
                     </div>
                   </button>
@@ -53,6 +64,12 @@ function AccountConnect() {
                     Wrong network
                   </button>
                 );
+              }
+
+              // Redirect if connected
+              if (connected) {
+                console.log('you are logged in');
+                redirectToAnotherPage();
               }
 
               return (

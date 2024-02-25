@@ -5,7 +5,7 @@
 #### Step 1: Obtain Wallet Connect Project ID from [walletconnect.com](https://cloud.walletconnect.com/sign-in) and assign to the `.env.local` file
 
 ```bash
-NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=ADD_WALLET_CONNECT_PROJECT_ID_HERE
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=63b603a93cf109420896bcdbe9b132df
 ```
 
 #### Step 2: Install and Run your onchain app
