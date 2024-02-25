@@ -67,7 +67,7 @@ contract Swoosh is SwooshStorage {
     }
 
     modifier validAddress(address user) {
-        if (user == address(0)) {
+        if (user == address(0) || user == address(msg.sender)) {
             revert("Invalid address");
         }
         _;
@@ -82,7 +82,7 @@ contract Swoosh is SwooshStorage {
         string memory imageURI
     ) public {
         for (uint256 i = 0; i < from.length; i++) {
-            if (from[i] == address(0)) {
+            if (from[i] == address(0) || from[i] == address(msg.sender)) {
                 revert("Invalid address");
             }
         }
