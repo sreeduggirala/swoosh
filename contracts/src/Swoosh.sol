@@ -71,6 +71,12 @@ contract Swoosh is SwooshStorage {
     // @notice: Create a new request
     // @params: debtor(s), amount
     function request(address[] memory from, uint256 amount) public {
+        for (uint256 i = 0; i < from.length; i++) {
+            if (from[i] == address(0)) {
+                revert("Invalid address");
+            }
+        }
+
         uint256 id = requests.length;
         address[] memory reimbursed;
         requests.push(
