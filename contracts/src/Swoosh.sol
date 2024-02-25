@@ -19,7 +19,7 @@ contract SwooshStorage {
     struct Payment {
         uint256 id;
         address creditor;
-        address debtors;
+        address debtor;
         uint256 amount;
         string message;
         string imageURI;
@@ -109,6 +109,8 @@ contract Swoosh is SwooshStorage {
         for (uint256 i = 0; i < from.length; i++) {
             requestsIn[from[i]].push(id);
         }
+
+        requestsOut[msg.sender].push(id);
     }
 
     function cancel(
@@ -281,8 +283,13 @@ contract Swoosh is SwooshStorage {
 
     // @notice: Get payment history
     // @params: User's address
-    function getHistory(address user) public view returns (uint256[] memory) {
-        return paymentsOut[user];
+    function getPayments(address user) public view returns (Payment[] memory) {
+        uint256[] memory indices = paymentsOut[user];
+        Payment[] memory res = new Payment[](indices.length);
+        for (uint256 i = 0; i < indices.length; i++) {
+            res[i] = payments[indices[i]];
+        }
+        return res;
     }
 
     // @notice: Get pending incoming requests
