@@ -86,5 +86,16 @@ contract SwooshTest is Test {
 
     // function testAccept() external {}
 
-    // function testCancel() external {}
+    function testCancel() external {
+        address[] memory from = new address[](2);
+        from[0] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+        from[1] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+        swoosh.request(from, 1, "hi", "");
+        Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(mainUser);
+        Swoosh.Request memory currentRequest = requestsOut[
+            requestsOut.length - 1
+        ];
+
+        swoosh.cancel(currentRequest.id);
+    }
 }
