@@ -1,23 +1,21 @@
 //SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.20;
 
 contract SwooshStorage {
     struct Request {
         uint256 id;
-        address sender;
-        address[] receivers;
+        address creditor; // the person requesting the money
+        address[] debtors; // people who owe the money
+        address[] paid;
         uint256 amount;
         uint256 timestamp;
-        bool isApproved;
-        bool isRejected;
-        bool isCanceled;
+        bool fulfilled; //if everyone pays back
     }
 
     struct Payment {
         uint256 id;
-        address sender;
-        address[] receivers;
+        address creditor;
+        address debtors;
         uint256 amount;
         uint256 timestamp;
     }
@@ -30,6 +28,22 @@ contract SwooshStorage {
     mapping(address => uint256[]) public requestsIn;
     mapping(address => uint256[]) public paymentsOut;
     mapping(address => address[]) public friends;
+
+    event newRequest(
+        address creditor,
+        address[] debtors,
+        uint256 indexed requestId
+    );
+    event newPayment(
+        address creditor,
+        address[] debtors,
+        uint256 indexed paymentId
+    );
+    event accepted(address debtor, address creditor, uint256 indexed requestId);
+    event rejected(address debtor, address creditor, uint256 indexed requestId);
+    event nudged(address creditor, address debtor);
+    event deposited(address user, uint256 amount);
+    event withdrew(address user, uint256 amount);
 }
 
 contract Swoosh is SwooshStorage {
@@ -40,53 +54,131 @@ contract Swoosh is SwooshStorage {
         _;
     }
 
+    modifier notProcessed(Request memory currentRequest) {
+        if (currentRequest.fulfilled) {
+            revert("Request already processed");
+        }
+        _;
+    }
+
+    modifier validAddress(address user) {
+        if (user == address(0)) {
+            revert("Invalid address");
+        }
+        _;
+    }
+
     // @notice: Create a new request
     // @params: debtor(s), amount
-    function request(address[] memory debtors, uint256 amount) public {
+    function request(address[] memory from, uint256 amount) public {
         uint256 id = requests.length;
+        address[] memory reimbursed;
         requests.push(
             Request(
                 id,
                 msg.sender,
-                debtors,
+                from,
+                reimbursed,
                 amount,
                 block.timestamp,
-                false,
-                false,
                 false
             )
         );
 
-        for (uint256 i = 0; i < debtors.length; i++) {
-            requestsIn[debtors[i]].push(id);
+        for (uint256 i = 0; i < from.length; i++) {
+            requestsIn[from[i]].push(id);
         }
     }
 
     // @notice: Create a new payment
-    // @params: creditor(s), amount
+    // @params: creditor, amount
     function pay(
-        address[] memory creditors,
+        address to,
         uint256 amount
-    ) public sufficientBalance(amount) {
+    ) public sufficientBalance(amount) validAddress(to) {
         uint256 id = payments.length;
-        payments.push(
-            Payment(id, msg.sender, creditors, amount, block.timestamp)
-        );
+        payments.push(Payment(id, msg.sender, to, amount, block.timestamp));
         paymentsOut[msg.sender].push(id);
         balance[msg.sender] -= amount;
+        balance[to] += amount;
     }
 
     // @notice: Approve an incoming request
     // @params: request ID
-    function approve(uint256 requestId) public {}
+    function accept(
+        uint256 requestId
+    )
+        public
+        sufficientBalance(requests[requestId].amount)
+        notProcessed(requests[requestId])
+    {
+        Request storage currentRequest = requests[requestId];
+
+        bool found = false;
+        for (uint256 i = 0; i < currentRequest.debtors.length; i++) {
+            if (currentRequest.debtors[i] == msg.sender) {
+                found = true;
+                if (currentRequest.debtors.length != 1) {
+                    currentRequest.debtors[i] = currentRequest.debtors[
+                        currentRequest.debtors.length
+                    ];
+                }
+                currentRequest.debtors.pop();
+            }
+        }
+
+        if (!found) {
+            revert("You are not in this request");
+        }
+
+        currentRequest.paid.push(msg.sender);
+
+        balance[msg.sender] -= currentRequest.amount;
+        balance[currentRequest.creditor] += currentRequest.amount;
+        currentRequest.fulfilled = true;
+
+        emit accepted(currentRequest.creditor, msg.sender, currentRequest.id);
+
+        // have all users reimbursed the sender? if so, isApproved = true
+        // if not, keep track of who has reimbursed the sender
+    }
 
     // @notice: Reject an incoming request
     // @params: request ID
-    function reject(uint256 requestId) public {}
+    function reject(
+        uint256 requestId
+    ) public notProcessed(requests[requestId]) {
+        Request storage currentRequest = requests[requestId];
+
+        bool found = false;
+        for (uint256 i = 0; i < currentRequest.debtors.length; i++) {
+            if (currentRequest.debtors[i] == msg.sender) {
+                found = true;
+                currentRequest.debtors[i] = currentRequest.debtors[
+                    currentRequest.debtors.length
+                ];
+                currentRequest.debtors.pop();
+            }
+        }
+
+        if (!found) {
+            revert("You are not in this request");
+        }
+
+        emit rejected(currentRequest.creditor, msg.sender, currentRequest.id);
+    }
+
+    // @notice: Reminds debtor to pay via push notification
+    // @params: Request ID, debtor's address
+    function nudge(uint256 requestId, address debtor) public {
+        // initiate push notification reminder for repayment
+        emit nudged(msg.sender, debtor);
+    }
 
     // @notice: Deposit funds to app
     function deposit() public payable {
         balance[msg.sender] += msg.value;
+        emit deposited(msg.sender, msg.value);
     }
 
     // @notice: Withdraw funds to the user's wallet
@@ -97,6 +189,7 @@ contract Swoosh is SwooshStorage {
         }
         balance[msg.sender] -= amount;
         payable(msg.sender).transfer(amount);
+        emit withdrew(msg.sender, amount);
     }
 
     // @notice: Add address/ENS to address book
