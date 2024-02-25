@@ -21,7 +21,6 @@ Bounties
 
 TBD
 1. Coinbase (Base) - Build on Account Abstraction / Paymaster
-2. Quicknode - Best Use of Token API (ex. past payments, token balances)
-3. Quicknode - Best use of QuickNode's QuickAlerts
-4. Quicknode - Best use case of QuickNode's IPFS
-5. Linea - Unleash your creativity with MetaMask SDK
+2. Quicknode - Best use of QuickNode's QuickAlerts
+3. Quicknode - Best use case of QuickNode's IPFS
+4. Linea - Unleash your creativity with MetaMask SDK

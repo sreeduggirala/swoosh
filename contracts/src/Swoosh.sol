@@ -60,7 +60,7 @@ contract Swoosh is SwooshStorage {
     }
 
     modifier notProcessed(Request memory currentRequest) {
-        if (currentRequest.fulfilled) {
+        if (currentRequest.fulfilled || currentRequest.cancelled) {
             revert("Request already processed");
         }
         _;
@@ -111,7 +111,44 @@ contract Swoosh is SwooshStorage {
         }
     }
 
-    function cancel() public {}
+    function cancel(
+        uint256 requestId
+    ) public notProcessed(requests[requestId]) {
+        Request memory currentRequest = requests[requestId];
+        if (msg.sender != currentRequest.creditor) {
+            revert("You are not the creator of this request");
+        }
+
+        if (currentRequest.paid.length > 0) {
+            revert("Cannot cancel after receiving payment");
+        }
+
+        for (uint256 i = 0; i < currentRequest.debtors.length; i++) {
+            for (
+                uint256 j = 0;
+                j < requestsIn[currentRequest.debtors[i]].length;
+                j++
+            ) {
+                if (j == currentRequest.id) {
+                    requestsIn[msg.sender][j] = requestsIn[msg.sender][
+                        requestsIn[msg.sender].length - 1
+                    ];
+                    requestsIn[msg.sender].pop();
+                }
+            }
+        }
+
+        for (uint256 i = 0; i < requestsOut[msg.sender].length; i++) {
+            if (i == currentRequest.id) {
+                requestsOut[msg.sender][i] = requestsOut[msg.sender][
+                    requestsOut[msg.sender].length - 1
+                ];
+                requestsOut[msg.sender].pop();
+            }
+        }
+
+        currentRequest.cancelled = true;
+    }
 
     // @notice: Create a new payment
     // @params: creditor, amount
@@ -169,6 +206,15 @@ contract Swoosh is SwooshStorage {
 
         currentRequest.paid.push(msg.sender);
 
+        for (uint256 i = 0; i < requestsIn[msg.sender].length; i++) {
+            if (i == currentRequest.id) {
+                requestsIn[msg.sender][i] = requestsIn[msg.sender][
+                    requestsIn[msg.sender].length - 1
+                ];
+                requestsIn[msg.sender].pop();
+            }
+        }
+
         balance[msg.sender] -= currentRequest.amount;
         balance[currentRequest.creditor] += currentRequest.amount;
 
@@ -204,6 +250,15 @@ contract Swoosh is SwooshStorage {
             revert("You are not in this request");
         }
 
+        for (uint256 i = 0; i < requestsIn[msg.sender].length; i++) {
+            if (i == currentRequest.id) {
+                requestsIn[msg.sender][i] = requestsIn[msg.sender][
+                    requestsIn[msg.sender].length - 1
+                ];
+                requestsIn[msg.sender].pop();
+            }
+        }
+
         emit rejected(currentRequest.creditor, msg.sender, currentRequest.id);
     }
 
@@ -234,16 +289,26 @@ contract Swoosh is SwooshStorage {
     // @params: User's address
     function getRequestsIn(
         address user
-    ) public view returns (uint256[] memory) {
-        return requestsIn[user];
+    ) public view returns (Request[] memory) {
+        uint256[] memory indices = requestsIn[user];
+        Request[] memory result = new Request[](indices.length);
+        for (uint256 i = 0; i < indices.length; i++) {
+            result[i] = requests[indices[i]];
+        }
+        return result;
     }
 
     // @notice: Get pending outgoing requests
     // @params: User's address
     function getRequestsOut(
         address user
-    ) public view returns (uint256[] memory) {
-        return requestsOut[user];
+    ) public view returns (Request[] memory) {
+        uint256[] memory indices = requestsOut[user];
+        Request[] memory result = new Request[](indices.length);
+        for (uint256 i = 0; i < indices.length; i++) {
+            result[i] = requests[indices[i]];
+        }
+        return result;
     }
 
     // @notice: Get user balance

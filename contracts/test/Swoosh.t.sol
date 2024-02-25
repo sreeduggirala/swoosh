@@ -25,11 +25,17 @@ contract SwooshTest is Test {
         assertEq(swoosh.getBalance(mainUser), 5);
     }
 
-    function testRequest() public {}
+    function testRequest() external {
+        address[] memory from = new address[](2);
+        from[0] = address(0x1);
+        from[1] = address(0x2);
+        swoosh.request(from, 1, "hi", "");
+        
+    }
 
-    function testPay() public {}
+    function testPay() external {}
 
-    function testReject() public {}
+    function testReject() external {}
 
-    function testAccept() public {}
+    function testAccept() external {}
 }
