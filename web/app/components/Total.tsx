@@ -10,7 +10,7 @@ interface TotalProps {
 
 export default function Total(props: TotalProps) {
   return (
-    <div className="px-8">
+    <div className="">
       <div
         className="rounded-swooshBR flex flex-col gap-8 px-6 py-8"
         style={{

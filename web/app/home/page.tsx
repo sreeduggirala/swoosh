@@ -40,7 +40,6 @@ export default function Home() {
     if (data != null) {
       const typedData = data as RequestOut[]; // Cast the data to the correct type
       setResult(typedData);
-      console.log(typedData);
     }
   }, [data]);
 
@@ -48,11 +47,9 @@ export default function Home() {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="px-4 py-8">
+    <div className="py-8">
       <Header title="SWOOSH" />
-      {/* Integrate GroupsDisplay here */}
       <GroupsDisplay requests={result} />
-      <Navbar />
     </div>
   );
 }

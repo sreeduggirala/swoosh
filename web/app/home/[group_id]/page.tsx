@@ -10,7 +10,6 @@ function ProductDetails({ params }: { params: { group_id: string } }) {
       <Header title={'Uber Denver'} />
       <Total price={22.85} />
       <MembersList />
-      <Navbar />
     </div>
   );
 }

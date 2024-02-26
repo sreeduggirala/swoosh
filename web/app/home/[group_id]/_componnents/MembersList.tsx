@@ -6,7 +6,7 @@ const MembersList = () => {
   const testTotal = 22.85;
 
   return (
-    <div className="mt-8 flex flex-col gap-2 px-8">
+    <div className="mt-8 flex flex-col gap-2 ">
       <p className=" text-lg">Members</p>
       {testMembers.map((i) => (
         <Member
