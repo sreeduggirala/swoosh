@@ -9,6 +9,7 @@ import GroupsDisplay from './GroupDisplay'; // Adjust the path as necessary
 import Header from './Header';
 import Navbar from 'app/components/Navbar';
 import { headers } from 'next/headers';
+import Button from 'app/components/Button';
 
 interface RequestOut {
   id: string;
@@ -48,6 +49,7 @@ export default function Home() {
 
   return (
     <div className="py-8">
+      <Button title="test" />
       <Header title="SWOOSH" />
       <GroupsDisplay requests={result} />
     </div>
