@@ -1,4 +1,4 @@
-"use client"; // This is a client component 👈🏽
+'use client'; // This is a client component 👈🏽
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useAccount, useReadContract } from 'wagmi';
@@ -6,7 +6,9 @@ import swooshABI from '../../../contracts/out/Swoosh.sol/Swoosh.json';
 import { baseSepolia } from '@wagmi/core/chains';
 import Image from 'next/image';
 import GroupsDisplay from './GroupDisplay'; // Adjust the path as necessary
-import Header from './HeaderSwoosh';
+import Header from './Header';
+import Navbar from 'app/components/Navbar';
+import { headers } from 'next/headers';
 
 interface RequestOut {
   id: string;
@@ -22,8 +24,8 @@ interface RequestOut {
   cancelled: boolean;
 }
 
-
 export default function Home() {
+
   const { address } = useAccount();
   const [result, setResult] = useState<RequestOut[]>([]);
 
@@ -42,16 +44,16 @@ export default function Home() {
       console.log(typedData);
     }
   }, [data]);
-  
+
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div className="px-4 py-8">
-      <Header />
+      <Header title="SWOOSH" />
       {/* Integrate GroupsDisplay here */}
       <GroupsDisplay requests={result} />
-
+      {/* <Navbar /> */}
     </div>
   );
 }
