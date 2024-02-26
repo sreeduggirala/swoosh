@@ -54,9 +54,11 @@ contract SwooshStorage {
 }
 
 contract Swoosh is SwooshStorage, ERC20 {
-    constructor() ERC20("Swoosh", "SWO") {}
+    ERC20 USDC;
 
-    ERC20 USDC = ERC20(0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913);
+    constructor(address _USDC) ERC20("Swoosh", "SWO") {
+        USDC = ERC20(_USDC);
+    }
 
     modifier sufficientBalance(uint256 amount) {
         if (balance[msg.sender] < amount) {
