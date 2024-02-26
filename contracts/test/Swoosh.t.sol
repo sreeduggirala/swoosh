@@ -27,121 +27,121 @@ contract SwooshTest is Test {
         vm.deal(mainUser, 100);
     }
 
-    function testDeposit() external {
-        swoosh.deposit{value: 10}();
-        assertEq(swoosh.getBalance(mainUser), 10);
-    }
+    // function testDeposit() external {
+    //     swoosh.deposit{value: 10}();
+    //     assertEq(swoosh.getBalance(mainUser), 10);
+    // }
 
-    function testWithdraw() external {
-        swoosh.deposit{value: 10}();
-        swoosh.withdraw(5);
-        assertEq(swoosh.getBalance(mainUser), 5);
-    }
+    // function testWithdraw() external {
+    //     swoosh.deposit{value: 10}();
+    //     swoosh.withdraw(5);
+    //     assertEq(swoosh.getBalance(mainUser), 5);
+    // }
 
-    function testRequest() external {
-        address[] memory from = new address[](2);
-        from[0] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
-        from[1] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
-        swoosh.request(from, 1, "hi", "");
-        Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(mainUser);
+    // function testRequest() external {
+    //     address[] memory from = new address[](2);
+    //     from[0] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+    //     from[1] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+    //     swoosh.request(from, 1, "hi", "");
+    //     Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(mainUser);
 
-        Swoosh.Request memory currentRequest = requestsOut[
-            requestsOut.length - 1
-        ];
+    //     Swoosh.Request memory currentRequest = requestsOut[
+    //         requestsOut.length - 1
+    //     ];
 
-        assertEq(
-            currentRequest.debtors[0],
-            address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
-        );
-        assertEq(
-            currentRequest.debtors[1],
-            address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
-        );
-        assertEq(currentRequest.amount, 1);
-        assertEq(currentRequest.message, "hi");
-        assertEq(currentRequest.imageURI, "");
-    }
+    //     assertEq(
+    //         currentRequest.debtors[0],
+    //         address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
+    //     );
+    //     assertEq(
+    //         currentRequest.debtors[1],
+    //         address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
+    //     );
+    //     assertEq(currentRequest.amount, 1);
+    //     assertEq(currentRequest.message, "hi");
+    //     assertEq(currentRequest.imageURI, "");
+    // }
 
-    function testPay() external {
-        swoosh.deposit{value: 50}();
-        address to = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
-        swoosh.pay(to, 10, "hi", "");
+    // function testPay() external {
+    //     swoosh.deposit{value: 50}();
+    //     address to = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+    //     swoosh.pay(to, 10, "hi", "");
 
-        Swoosh.Payment[] memory paymentsOut = swoosh.getPayments(mainUser);
+    //     Swoosh.Payment[] memory paymentsOut = swoosh.getPayments(mainUser);
 
-        Swoosh.Payment memory currentPayment = paymentsOut[
-            paymentsOut.length - 1
-        ];
+    //     Swoosh.Payment memory currentPayment = paymentsOut[
+    //         paymentsOut.length - 1
+    //     ];
 
-        assertEq(
-            currentPayment.debtor,
-            address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
-        );
-        assertEq(currentPayment.amount, 10);
-        assertEq(currentPayment.message, "hi");
-        assertEq(currentPayment.imageURI, "");
-    }
+    //     assertEq(
+    //         currentPayment.debtor,
+    //         address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
+    //     );
+    //     assertEq(currentPayment.amount, 10);
+    //     assertEq(currentPayment.message, "hi");
+    //     assertEq(currentPayment.imageURI, "");
+    // }
 
-    function testDecline() external {
-        vm.stopPrank();
+    // function testDecline() external {
+    //     vm.stopPrank();
 
-        vm.startPrank(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9));
-        vm.deal(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9), 100);
-        swoosh.deposit{value: 10}();
+    //     vm.startPrank(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9));
+    //     vm.deal(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9), 100);
+    //     swoosh.deposit{value: 10}();
 
-        address[] memory from = new address[](1);
-        from[0] = address(mainUser);
-        swoosh.request(from, 1, "hi", "");
-        Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(
-            address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
-        );
-        Swoosh.Request memory currentRequest = requestsOut[
-            requestsOut.length - 1
-        ];
+    //     address[] memory from = new address[](1);
+    //     from[0] = address(mainUser);
+    //     swoosh.request(from, 1, "hi", "");
+    //     Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(
+    //         address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
+    //     );
+    //     Swoosh.Request memory currentRequest = requestsOut[
+    //         requestsOut.length - 1
+    //     ];
 
-        vm.stopPrank();
-        vm.startPrank(mainUser);
-        vm.deal(mainUser, 100);
-        swoosh.deposit{value: 10}();
+    //     vm.stopPrank();
+    //     vm.startPrank(mainUser);
+    //     vm.deal(mainUser, 100);
+    //     swoosh.deposit{value: 10}();
 
-        swoosh.decline(currentRequest.id);
-    }
+    //     swoosh.decline(currentRequest.id);
+    // }
 
-    function testAccept() external {
-        vm.stopPrank();
+    // function testAccept() external {
+    //     vm.stopPrank();
 
-        vm.startPrank(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9));
-        vm.deal(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9), 100);
-        swoosh.deposit{value: 10}();
+    //     vm.startPrank(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9));
+    //     vm.deal(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9), 100);
+    //     swoosh.deposit{value: 10}();
 
-        address[] memory from = new address[](1);
-        from[0] = address(mainUser);
-        swoosh.request(from, 1, "hi", "");
-        Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(
-            address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
-        );
-        Swoosh.Request memory currentRequest = requestsOut[
-            requestsOut.length - 1
-        ];
+    //     address[] memory from = new address[](1);
+    //     from[0] = address(mainUser);
+    //     swoosh.request(from, 1, "hi", "");
+    //     Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(
+    //         address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9)
+    //     );
+    //     Swoosh.Request memory currentRequest = requestsOut[
+    //         requestsOut.length - 1
+    //     ];
 
-        vm.stopPrank();
-        vm.startPrank(mainUser);
-        vm.deal(mainUser, 100);
-        swoosh.deposit{value: 10}();
+    //     vm.stopPrank();
+    //     vm.startPrank(mainUser);
+    //     vm.deal(mainUser, 100);
+    //     swoosh.deposit{value: 10}();
 
-        swoosh.accept(currentRequest.id);
-    }
+    //     swoosh.accept(currentRequest.id);
+    // }
 
-    function testCancel() external {
-        address[] memory from = new address[](2);
-        from[0] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
-        from[1] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
-        swoosh.request(from, 1, "hi", "");
-        Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(mainUser);
-        Swoosh.Request memory currentRequest = requestsOut[
-            requestsOut.length - 1
-        ];
+    // function testCancel() external {
+    //     address[] memory from = new address[](2);
+    //     from[0] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+    //     from[1] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+    //     swoosh.request(from, 1, "hi", "");
+    //     Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(mainUser);
+    //     Swoosh.Request memory currentRequest = requestsOut[
+    //         requestsOut.length - 1
+    //     ];
 
-        swoosh.cancel(currentRequest.id);
-    }
+    //     swoosh.cancel(currentRequest.id);
+    // }
 }

@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
 contract SwooshStorage {
     struct Request {
         uint256 id;
@@ -51,7 +53,11 @@ contract SwooshStorage {
     event withdrew(address user, uint256 amount);
 }
 
-contract Swoosh is SwooshStorage {
+contract Swoosh is SwooshStorage, ERC20 {
+    constructor() ERC20("Swoosh", "SWO") {}
+
+    ERC20 USDC = ERC20(0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913);
+
     modifier sufficientBalance(uint256 amount) {
         if (balance[msg.sender] < amount) {
             revert("Insufficient balance");
@@ -270,9 +276,11 @@ contract Swoosh is SwooshStorage {
     }
 
     // @notice: Deposit funds to app
-    function deposit() public payable {
-        balance[msg.sender] += msg.value;
-        emit deposited(msg.sender, msg.value);
+    function deposit(uint256 amount) public payable {
+        USDC.approve(payable(address(this)), amount);
+        USDC.transferFrom(msg.sender, payable(address(this)), amount);
+        balance[msg.sender] += amount;
+        emit deposited(msg.sender, amount);
     }
 
     // @notice: Withdraw funds to the user's wallet
@@ -282,7 +290,7 @@ contract Swoosh is SwooshStorage {
             revert("Insufficient balance");
         }
         balance[msg.sender] -= amount;
-        payable(msg.sender).transfer(amount);
+        USDC.transfer(payable(msg.sender), amount);
         emit withdrew(msg.sender, amount);
     }
 
