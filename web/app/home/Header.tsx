@@ -4,8 +4,8 @@ type HeaderProps = {
 
 export default function Header(props: HeaderProps) {
   return (
-    <div className="flex w-4/5">
-      <p className="font-Inter text-center text-4xl  tracking-[.6em]">{props.title}</p>
+    <div className="w-full py-16 ">
+      <p className="font-Inter text-4xl  tracking-widest">{props.title}</p>
     </div>
   );
 }

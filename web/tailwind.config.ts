@@ -22,7 +22,7 @@ const config: Config = {
       colors: {
         white: '#FFF',
         black: '#161616',
-        gray: '#BAB9CB',
+        gray: '#F8F8F8',
         blue: {
           100: '#C7FFFE',
           200: '#5465FF',
@@ -31,9 +31,10 @@ const config: Config = {
       },
     },
     borderRadius: {
-      'swooshBR' : '1rem'
-    }
-    
+      lg: '.5rem',
+      full: '9999px',
+      swooshBR: '1rem',
+    },
   },
   plugins: [],
 };

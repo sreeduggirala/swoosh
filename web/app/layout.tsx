@@ -1,8 +1,6 @@
 import './global.css';
 
 import OnchainProviders from '@/OnchainProviders';
-import { headers } from 'next/headers';
-import { usePathname } from 'next/navigation';
 
 import { inter } from './fonts';
 import type { Metadata } from 'next';
@@ -28,18 +26,17 @@ export const metadata: Metadata = {
  * https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const headersList: Headers = headers();
-  const referer: string | null = headersList.get('referer');
-  let url: string | undefined;
-  if (referer !== null) {
-    url = new URL(referer).pathname;
-  }
-
+  const isSignIn = children.props.childProp.segment == '__PAGE__';
   return (
-    <html lang="en" className={`${inter.className} `}>
-      <body className="flex flex-1 flex-col">
+    <html
+      lang="en"
+      className={` ${inter.className} relative m-auto bg-black  ${
+        isSignIn ? '' : ' max-w-sm  md:max-w-2xl '
+      }`}
+    >
+      <body className="">
         <OnchainProviders>{children}</OnchainProviders>
-        {url != undefined && url != '/' ? <Navbar /> : null}
+        {isSignIn ? null : <Navbar />}
       </body>
     </html>
   );
