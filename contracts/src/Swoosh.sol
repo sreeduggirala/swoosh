@@ -48,7 +48,7 @@ contract SwooshStorage {
     );
     event accepted(address debtor, address creditor, uint256 indexed requestId);
     event declined(address debtor, address creditor, uint256 indexed requestId);
-    event nudged(address creditor, address debtor);
+    event nudged(address creditor, address debtor, uint256 indexed requestId);
     event deposited(address user, uint256 amount);
     event withdrew(address user, uint256 amount);
 }
@@ -278,6 +278,10 @@ contract Swoosh is SwooshStorage, ERC20 {
         emit declined(currentRequest.creditor, msg.sender, currentRequest.id);
     }
 
+    function nudge(address debtor, uint256 requestId) public {
+        emit nudged(msg.sender, debtor, requestId);
+    }
+
     // @notice: Deposit funds to app
     function deposit(uint256 amount) public payable {
         USDC.approve(payable(address(this)), amount);
@@ -301,11 +305,11 @@ contract Swoosh is SwooshStorage, ERC20 {
     // @params: User's address
     function getPayments(address user) public view returns (Payment[] memory) {
         uint256[] memory indices = paymentsOut[user];
-        Payment[] memory res = new Payment[](indices.length);
+        Payment[] memory result = new Payment[](indices.length);
         for (uint256 i = 0; i < indices.length; i++) {
-            res[i] = payments[indices[i]];
+            result[i] = payments[indices[i]];
         }
-        return res;
+        return result;
     }
 
     // @notice: Get pending incoming requests

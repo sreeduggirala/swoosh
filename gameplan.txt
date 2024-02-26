@@ -18,10 +18,14 @@ Bounties
 4. Injective - Building with Injective inEVM
 5. XDC - Most creative BUIDL using the XDC Network
 6. Arbitrum - Best DeFi App on Arbitrum
+7. Hedera BUIDLers Challenge: Imagine, Create, Hello Future
+8. Hedera Bounty 3 - Exceptional Ecosystem Integration
+9. ETHDenver - Defi, NFTs & Gaming Track: $15,000
+10. ETHDenver - Best of DeFi, NFTs + Gaming: $1,000
+11. ETHDenver - Best of Defi, NFTs, & Gaming: $12,500
 
 
 TBD
 1. Coinbase (Base) - Build on Account Abstraction / Paymaster
 2. Quicknode - Best use of QuickNode's QuickAlerts
 3. Quicknode - Best use case of QuickNode's IPFS
-4. Chainlink - Connect the world with Chainlink (Automation, platform fee collection)
