@@ -4,18 +4,18 @@ import React from 'react';
 import Swoosh from './Swoosh'; // Ensure this is correctly imported
 
 interface RequestOut {
-    id: string;
-    creditor: string;
-    debtors: string[];
-    paid: any[]; // Adjust the type according to what `paid` actually contains
-    declined: any[]; // Same here, adjust the type as necessary
-    amount: string;
-    message: string;
-    imageURI: string;
-    timestamp: string;
-    fulfilled: boolean;
-    cancelled: boolean;
-  }
+  id: string;
+  creditor: string;
+  debtors: string[];
+  paid: any[]; // Adjust the type according to what `paid` actually contains
+  declined: any[]; // Same here, adjust the type as necessary
+  amount: string;
+  message: string;
+  imageURI: string;
+  timestamp: string;
+  fulfilled: boolean;
+  cancelled: boolean;
+}
 
 // Define a type for the props expected by GroupsDisplay
 interface GroupsDisplayProps {

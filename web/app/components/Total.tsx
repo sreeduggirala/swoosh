@@ -1,6 +1,6 @@
 'use client';
 import ProgressBar from './ProgressBar';
-import icon from './assets/USDC.png';
+import icon from '../assets/USDC.png';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 

@@ -1,6 +1,5 @@
-import Navbar from 'app/components/Navbar';
 import React from 'react';
-import Header from '../Header';
+import Header from '../../components/Header';
 import Total from '../../components/Total';
 import MembersList from './_componnents/MembersList';
 

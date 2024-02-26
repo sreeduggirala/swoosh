@@ -49,7 +49,7 @@ function AccountConnect() {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="inline-flex flex-grow items-center justify-center gap-2 rounded-3xl bg-white px-4 py-4"
+                    className="inline-flex flex-grow items-center justify-center gap-2 rounded-full bg-white px-4 py-4"
                   >
                     <div className=" text-lg font-medium leading-normal text-black">
                       Connect wallet

@@ -30,8 +30,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={` ${inter.className} relative m-auto  ${
-        isSignIn ? '' : ' max-w-sm  md:max-w-2xl '
+      className={` ${inter.className} relative m-auto bg-black  ${
+        isSignIn ? '' : ' max-w-md  md:max-w-2xl '
       }`}
     >
       <body className="">
