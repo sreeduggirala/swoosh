@@ -17,10 +17,11 @@ Bounties
 2. Coinbase (Base) - Build a Consumer Product
 4. Injective - Building with Injective inEVM
 5. XDC - Most creative BUIDL using the XDC Network
+6. Arbitrum - Best DeFi App on Arbitrum
 
 
 TBD
 1. Coinbase (Base) - Build on Account Abstraction / Paymaster
 2. Quicknode - Best use of QuickNode's QuickAlerts
 3. Quicknode - Best use case of QuickNode's IPFS
-4. Linea - Unleash your creativity with MetaMask SDK
+4. Chainlink - Connect the world with Chainlink (Automation, platform fee collection)

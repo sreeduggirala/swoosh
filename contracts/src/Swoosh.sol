@@ -272,6 +272,7 @@ contract Swoosh is SwooshStorage, ERC20 {
             }
         }
 
+        currentRequest.cancelled = true;
         emit declined(currentRequest.creditor, msg.sender, currentRequest.id);
     }
 
