@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import profile_icon from '../../assets/bored_app_icon.png';
+import profile_icon from '../assets/bored_app_icon.png';
 
 
 

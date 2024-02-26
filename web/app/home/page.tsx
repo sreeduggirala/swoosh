@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useAccount, useReadContract } from 'wagmi';
 import swooshABI from '../../../contracts/out/Swoosh.sol/Swoosh.json';
 import { baseSepolia } from '@wagmi/core/chains';
-import HomeHeader from './_components/HomeHeader';
-import HomeGroup from './_components/HomeGroup';
+import HomeHeader from '../components/HomeHeader';
+import HomeGroup from '../components/HomeGroup';
 
 interface RequestOut {
   id: string;
