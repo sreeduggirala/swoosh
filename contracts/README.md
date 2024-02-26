@@ -2,7 +2,7 @@
 
 ## Base Sepolia
 
-Contract address: [0x813722E1244b608a8d60fD5090C68bF6Ac12b602](https://sepolia.basescan.org/address/0x813722E1244b608a8d60fD5090C68bF6Ac12b602)
+Contract address: [0xE0e4f202Ddee2850Ed29E3B7b59Bd205ac107E80](https://sepolia.basescan.org/address/0xE0e4f202Ddee2850Ed29E3B7b59Bd205ac107E80)
 
 ## Linea
 
