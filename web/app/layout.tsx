@@ -1,12 +1,9 @@
 import './global.css';
 
 import OnchainProviders from '@/OnchainProviders';
-import { headers } from 'next/headers';
-import { usePathname } from 'next/navigation';
 
 import { inter } from './fonts';
 import type { Metadata } from 'next';
-import Navbar from './components/Navbar';
 
 export const viewport = {
   width: 'device-width',
@@ -28,18 +25,11 @@ export const metadata: Metadata = {
  * https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const headersList: Headers = headers();
-  const referer: string | null = headersList.get('referer');
-  let url: string | undefined;
-  if (referer !== null) {
-    url = new URL(referer).pathname;
-  }
 
   return (
     <html lang="en" className={`${inter.className} `}>
       <body className="flex flex-1 flex-col">
         <OnchainProviders>{children}</OnchainProviders>
-        {url != undefined && url != '/' ? <Navbar /> : null}
       </body>
     </html>
   );

@@ -8,11 +8,11 @@ export default function Navbar() {
       <div
         className="flex w-96 items-center justify-evenly rounded-full  text-blue-200"
         style={{
-          background: 'rgba(199, 255, 254, 0.68)',
+          background: 'rgba(199, 255, 254, 0.75)',
           borderRadius: '16px',
           boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-          WebkitBackdropFilter: 'blur(9.6px)' /* Note the capitalization for Webkit */,
-          backdropFilter: 'blur(9.6px)',
+          WebkitBackdropFilter: 'blur(10px)' /* Note the capitalization for Webkit */,
+          backdropFilter: 'blur(10px)',
           border: '1px solid rgba(199, 255, 254, 1)',
         }}
       >

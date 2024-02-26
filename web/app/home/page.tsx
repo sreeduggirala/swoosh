@@ -25,7 +25,6 @@ interface RequestOut {
 }
 
 export default function Home() {
-
   const { address } = useAccount();
   const [result, setResult] = useState<RequestOut[]>([]);
 
@@ -53,7 +52,7 @@ export default function Home() {
       <Header title="SWOOSH" />
       {/* Integrate GroupsDisplay here */}
       <GroupsDisplay requests={result} />
-      {/* <Navbar /> */}
+      <Navbar />
     </div>
   );
 }
