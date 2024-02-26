@@ -7,7 +7,7 @@ contract SwooshStorage {
         address creditor; // the person requesting the money
         address[] debtors; // people who owe the money
         address[] paid;
-        address[] rejected;
+        address[] declined;
         uint256 amount;
         string message;
         string imageURI;
@@ -45,7 +45,7 @@ contract SwooshStorage {
         uint256 indexed paymentId
     );
     event accepted(address debtor, address creditor, uint256 indexed requestId);
-    event rejected(address debtor, address creditor, uint256 indexed requestId);
+    event declined(address debtor, address creditor, uint256 indexed requestId);
     event nudged(address creditor, address debtor);
     event deposited(address user, uint256 amount);
     event withdrew(address user, uint256 amount);
@@ -89,14 +89,14 @@ contract Swoosh is SwooshStorage {
 
         uint256 id = requests.length;
         address[] memory paid;
-        address[] memory rejected;
+        address[] memory declined;
         requests.push(
             Request(
                 id,
                 msg.sender,
                 from,
                 paid,
-                rejected,
+                declined,
                 amount,
                 message,
                 imageURI,
@@ -196,13 +196,10 @@ contract Swoosh is SwooshStorage {
         for (uint256 i = 0; i < currentRequest.debtors.length; i++) {
             if (currentRequest.debtors[i] == msg.sender) {
                 found = true;
-                if (currentRequest.debtors.length != 1) {
-                    currentRequest.debtors[i] = currentRequest.debtors[
-                        currentRequest.debtors.length
-                    ];
-                }
+                currentRequest.debtors[i] = currentRequest.debtors[
+                    currentRequest.debtors.length - 1
+                ];
                 currentRequest.debtors.pop();
-                break;
             }
         }
 
@@ -231,15 +228,15 @@ contract Swoosh is SwooshStorage {
         emit accepted(currentRequest.creditor, msg.sender, currentRequest.id);
     }
 
-    // @notice: Reject an incoming request
+    // @notice: decline an incoming request
     // @params: request ID
-    function reject(
+    function decline(
         uint256 requestId
     ) public notProcessed(requests[requestId]) {
         Request storage currentRequest = requests[requestId];
 
         if (currentRequest.debtors.length > 1) {
-            revert("Cannot reject group transactions");
+            revert("Cannot decline group transactions");
         }
 
         bool found = false;
@@ -269,7 +266,7 @@ contract Swoosh is SwooshStorage {
             }
         }
 
-        emit rejected(currentRequest.creditor, msg.sender, currentRequest.id);
+        emit declined(currentRequest.creditor, msg.sender, currentRequest.id);
     }
 
     // @notice: Deposit funds to app

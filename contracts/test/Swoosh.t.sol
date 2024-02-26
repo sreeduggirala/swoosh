@@ -82,20 +82,34 @@ contract SwooshTest is Test {
         assertEq(currentPayment.imageURI, "");
     }
 
-    // function testReject() external {}
+    // function testDecline() external {}
 
-    // function testAccept() external {}
+    function testAccept() external {
+        vm.stopPrank();
 
-    function testCancel() external {
-        address[] memory from = new address[](2);
-        from[0] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
-        from[1] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+        vm.startPrank(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9));
+        vm.deal(address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9), 100);
+        address[] memory from = new address[](1);
+        from[0] = address(mainUser);
         swoosh.request(from, 1, "hi", "");
         Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(mainUser);
         Swoosh.Request memory currentRequest = requestsOut[
             requestsOut.length - 1
         ];
 
-        swoosh.cancel(currentRequest.id);
+        swoosh.accept(currentRequest.id);
     }
+
+    // function testCancel() external {
+    //     address[] memory from = new address[](2);
+    //     from[0] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+    //     from[1] = address(0x8B603f2890694cF31689dFDA28Ff5e79917243e9);
+    //     swoosh.request(from, 1, "hi", "");
+    //     Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(mainUser);
+    //     Swoosh.Request memory currentRequest = requestsOut[
+    //         requestsOut.length - 1
+    //     ];
+
+    //     swoosh.cancel(currentRequest.id);
+    // }
 }
