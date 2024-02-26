@@ -125,11 +125,6 @@ contract Swoosh is SwooshStorage {
             revert("Cannot cancel after receiving payment");
         }
 
-        // remove requests in from the debtors
-        // 1. go through the debtors array
-        // 2. find the mapping (address => uint256[])
-        // 3. remove the currentRequest from the uint256[] based on ID
-
         for (uint256 i = 0; i < currentRequest.debtors.length; i++) {
             for (
                 uint256 j = 0;
@@ -144,28 +139,19 @@ contract Swoosh is SwooshStorage {
                 }
             }
         }
-        // remove request out from the creditor
-        uint count = 0;
+
         for (
             uint256 i = 0;
             i < requestsOut[currentRequest.creditor].length;
             i++
         ) {
-            if (requestsOut[currentRequest.creditor][i] != requestId) {
-                count++;
+            if (requestsOut[currentRequest.creditor][i] == requestId) {
+                requestsOut[currentRequest.creditor][i] = requestsOut[
+                    currentRequest.creditor
+                ][requestsOut[currentRequest.creditor].length - 1];
+                requestsOut[currentRequest.creditor].pop();
             }
         }
-        uint256[] memory newOut = new uint256[](count);
-        for (
-            uint256 i = 0;
-            i < requestsOut[currentRequest.creditor].length;
-            i++
-        ) {
-            if (requestsOut[currentRequest.creditor][i] != requestId) {
-                newOut[i] = requestsOut[currentRequest.creditor][i];
-            }
-        }
-        requestsOut[currentRequest.creditor] = newOut;
 
         currentRequest.cancelled = true;
     }
