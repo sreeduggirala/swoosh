@@ -14,13 +14,17 @@ const withPWA = require('next-pwa')({
 });
 
 const nextConfig = withPWA({
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'ipfs.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'pbs.twimg.com'
+      }
     ],
   },
 });
