@@ -5,6 +5,8 @@ import { useAccount, useReadContract } from 'wagmi';
 import swooshABI from '../../../contracts/out/Swoosh.sol/Swoosh.json';
 import { baseSepolia } from '@wagmi/core/chains';
 import Image from 'next/image';
+import GroupsDisplay from './GroupDisplay'; // Adjust the path as necessary
+import Header from './HeaderSwoosh';
 
 interface RequestOut {
   id: string;
@@ -46,26 +48,10 @@ export default function Home() {
 
   return (
     <div className="px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">HOME</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {result.map((request, index) => (
-          <div key={index} className="border rounded-lg overflow-hidden shadow-lg">
-            <Image src={request.imageURI} alt="Request Image" width={200} height={200} className="w-full h-48 object-cover" />
-            <div className="p-4">
-              <h2 className="font-bold text-lg mb-2">Request #{request.id}</h2>
-              <p><strong>Creditor:</strong> {request.creditor}</p>
-              <p><strong>Debtors:</strong> {request.debtors.join(', ')}</p>
-              <p><strong>Amount:</strong> {request.amount} wei</p>
-              <p><strong>Message:</strong> {request.message}</p>
-              <p><strong>Timestamp:</strong> {new Date(parseInt(request.timestamp) * 1000).toLocaleString()}</p>
-              <p><strong>Status:</strong> {request.fulfilled ? 'Fulfilled' : 'Pending'}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <ul className="mt-8">
+      <Header />
+      {/* Integrate GroupsDisplay here */}
+      <GroupsDisplay requests={result} />
 
-      </ul>
     </div>
   );
 }

@@ -42,8 +42,14 @@ const config: Config = {
         'boat-color-yellow-70': '#FFD200',
         'boat-color-orange': '#f55925',
         'boat-gold': '#7b602f',
+        'swooshOverlay': '#5465FF',
+        'swooshText': '#111963',
       },
     },
+    borderRadius: {
+      'swooshBR' : '1rem'
+    }
+    
   },
   plugins: [],
 };
