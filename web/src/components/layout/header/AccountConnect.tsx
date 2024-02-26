@@ -67,10 +67,10 @@ function AccountConnect() {
               }
 
               // Redirect if connected
-              if (connected) {
-                console.log('you are logged in');
-                redirectToAnotherPage();
-              }
+              // if (connected) {
+              //   console.log('you are logged in');
+              //   redirectToAnotherPage();
+              // }
 
               return (
                 <>

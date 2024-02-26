@@ -27,7 +27,7 @@ initAnalytics();
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.className}`}>
+    <html lang="en" className={`${inter.className} `}>
       <body className="flex flex-1 flex-col">
         <OnchainProviders>{children}</OnchainProviders>
       </body>
