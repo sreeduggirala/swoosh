@@ -238,6 +238,10 @@ contract Swoosh is SwooshStorage {
     ) public notProcessed(requests[requestId]) {
         Request storage currentRequest = requests[requestId];
 
+        if (currentRequest.debtors.length > 1) {
+            revert("Cannot reject group transactions");
+        }
+
         bool found = false;
         for (uint256 i = 0; i < currentRequest.debtors.length; i++) {
             if (currentRequest.debtors[i] == msg.sender) {
