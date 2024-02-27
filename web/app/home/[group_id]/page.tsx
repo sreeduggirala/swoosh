@@ -5,7 +5,7 @@ import MembersList from './_componnents/MembersList';
 
 function ProductDetails({ params }: { params: { group_id: string } }) {
   return (
-    <div>
+    <div className="px-4">
       <Header title={'Uber Denver'} />
       <Total price={22.85} />
       <MembersList />
