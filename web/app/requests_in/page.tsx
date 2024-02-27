@@ -7,6 +7,7 @@ import Swoosh from 'app/components/Swoosh';
 import { useAccount } from 'wagmi';
 import { readSwooshContract } from 'app/util';
 import { DepositERC20 } from 'app/components/deposit';
+import { WithdrawERC20 } from 'app/components/Withdraw';
 
 interface RequestInHeaderGroupProp {
   userBalance: number;
@@ -49,7 +50,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
         <div className="flex justify-center">
           <Button
             variant="Deposit"
-            href="/requests_in/1"
+            href="/"
             onClick={() => document.getElementById('deposit_modal').showModal()}
           />
         </div>
@@ -60,7 +61,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
           ${formatNumber(Number(props.owe) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
-          <Button variant="Withdraw" href="/requests_in/1" />
+          <Button variant="Withdraw" href="/" onClick={()=> document.getElementById('withdraw_modal').showModal()} />
         </div>
         </div></div>
   );
@@ -132,7 +133,17 @@ const RequestsInPage = () => {
           </div>
         
       </dialog>    
-      </div>
+      <dialog id="withdraw_modal" className="modal">
+        <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
+          <form method="dialog " className="flex w-full justify-evenly gap-2">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+            </form>
+          <WithdrawERC20/>          
+          </div>
+        
+      </dialog>  
+       </div>
   );
 };
 
