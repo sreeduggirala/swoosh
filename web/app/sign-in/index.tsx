@@ -1,6 +1,6 @@
 'use client';
 
-import SignInPage from './_components/SignInPage';
+import SignInPage from '../components/SignInPage';
 
 /**
  * Use the page component to wrap the components
