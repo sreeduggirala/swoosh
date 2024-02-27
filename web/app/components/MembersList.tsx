@@ -1,20 +1,34 @@
 import React from 'react';
-import Button from './Button';
+import {Button} from './Button';
 
-const MembersList = () => {
+
+interface MembersListProps {
+  debtMembers: string[];
+  paidMembers: string[];
+  total: number;
+}
+const MembersList = (props: MembersListProps) => {
   // replace with smart contract connection
-  const testMembers = ['0x23423423sd', '0xhasohkdfa', 'bob.eth'];
-  const testTotal = 22.85;
-
+  console.log(props)
   return (
     <div className="mt-8 flex flex-col gap-2 ">
-      {testMembers.map((i) => (
+      {(props.debtMembers != null) ? props.debtMembers.map((i) => (
         <Member
           address={formatAddress(i)}
-          isPending={Math.random() > 0.5}
-          amount={parseFloat((testTotal / testMembers.length).toFixed(2))}
+          isPending={true}
+          amount={parseFloat((props.total / (props.debtMembers.length + props.paidMembers.length)).toFixed(2))}
         />
-      ))}
+      )) : <div></div>}
+      {
+        props.paidMembers != null ? props.paidMembers.map((i) => (
+          <Member
+            address={formatAddress(i)}
+            isPending={false}
+            amount={parseFloat((props.total / (props.debtMembers.length + props.paidMembers.length)).toFixed(2))}
+          />
+        ))
+      
+      : <div></div>}
     </div>
   );
 };

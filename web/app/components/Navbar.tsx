@@ -4,8 +4,8 @@ import { IoHome, IoPersonCircleSharp, IoAddCircle } from 'react-icons/io5';
 
 export default function Navbar() {
   return (
-    <div className="absolute inset-x-0 bottom-5 flex h-14 justify-center ">
-      <div className="bg-gray flex min-w-96  items-center justify-evenly rounded-full  text-blue-200">
+    <div className="fixed inset-x-0 bottom-5 flex h-14 justify-center ">
+      <div className="bg-gray flex min-w-96 items-center justify-evenly rounded-full  text-blue-200">
         <button>
           <Link href="/home">
             <IoHome fontSize={42} />

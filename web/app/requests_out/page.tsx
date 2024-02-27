@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import Header from '../components/Header'
-import Button from '../components/Button'
+import {Button} from '../components/Button'
 import Swoosh from '../components/Swoosh'
 import { useAccount } from 'wagmi'
 import { readSwooshContract } from 'app/util'
@@ -14,16 +14,20 @@ interface RequestOutHeaderGroupProp{
 const RequestOutHeaderGroup = (props: RequestOutHeaderGroupProp) => {
 
 
-  return <div className='w-full flex justify-around  bg-gray rounded-lg'>
-  <div className='p-6 px-8'>
+  return <div className='  w-full flex bg-gray rounded-lg'>
+  <div className='p-3 px-4 w-1/2'>
     <p>Balance</p>
-    <p className='font-semibold text-4xl py-2'>{String(Number((props.userBalance as number)) / (Math.pow(10, 18)))} eth</p>
-      <Button  variant='Deposit' href='/requests_in/1'/>
+    <p className='font-semibold text-5xl py-4'>${String(Number((props.userBalance as number)) / (Math.pow(10, 18)))}</p>
+    <div className="flex justify-center"> 
+      <Button  variant='Deposit' href='' onClick={()=>{alert('Deposit')}}/>
+    </div>
   </div>
-  <div className='p-6 px-8'>
+  <div className='p-3 px-4 w-1/2'>
     <p>Owed</p>
-    <p className='font-semibold text-4xl py-2'>{String(Number((props.owned as number)) / (Math.pow(10, 18)))} eth</p>
-    <Button variant='Withdraw' href='/requests_in/1'/>
+    <p className='font-semibold text-5xl py-4'>${String(Number((props.owned as number)) / (Math.pow(10, 18)))}</p>
+    <div className="flex justify-center">
+      <Button variant='Withdraw' href='/requests_in/1'/>
+    </div>
   </div>
   </div>
 }
@@ -53,7 +57,9 @@ const RequestOutGroup = () => {
     dataResult.push({title: resultOut[i].message, percent: resultOut[i].paid.length / (resultOut[i].debtors.length + resultOut[i].paid.length), href: '/requests_out/'+resultOut[i].id});
   }
   return <div className='grid grid-cols-2 gap-4 mt-8'>
-    {dataResult.map(request=><Swoosh  percent={request.percent} title={request.title} href={request.href}/>)}
+    {dataResult.map(request=><Swoosh onClick={()=>console.log("PAY MONEY")
+    
+    }  percent={request.percent} title={request.title} href={request.href}/>)}
   </div>
 }
 
@@ -74,9 +80,13 @@ const RequestsOutPage = () => {
   }
   return (
     <div className="px-4">
-      <Header title="Awaiting Swooshes"/>
-      <RequestOutHeaderGroup userBalance={userBalance as number} owned={sum} />
-      <RequestOutGroup/>
+      {/* <div className="fixed top-0 left-0 z-10 bg-white"> */}
+        <Header title="Awaiting Swooshes"/>
+        <RequestOutHeaderGroup userBalance={userBalance as number} owned={sum} />
+      {/* </div> */}
+      <div className="overflow-y-scroll">
+        <RequestOutGroup/>
+      </div>
     </div>
   )
 }

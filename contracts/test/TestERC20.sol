@@ -18,10 +18,9 @@ contract TestERC20 is
     ERC20FlashMint
 {
     constructor(
-        address initialOwner
     )
         ERC20("Test ERC-20", "TEST")
-        Ownable(initialOwner)
+        Ownable(msg.sender)
         ERC20Permit("Test ERC-20")
     {}
 

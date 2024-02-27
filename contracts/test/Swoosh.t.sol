@@ -25,7 +25,7 @@ contract SwooshTest is Test {
     address sree = 0x8B603f2890694cF31689dFDA28Ff5e79917243e9;
 
     function setUp() external {
-        erc20 = new TestERC20(address(this));
+        erc20 = new TestERC20();
         swoosh = new Swoosh(address(erc20));
         erc20.mint(mainUser, 1000);
         vm.startPrank(mainUser);
