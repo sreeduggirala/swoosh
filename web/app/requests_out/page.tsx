@@ -10,6 +10,28 @@ interface RequestOutHeaderGroupProp{
   userBalance: number,
   owned: number
 }
+function formatNumber(num: number): string {
+  if (num < 1000) {
+    return num.toFixed(2);
+  } else {
+    let divisor = 1;
+    let unit = '';
+
+    if (num >= 1e9) {
+      divisor = 1e9;
+      unit = 'b';
+    } else if (num >= 1e6) {
+      divisor = 1e6;
+      unit = 'm';
+    } else if (num >= 1e3) {
+      divisor = 1e3;
+      unit = 'k';
+    }
+
+    const formattedNumber = (num / divisor).toFixed(2) + unit;
+    return formattedNumber;
+  }
+}
 
 const RequestOutHeaderGroup = (props: RequestOutHeaderGroupProp) => {
 
@@ -17,14 +39,14 @@ const RequestOutHeaderGroup = (props: RequestOutHeaderGroupProp) => {
   return <div className='  w-full flex bg-gray rounded-lg'>
   <div className='p-3 px-4 w-1/2'>
     <p>Balance</p>
-    <p className='font-semibold text-5xl py-4'>${String(Number((props.userBalance as number)) / (Math.pow(10, 18)))}</p>
+    <p className='font-semibold text-5xl py-4'>${formatNumber(Number((props.userBalance as number)) / (Math.pow(10, 18)))}</p>
     <div className="flex justify-center"> 
       <Button  variant='Deposit' href='' onClick={()=>{alert('Deposit')}}/>
     </div>
   </div>
   <div className='p-3 px-4 w-1/2'>
     <p>Owed</p>
-    <p className='font-semibold text-5xl py-4'>${String(Number((props.owned as number)) / (Math.pow(10, 18)))}</p>
+    <p className='font-semibold text-5xl py-4'>${formatNumber(Number((props.owned as number)) / (Math.pow(10, 18)))}</p>
     <div className="flex justify-center">
       <Button variant='Withdraw' href='/requests_in/1'/>
     </div>
@@ -80,11 +102,11 @@ const RequestsOutPage = () => {
   }
   return (
     <div className="px-4">
-      {/* <div className="fixed top-0 left-0 z-10 bg-white"> */}
-        <Header title="Awaiting Swooshes"/>
+      <div className="sticky top-0 z-10 bg-white w-full pb-4">
+        <Header title="Your Swooshes"/>
         <RequestOutHeaderGroup userBalance={userBalance as number} owned={sum} />
-      {/* </div> */}
-      <div className="overflow-y-scroll">
+      </div>
+      <div className="pb-4">
         <RequestOutGroup/>
       </div>
     </div>

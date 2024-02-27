@@ -11,6 +11,29 @@ interface RequestInHeaderGroupProp{
   userBalance: number,
   owe: number
 }
+
+function formatNumber(num: number): string {
+  if (num < 1000) {
+    return num.toFixed(2);
+  } else {
+    let divisor = 1;
+    let unit = '';
+
+    if (num >= 1e9) {
+      divisor = 1e9;
+      unit = 'b';
+    } else if (num >= 1e6) {
+      divisor = 1e6;
+      unit = 'm';
+    } else if (num >= 1e3) {
+      divisor = 1e3;
+      unit = 'k';
+    }
+
+    const formattedNumber = (num / divisor).toFixed(2) + unit;
+    return formattedNumber;
+  }
+}
 const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
 
   const user_address = useAccount().address;
@@ -19,14 +42,14 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
     
   <div className='p-3 px-4 w-1/2'>
     <p>Balance</p>
-    <p className='font-semibold text-5xl py-4'>${String(Number((props.userBalance)) / (Math.pow(10, 18)))}</p>
+    <p className='font-semibold text-4xl py-4'>${formatNumber(Number((props.userBalance)) / (Math.pow(10, 18)))}</p>
     <div className="flex justify-center">
       <Button variant='Deposit' href='/requests_in/1'/>
     </div>
   </div>
   <div className='p-3 px-4 w-1/2'>
       <p>Owed</p>
-      <p className='font-semibold text-5xl py-4'>${String(Number((props.owe)) / (Math.pow(10, 18)))}</p>
+      <p className='font-semibold text-4xl py-4'>${formatNumber(Number((props.owe)) / (Math.pow(10, 18)))}</p>
       <div className="flex justify-center">
         <Button variant='Withdraw' href='/requests_in/1'/>
       </div>
@@ -46,7 +69,7 @@ const RequestInGroup = () => {
   }
 
   
-  return <div className=' grid grid-cols-2 gap-4 mt-8'>    
+  return <div className=' grid grid-cols-2 gap-4 mt-8d max-h-screen overflow-y-auto'>    
     {dataResult.map(request=><Swoosh  onClick={()=>{alert('sus')}} title={request.title} href={''} variant='button' amount={(Number((request.amount)) / (Math.pow(10, 18)))} percent={0} />)}
   </div>
 }
@@ -79,12 +102,12 @@ const RequestsInPage = () => {
     sum += Number(resultOut[i].amount);
   }
   return (
-    <div className="px-4">
-      {/* <div className="justify-center bg-white z-10 px-4"> */}
+    <div className="flex flex-col px-4 pb-20">
+      <div className="sticky top-0 z-10 bg-white w-full pb-4">
         <Header title="Awaiting Swooshes"/>
         <RequestInHeaderGroup userBalance={userBalance as number} owe={sum}/>
-      {/* </div> */}
-      <div className="overflow-y-scroll">
+      </div>
+      <div className="pb-4">
         <RequestInGroup/>
       </div>
     </div>
