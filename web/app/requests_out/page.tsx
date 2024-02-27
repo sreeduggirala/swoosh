@@ -10,28 +10,7 @@ interface RequestOutHeaderGroupProp {
   userBalance: number;
   owned: number;
 }
-function formatNumber(num: number): string {
-  if (num < 1000) {
-    return num.toFixed(2);
-  } else {
-    let divisor = 1;
-    let unit = '';
 
-    if (num >= 1e9) {
-      divisor = 1e9;
-      unit = 'b';
-    } else if (num >= 1e6) {
-      divisor = 1e6;
-      unit = 'm';
-    } else if (num >= 1e3) {
-      divisor = 1e3;
-      unit = 'k';
-    }
-
-    const formattedNumber = (num / divisor).toFixed(2) + unit;
-    return formattedNumber;
-  }
-}
 function formatNumber(num: number): string {
   if (num < 1000) {
     return num.toFixed(2);
@@ -74,7 +53,7 @@ const RequestOutHeaderGroup = (props: RequestOutHeaderGroupProp) => {
       <div className="w-1/2 p-3 px-4">
         <p>Owed</p>
         <p className="py-4 text-5xl font-semibold">
-          ${String(Number(props.owned as number) / Math.pow(10, 18))}
+          ${formatNumber(Number(props.owned as number) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
           <Button variant="Withdraw" href="/requests_in/1" />
@@ -85,23 +64,6 @@ const RequestOutHeaderGroup = (props: RequestOutHeaderGroupProp) => {
 };
 
 
-  return <div className='  w-full flex bg-gray rounded-lg'>
-  <div className='p-3 px-4 w-1/2'>
-    <p>Balance</p>
-    <p className='font-semibold text-5xl py-4'>${formatNumber(Number((props.userBalance as number)) / (Math.pow(10, 18)))}</p>
-    <div className="flex justify-center"> 
-      <Button  variant='Deposit' href='' onClick={()=>{alert('Deposit')}}/>
-    </div>
-  </div>
-  <div className='p-3 px-4 w-1/2'>
-    <p>Owed</p>
-    <p className='font-semibold text-5xl py-4'>${formatNumber(Number((props.owned as number)) / (Math.pow(10, 18)))}</p>
-    <div className="flex justify-center">
-      <Button variant='Withdraw' href='/requests_in/1'/>
-    </div>
-  </div>
-  </div>
-}
 
 interface Request {
   id: string;
@@ -158,7 +120,7 @@ const RequestsOutPage = () => {
     sum += Number(resultOut[i].amount) * resultOut[i].debtors.length;
   }
   return (
-    <div className="flex flex-col px-4 pb-20">
+    <div className="px-4">
       <div className="sticky top-0 z-10 bg-white w-full pb-4">
         <Header title="Your Swooshes"/>
         <RequestOutHeaderGroup userBalance={userBalance as number} owned={sum} />

@@ -33,7 +33,7 @@ export default function HomePage() {
 
 
   return (
-    <div className="py-8 px-4">
+    <div className="py-8">
       <HomeHeader />
       <HomeGroup inNumber={resultIn.length} outNumber={resultOut.length} />
     </div>

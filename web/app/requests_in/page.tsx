@@ -35,28 +35,6 @@ function formatNumber(num: number): string {
   }
 }
 
-function formatNumber(num: number): string {
-  if (num < 1000) {
-    return num.toFixed(2);
-  } else {
-    let divisor = 1;
-    let unit = '';
-
-    if (num >= 1e9) {
-      divisor = 1e9;
-      unit = 'b';
-    } else if (num >= 1e6) {
-      divisor = 1e6;
-      unit = 'm';
-    } else if (num >= 1e3) {
-      divisor = 1e3;
-      unit = 'k';
-    }
-
-    const formattedNumber = (num / divisor).toFixed(2) + unit;
-    return formattedNumber;
-  }
-}
 const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
   const user_address = useAccount().address;
 
@@ -78,27 +56,12 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
       <div className="w-1/2 p-3 px-4">
         <p>Owed</p>
         <p className="py-4 text-5xl font-semibold">
-          ${String(Number(props.owe) / Math.pow(10, 18))}
+          ${formatNumber(Number(props.owe) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
           <Button variant="Withdraw" href="/requests_in/1" />
         </div>
-  return <div className='w-full flex bg-gray rounded-lg'>
-    
-  <div className='p-3 px-4 w-1/2'>
-    <p>Balance</p>
-    <p className='font-semibold text-4xl py-4'>${formatNumber(Number((props.userBalance)) / (Math.pow(10, 18)))}</p>
-    <div className="flex justify-center">
-      <Button variant='Deposit' href='/requests_in/1'/>
-    </div>
-  </div>
-  <div className='p-3 px-4 w-1/2'>
-      <p>Owed</p>
-      <p className='font-semibold text-4xl py-4'>${formatNumber(Number((props.owe)) / (Math.pow(10, 18)))}</p>
-      <div className="flex justify-center">
-        <Button variant='Withdraw' href='/requests_in/1'/>
-      </div>
-    </div>
+        </div></div>
   );
 };
 
