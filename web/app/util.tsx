@@ -9,7 +9,7 @@ import HomeGroup from './components/HomeGroup';
 export function readSwooshContract(functionName: string, args: any[], setResult: any): readSwooshContractReturn {
     const { data, isLoading, error } = useReadContract({
       abi: swooshABI.abi,
-      address: '0xE0e4f202Ddee2850Ed29E3B7b59Bd205ac107E80',
+      address: '0x813722E1244b608a8d60fD5090C68bF6Ac12b602',
       functionName,
       args,
       chainId: baseSepolia.id,
@@ -17,7 +17,7 @@ export function readSwooshContract(functionName: string, args: any[], setResult:
   
     useEffect(() => {
       if (data != null) {
-        const typedData = data as Request[]; // Cast the data to the correct type
+        const typedData = data; // Cast the data to the correct typ
         setResult(typedData);
         console.log(typedData);
       }
