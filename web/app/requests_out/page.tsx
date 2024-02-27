@@ -130,7 +130,6 @@ const RequestsOutPage = () => {
       </div>
       <dialog id="deposit_modal" className="modal">
         <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
-          <h3 className=" py-6 text-xl">How much do you want to deposit?</h3>
           <form method="dialog " className="flex w-full justify-evenly gap-2">
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
