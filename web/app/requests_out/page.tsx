@@ -6,6 +6,7 @@ import Swoosh from '../components/Swoosh';
 import { useAccount } from 'wagmi';
 import { readSwooshContract } from 'app/util';
 import {DepositERC20} from "../components/deposit";
+import { WithdrawERC20 } from 'app/components/Withdraw';
 interface RequestOutHeaderGroupProp {
   userBalance: number;
   owned: number;
@@ -53,12 +54,12 @@ const RequestOutHeaderGroup = (props: RequestOutHeaderGroupProp) => {
       <div className="w-1/2 p-3 px-4">
         <p>Owed</p>
         <p className="py-4 text-5xl font-semibold">
-          ${formatNumber(Number(props.owned as number) / Math.pow(10, 18))}
+          ${formatNumber(Number(props.owned) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
-          <Button variant="Withdraw" href="/requests_in/1" />
+          <Button variant="Withdraw" href="/" onClick={()=> document.getElementById('withdraw_modal').showModal()} />
         </div>
-      </div>
+        </div>
     </div>
   );
 };
@@ -135,6 +136,17 @@ const RequestsOutPage = () => {
 
             </form>
           <DepositERC20/>          
+          </div>
+        
+      </dialog>
+
+      <dialog id="withdraw_modal" className="modal">
+        <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
+          <form method="dialog " className="flex w-full justify-evenly gap-2">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+            </form>
+          <WithdrawERC20/>          
           </div>
         
       </dialog>

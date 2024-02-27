@@ -142,7 +142,8 @@ const RequestsInPage = () => {
           <WithdrawERC20/>          
           </div>
         
-      </dialog>  
+      </dialog>
+        
        </div>
   );
 };

@@ -11,8 +11,8 @@ contract SwooshScript is Script {
         // erc20.mint(address(0x790914B66Aa57cCdA5596Da83B98c94700ECbF04), 2000 * 10 ** 18);
         console.log(erc20.balanceOf(address(0xcfbC6d2ed767EA76ceD4518e16DeA8B6996B88Aa)));
         // erc20.mint(address(0x31d5a8709bE7f3cE42efc21A72718acf1D57a890), 2000 * 10 ** 18);
-        // Swoosh swoosh = Swoosh(0x39A23022abF01500ae70B0c1774D41525A266c0C);
-        // // swoosh.deposit{value: 0.3 * 10 ** 18}();
+        Swoosh swoosh = Swoosh(0x39A23022abF01500ae70B0c1774D41525A266c0C);
+        swoosh.deposit(500);
         address[] memory from = new address[](1);
         // from[0] = address(0xcfbC6d2ed767EA76ceD4518e16DeA8B6996B88Aa);
         // from[1] = address(0x31d5a8709bE7f3cE42efc21A72718acf1D57a890);
