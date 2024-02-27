@@ -20,7 +20,7 @@ export function Button({
                       variant === 'Nudge' ? 'bg-blue-200 w-min': 'bg-blue-200';
 
   return (
-    <button onClick={onClick} className={`${buttonClass} rounded-full w-full`}>
+    <button onClick={onClick} className={`${buttonClass} rounded-full w-full hover:scale-105 duration-200`}>
         {variant === 'Nudge' ? (
             <div className="flex items-center text-xl justify-center px-2 py-2">
               <CiBellOn className="text-white" />
