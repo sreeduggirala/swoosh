@@ -37,7 +37,7 @@ const config: Config = {
       swooshPB: '9999px',
     },
   },
-  plugins: [],
+  plugins: [require('daisyui')],
 };
 
 export default config;
