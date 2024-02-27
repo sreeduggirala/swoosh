@@ -43,7 +43,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
       <div className="w-1/2 p-3 px-4">
         <p>Balance</p>
         <p className="py-4 text-5xl font-semibold">
-          ${String(Number(props.userBalance) / Math.pow(10, 18))}
+          ${formatNumber(Number(props.userBalance) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
           <Button

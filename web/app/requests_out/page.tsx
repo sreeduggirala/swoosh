@@ -5,7 +5,7 @@ import { Button } from '../components/Button';
 import Swoosh from '../components/Swoosh';
 import { useAccount } from 'wagmi';
 import { readSwooshContract } from 'app/util';
-
+import {DepositERC20} from "../components/deposit";
 interface RequestOutHeaderGroupProp {
   userBalance: number;
   owned: number;
@@ -40,7 +40,7 @@ const RequestOutHeaderGroup = (props: RequestOutHeaderGroupProp) => {
       <div className="w-1/2 p-3 px-4">
         <p>Balance</p>
         <p className="py-4 text-5xl font-semibold">
-          ${String(Number(props.userBalance as number) / Math.pow(10, 18))}
+          ${formatNumber(Number(props.userBalance as number) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
           <Button
@@ -131,24 +131,13 @@ const RequestsOutPage = () => {
       <dialog id="deposit_modal" className="modal">
         <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
           <h3 className=" py-6 text-xl">How much do you want to deposit?</h3>
-          <div className="flex items-center justify-center gap-4">
-            <input
-              value={deposit}
-              placeholder="22.5"
-              onChange={(e) => {
-                setDeposit(e.target.value);
-              }}
-              className="w-32 rounded-lg bg-gray p-6 text-center text-4xl text-black"
-            />
-            <p className="text-4xl font-semibold tracking-widest">USDC</p>
-          </div>
-          <div className="modal-action">
-            <form method="dialog " className="flex w-full justify-evenly gap-2">
-              <button className="btn-primary btn flex-1 text-white">Deposit</button>
-              <button className="btn-primary btn flex-1 text-white">Cancel</button>
+          <form method="dialog " className="flex w-full justify-evenly gap-2">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
             </form>
+          <DepositERC20/>          
           </div>
-        </div>
+        
       </dialog>
     </div>
   );
