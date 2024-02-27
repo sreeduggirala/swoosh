@@ -6,7 +6,7 @@ type Props = {
     percent,
   }: Props) {
     return (
-    <div className ="relative">
+    <div className ="relative rounded-full">
         {/* Container div representing the complete bar */}
         <div className="relative h-8 bg-blue-200 opacity-50 rounded-swooshPB"></div>
   

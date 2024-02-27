@@ -5,8 +5,11 @@ import swooshABI from '../../../contracts/out/Swoosh.sol/Swoosh.json';
 import { baseSepolia } from '@wagmi/core/chains';
 import HomeHeader from '../components/HomeHeader';
 import HomeGroup from '../components/HomeGroup';
+import { readSwooshContract } from 'app/util';
+import Link from 'next/link'
 
-interface RequestOut {
+
+interface Request {
   id: string;
   creditor: string;
   debtors: string[];
@@ -21,31 +24,28 @@ interface RequestOut {
 }
 
 export default function HomePage() {
+
   const user_address = useAccount().address;
-  const [result, setResult] = useState<RequestOut[]>([]);
+  const [resultOut, setResultOut] = useState<Request[]>([]);
+  const [resultIn, setResultIn] = useState<Request[]>([]);
+  let result = readSwooshContract('getRequestsOut', [user_address], setResultOut);
 
-  const { data, isLoading, error } = useReadContract({
-    abi: swooshABI.abi,
-    address: '0xE0e4f202Ddee2850Ed29E3B7b59Bd205ac107E80',
-    functionName: 'getRequestsOut',
-    args: [user_address],
-    chainId: baseSepolia.id,
-  });
 
-  useEffect(() => {
-    if (data != null) {
-      const typedData = data as RequestOut[]; // Cast the data to the correct type
-      setResult(typedData);
-    }
-  }, [data]);
+  result = readSwooshContract('getRequestsIn', [user_address], setResultIn);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+
+  if (result.isLoading) return <p>Loading...</p>;
+  if (result.error) return <p>Error: {result.error.message}</p>;
 
   return (
     <div className="py-8">
       <HomeHeader />
-      <HomeGroup />
+      <HomeGroup  inNumber={resultIn.length} outNumber={resultOut.length}/>
     </div>
   );
+
+  interface HomeGroupProp{
+    inNumber: number,
+    outNumber: number
+  }
 }

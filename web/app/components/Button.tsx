@@ -4,37 +4,42 @@ import { CiBellOn } from 'react-icons/ci';
 type Props = {
   title?: string;
   href: string;
-  // primary = Deposit/Withdraw/View/Pay All
-  // secondary = Pay/Pending/Nudge
-  variant?: 'primary' | 'secondary';
-  isPending?: boolean;
-  isNudge?: boolean;
+  variant: 'Deposit' | 'Withdraw' | 'View' | 'Pay All' | 'Pending' | 'Nudge' | 'Custom';
 };
 
 export default function Button({
   title,
   variant,
   href = '/',
-  isPending = false,
-  isNudge = false,
 }: Props) {
-  const renderText = !isNudge && (title || (isPending ? 'Pending...' : 'Paid'));
+  const buttonClass = variant === 'Pending' ? 'bg-blue-200 opacity-50' : 
+                      variant === 'Nudge' ? 'bg-blue-200 w-min': 'bg-blue-200';
 
   return (
-    <Link className="w-1/4 rounded-full bg-blue-200 no-underline" href={href}>
-      {isNudge ? (
-        <div className="align-items justify-center text-center">
-          <CiBellOn className="text-white" />
-        </div>
-      ) : (
-        <p
-          className={`font-Inter text-center font-semibold text-white ${
-            variant === 'primary' ? 'px-4 py-2' : variant === 'secondary' ? 'px-6 py-1' : ''
-          }`}
-        >
-          {title ?? (isPending ? 'Pending...' : 'Paid')}
-        </p>
-      )}
-    </Link>
+    <button className={`${buttonClass} rounded-full`}>
+      <Link className="no-underline" href={href}>
+          {variant === 'Nudge' ? (
+            <div className="flex items-center text-xl justify-center px-2 py-2">
+              <CiBellOn className="text-white" />
+            </div>
+          ) : variant === 'Custom' ? (
+            <p className="font-Inter text-center font-semibold text-white px-4 py-2">
+              {title}
+            </p>
+          ) : (
+            <p
+              className={`font-Inter text-center font-semibold text-white ${
+                variant === 'Deposit' || 
+                variant === 'Withdraw' || 
+                variant === 'View' || 
+                variant === 'Pay All' ? 
+                'px-4 py-2' : 'py-1'
+              }`}
+            >
+              {variant}
+            </p>
+          )}
+      </Link>
+    </button>
   );
 }

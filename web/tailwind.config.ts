@@ -34,6 +34,7 @@ const config: Config = {
       lg: '.5rem',
       full: '9999px',
       swooshBR: '1rem',
+      swooshPB: '9999px',
     },
   },
   plugins: [],
