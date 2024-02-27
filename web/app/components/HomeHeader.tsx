@@ -8,7 +8,6 @@ import { useAccount } from 'wagmi';
 const HomeHeader = () => {
   //get user address
   const user_address = String(useAccount().address);
-  console.log(user_address)
   let truncated = user_address?.slice(0, 4) + '...' + user_address?.slice(-3);
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4 py-12">

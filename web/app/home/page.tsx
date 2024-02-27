@@ -25,15 +25,13 @@ export default function HomePage() {
   const [resultIn, setResultIn] = useState<Request[]>([]);
 
   let result = readSwooshContract('getRequestsOut', [user_address], setResultOut);
-
   result = readSwooshContract('getRequestsIn', [user_address], setResultIn);
 
-  if (result.isLoading) return <p>Loading...</p>;
+  if (result.isLoading) return <p>Loading ...</p>;
   if (result.error) return <p>Error: {result.error.message}</p>;
 
-
   return (
-    <div className="py-8 px-4">
+    <div className="px-4 py-8">
       <HomeHeader />
       <HomeGroup inNumber={resultIn.length} outNumber={resultOut.length} />
     </div>

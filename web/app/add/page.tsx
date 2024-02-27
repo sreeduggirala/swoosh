@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from '../components/Header'
-import Button from '../components/Button'
 
 interface RequestInCardProps {
   title:string
@@ -8,7 +7,7 @@ interface RequestInCardProps {
 
 const Add = () => {
   return (
-    <div><Header title="Awaiting Swooshes"/>
+    <div><Header title="ADD"/>
 
     </div>
   )

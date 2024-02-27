@@ -1,5 +1,5 @@
 import { generateMetadata } from '@/utils/generateMetadata';
-import SignInPage from './components/SignInPage';
+import SignInPage from './sign-in';
 
 export const metadata = generateMetadata({
   title: 'Build Onchain Apps Toolkit',

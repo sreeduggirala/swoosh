@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { AccountDropdown } from './AccountDropdown';
@@ -11,15 +10,7 @@ import { AccountInfoPanel } from './AccountInfoPanel';
  *  - Displays the wallet network
  */
 function AccountConnect() {
-  const router = useRouter();
-
-  const redirectToAnotherPage = () => {
-    // Check if running in the client-side environment
-    if (typeof window !== 'undefined') {
-      // Redirect to the desired page after successful authentication
-      router.push('/home');
-    }
-  };
+  
 
   return (
     <ConnectButton.Custom>
@@ -66,11 +57,7 @@ function AccountConnect() {
                 );
               }
 
-              // Redirect if connected
-              // if (connected) {
-              //   console.log('you are logged in');
-              //   redirectToAnotherPage();
-              // }
+              
 
               return (
                 <>

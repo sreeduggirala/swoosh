@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import { Button } from '../components/Button';
-import SwooshProgressBar from '../components/SwooshProgressBar';
 import Swoosh from 'app/components/Swoosh';
 import { useAccount } from 'wagmi';
 import { readSwooshContract } from 'app/util';
@@ -10,11 +9,16 @@ import { DepositERC20 } from 'app/components/deposit';
 import { WithdrawERC20 } from 'app/components/Withdraw';
 
 interface RequestInHeaderGroupProp {
-  userBalance: number;
-  owe: number;
+  balance: number;
+  owed: number;
 }
 
-function formatNumber(num: number): string {
+interface RequestInData {
+  title: string;
+  amount: string;
+}
+
+export function formatNumber(num: number): string {
   if (num < 1000) {
     return num.toFixed(2);
   } else {
@@ -38,14 +42,12 @@ function formatNumber(num: number): string {
 }
 
 const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
-  const user_address = useAccount().address;
-
   return (
     <div className="flex w-full rounded-lg bg-gray">
       <div className="w-1/2 p-3 px-4">
         <p>Balance</p>
         <p className="py-4 text-5xl font-semibold">
-          ${formatNumber(Number(props.userBalance) / Math.pow(10, 18))}
+          ${formatNumber(Number(props.balance) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
           <Button
@@ -58,12 +60,13 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
       <div className="w-1/2 p-3 px-4">
         <p>Owed</p>
         <p className="py-4 text-5xl font-semibold">
-          ${formatNumber(Number(props.owe) / Math.pow(10, 18))}
+          ${formatNumber(Number(props.owed) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
           <Button variant="Withdraw" href="/" onClick={()=> document.getElementById('withdraw_modal').showModal()} />
         </div>
-        </div></div>
+      </div>
+    </div>
   );
 };
 
@@ -71,21 +74,32 @@ const RequestInGroup = () => {
   const user_address = useAccount().address;
   const [resultOut, setResultOut] = useState<Request[]>([]);
 
-  let result = readSwooshContract('getRequestsIn', [user_address], setResultOut);
-  let dataResult = [];
-  for (let i = 0; i < resultOut.length; i++) {
-    dataResult.push({
-      title: resultOut[i].message,
-      href: '/requests_in/' + resultOut[i].id,
-      amount: resultOut[i].amount,
+  readSwooshContract('getRequestsIn', [user_address], setResultOut);
+  let data: RequestInData[] = [];
+  resultOut.map((result) => {
+    data.push({
+      title: result.message,
+      amount: result.amount,
     });
-  }
+  });
 
-  
-  return <div className=' grid grid-cols-2 gap-4 mt-8d max-h-screen overflow-y-auto'>    
-    {dataResult.map(request=><Swoosh  onClick={()=>{alert('sus')}} title={request.title} href={''} variant='button' amount={(Number((request.amount)) / (Math.pow(10, 18)))} percent={0} />)}
-  </div>
-}
+  return (
+    <div className=" mt-8d grid max-h-screen grid-cols-2 gap-4 overflow-y-auto">
+      {data.map((request) => (
+        <Swoosh
+          onClick={() => {
+            alert('sus');
+          }}
+          title={request.title}
+          href={''}
+          variant="button"
+          amount={Number(request.amount) / Math.pow(10, 18)}
+          percent={0}
+        />
+      ))}
+    </div>
+  );
+};
 
 interface Request {
   id: string;
@@ -103,10 +117,9 @@ interface Request {
 
 const RequestsInPage = () => {
   const user_address = useAccount().address;
-  const [deposit, setDeposit] = useState();
+  const [deposit, setDeposit] = useState('');
   const [resultOut, setResultOut] = useState<Request[]>([]);
   const [userBalance, setUserBalance] = useState<number>();
-  const [owned, setOwned] = useState<Number>();
 
   let result = readSwooshContract('getBalance', [user_address], setUserBalance);
   result = readSwooshContract('getRequestsIn', [user_address], setResultOut);
@@ -116,9 +129,9 @@ const RequestsInPage = () => {
   }
   return (
     <div className="flex flex-col px-4 pb-20">
-      <div className="sticky top-0 z-10 bg-white w-full pb-4">
-      <Header title="Awaiting Swooshes" />
-      <RequestInHeaderGroup userBalance={userBalance as number} owe={sum} />
+      <div className="sticky top-0 z-10 w-full bg-white pb-4">
+        <Header title="Awaiting Swooshes" />
+        <RequestInHeaderGroup balance={userBalance as number} owed={sum} />
       </div>
       <div className="pb-4">
         <RequestInGroup />
