@@ -36,7 +36,7 @@ function RequestPage_Out({ params }: { params: { request_id: string } }) {
   // console.log(chosenResult);
   // let sumPrice = chosenResult.debtors.length * parseInt(chosenResult.amount) / Math.pow(10, 18);
   return (
-    <div className="flex flex-col px-4 pb-20">
+    <div className="px-4">
       <Header title={'Uber Denver'} />
       <Total percent={resultOut[parseInt(params.request_id)]?.paid.length / (resultOut[parseInt(params.request_id)]?.paid.length + resultOut[parseInt(params.request_id)]?.debtors.length)} price={resultOut[parseInt(params.request_id)]?.debtors.length * parseInt(resultOut[parseInt(params.request_id)]?.amount) / Math.pow(10, 18) }/>
       <MembersList debtMembers={resultOut[parseInt(params.request_id)]?.debtors} paidMembers={resultOut[parseInt(params.request_id)]?.paid} total={resultOut[parseInt(params.request_id)]?.debtors.length * parseInt(resultOut[parseInt(params.request_id)]?.amount) / Math.pow(10, 18)}/>

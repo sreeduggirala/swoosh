@@ -120,7 +120,7 @@ const RequestsOutPage = () => {
     sum += Number(resultOut[i].amount) * resultOut[i].debtors.length;
   }
   return (
-    <div className="px-4">
+    <div className="flex flex-col px-4 pb-20">
       <div className="sticky top-0 z-10 bg-white w-full pb-4">
         <Header title="Your Swooshes"/>
         <RequestOutHeaderGroup userBalance={userBalance as number} owned={sum} />
