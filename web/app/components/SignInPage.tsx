@@ -1,3 +1,4 @@
+'use client';
 import AccountConnect from '@/components/layout/header/AccountConnect';
 import React from 'react';
 

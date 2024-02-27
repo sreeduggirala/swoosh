@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAccount, useReadContract } from 'wagmi';
 import { baseSepolia } from '@wagmi/core/chains';
-import swooshABI from '../../../contracts/out/Swoosh.sol/Swoosh.json';
+import swooshABI from '../../../../contracts/out/Swoosh.sol/Swoosh.json';
 import Link from 'next/link';
 export interface RequestOut {
   id: string;
