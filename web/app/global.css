@@ -16,7 +16,7 @@
   --blue-200: #5465ff;
   --blue-300: #111963;
 
-  /* Build Onchain Apps shared variables */
+  --gradient: linear-gradient(180deg, var(--blue-200), var(--black));
   --color-background: var(--white);
   --color-text: var(--blue-300);
 
@@ -24,6 +24,10 @@
     * the operating system dark color scheme. 
     * https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme */
   color-scheme: dark;
+}
+
+.gradient-background {
+  background: var(--gradient);
 }
 
 *,

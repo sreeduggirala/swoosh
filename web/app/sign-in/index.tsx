@@ -15,11 +15,11 @@ export default function SignInPage() {
     }
   };
   // Redirect if connected
-  if (useAccount().isConnected) {
+  if (useAccount().status == 'connected') {
     redirectToHomePage();
   }
   return (
-    <div className="  flex h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-200 to-black">
+    <div className="  flex h-screen flex-col items-center justify-center ">
       <h1 className=" mb-32 text-6xl tracking-widest text-blue-100 ">SWOOSH</h1>
       <div className="w-64 ">
         <AccountConnect />
