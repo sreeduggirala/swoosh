@@ -32,6 +32,7 @@ const Add = () => {
 
   const writeRequest = async () => {
     var amount = (parseFloat(costStr) / members.length).toFixed(2);
+    //todo: add image uri, add error handling
     writeContract({
       address: '0x39A23022abF01500ae70B0c1774D41525A266c0C',
       abi,
