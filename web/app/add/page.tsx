@@ -41,7 +41,22 @@ const Add = () => {
     })
   }
 
-
+  async function submit(e: any) { 
+    var amount = (parseFloat(costStr) * Math.pow(10, 18) / (members.length+1));
+    //todo: add image uri, add error handling
+    writeContract({
+      address: '0x39A23022abF01500ae70B0c1774D41525A266c0C',
+      abi,
+      functionName: 'request',
+      args: [members, amount, message, ""],
+    })
+  } 
+  
+submit
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = 
+  useWaitForTransactionReceipt({ 
+    hash, 
+  }) 
 
   return (
     <div className='flex flex-col px-4 pb-20'>
@@ -54,13 +69,25 @@ const Add = () => {
         </div>
         <button 
           className="btn btn-primary rounded-full text-white w-full mt-4 outline"
-          onClick={writeRequest}
+          onClick={submit}
         >
-          Sweesh!
-        </button>
-      </div>
+{isPending ? 'Confirming...' : 'Sweesh!'}         </button>
+
+<p>
+      {hash && <div>Transaction Hash: {hash}</div>}
+      {isConfirming && <div>Waiting for confirmation...</div>} 
+      {isConfirmed && <div>Transaction confirmed.</div>} 
+      {error && ( 
+        <div>Error: {(error as BaseError).shortMessage || error.message}</div> 
+      )} 
+      </p>
+      </div>    
     </div>
   )
 }
 
 export default Add
+
+function usePrepareContractWrite(arg0: { address: string; abi: { name: string; type: string; stateMutability: string; inputs: never[]; outputs: never[] }[]; functionName: string }): { config: any } {
+  throw new Error('Function not implemented.')
+}
