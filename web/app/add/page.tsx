@@ -68,7 +68,7 @@ submit
           <AddMembers members={members} setMembers={setMembers}/>
         </div>
         <button 
-          className="btn btn-primary rounded-full text-white w-full mt-4 outline"
+          className="btn btn-primary rounded-full text-white text-2xl w-full mt-4 outline"
           onClick={submit}
         >
 {isPending ? 'Confirming...' : 'Sweesh!'}         </button>

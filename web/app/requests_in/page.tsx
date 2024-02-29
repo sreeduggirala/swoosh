@@ -7,6 +7,7 @@ import { useAccount } from 'wagmi';
 import { readSwooshContract } from 'app/util';
 import { DepositERC20 } from 'app/components/deposit';
 import { WithdrawERC20 } from 'app/components/Withdraw';
+import ScrollableContent from 'app/components/ScrollableContent';
 
 interface RequestInHeaderGroupProp {
   balance: number;
@@ -36,7 +37,7 @@ export function formatNumber(num: number): string {
       unit = 'k';
     }
 
-    const formattedNumber = (num / divisor).toFixed(2) + unit;
+    const formattedNumber = (num / divisor).toFixed(1) + unit;
     return formattedNumber;
   }
 }
@@ -46,7 +47,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
     <div className="flex w-full rounded-lg bg-gray">
       <div className="w-1/2 p-3 px-4">
         <p>Balance</p>
-        <p className="py-4 text-5xl font-semibold">
+        <p className="py-4 text-4xl font-semibold">
           ${formatNumber(Number(props.balance) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
@@ -59,7 +60,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
       </div>
       <div className="w-1/2 p-3 px-4">
         <p>Owed</p>
-        <p className="py-4 text-5xl font-semibold">
+        <p className="py-4 text-4xl font-semibold">
           ${formatNumber(Number(props.owed) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
@@ -84,20 +85,20 @@ const RequestInGroup = () => {
   });
 
   return (
-    <div className=" mt-8d grid max-h-screen grid-cols-2 gap-4 overflow-y-auto">
-      {data.map((request) => (
-        <Swoosh
-          onClick={() => {
-            alert('sus');
-          }}
-          title={request.title}
-          href={''}
-          variant="button"
-          amount={Number(request.amount) / Math.pow(10, 18)}
-          percent={0}
-        />
-      ))}
-    </div>
+        <div className=" mt-8d grid max-h-screen grid-cols-2 gap-4 overflow-y-auto">
+        {data.map((request) => (
+          <Swoosh
+            onClick={() => {
+              alert('sus');
+            }}
+            title={request.title}
+            href={''}
+            variant="button"
+            amount={Number(request.amount) / Math.pow(10, 18)}
+            percent={0}
+          />
+        ))}
+      </div>
   );
 };
 
@@ -128,14 +129,19 @@ const RequestsInPage = () => {
     sum += Number(resultOut[i].amount);
   }
   return (
-    <div className="flex flex-col px-4 pb-20">
+    <div className="flex flex-col px-4 pb-28 w-screen h-screen overflow-y-hidden rounded-sm">
       <div className="sticky top-0 z-10 w-full bg-white pb-4">
         <Header title="Awaiting Swooshes" />
         <RequestInHeaderGroup balance={userBalance as number} owed={sum} />
       </div>
-      <div className="pb-4">
-        <RequestInGroup />
+      <div className="w-full h-3/5 overflow-y-scroll">
+        <ScrollableContent>
+          <RequestInGroup />
+        </ScrollableContent>
       </div>
+
+
+
       <dialog id="deposit_modal" className="modal">
         <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
           <form method="dialog " className="flex w-full justify-evenly gap-2">
@@ -157,7 +163,7 @@ const RequestsInPage = () => {
         
       </dialog>
         
-       </div>
+    </div>
   );
 };
 
