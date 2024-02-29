@@ -15,7 +15,7 @@ export function AccountInfoPanel() {
 
   return (
     <>
-      <div className="my-4 inline-flex items-center justify-start gap-2">
+      <div className="my-4 inline-flex items-center justify-start gap-4">
         <Avatar address={address} className="h-10 w-10 rounded-full" />
         <div className="inline-flex flex-col items-start justify-center gap-1">
           <div className="font-inter w-32 text-base font-medium text-white">
@@ -27,15 +27,19 @@ export function AccountInfoPanel() {
         </div>
       </div>
       <hr className="h-px self-stretch border-transparent bg-zinc-400 bg-opacity-20" />
-      <button
-        type="button"
-        aria-label="Disconnect"
-        className="my-4 inline-flex items-center justify-between self-stretch"
-        onClick={handleDisconnectWallet}
-      >
-        <span className="font-inter w-32 text-left text-base font-medium text-white">Log out</span>
-        <ExitIcon className="relative h-4 w-4" />
-      </button>
+      <div className="flex justify-center">
+        <button
+          type="button"
+          aria-label="Disconnect"
+          className="my-4 inline-flex items-center justify-between self-stretch"
+          onClick={handleDisconnectWallet}
+        >
+          <span className="font-inter w-32 text-left text-base font-medium text-white">
+            Log out
+          </span>
+          <ExitIcon className="relative h-4 w-4 text-white" />
+        </button>
+      </div>
     </>
   );
 }

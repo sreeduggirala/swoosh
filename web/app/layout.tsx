@@ -53,14 +53,14 @@ function AppProvider({ children, isSignIn }: AppProviderProps) {
   const user_address = useAccount().address;
   const router = useRouter();
 
-  useEffect(() => {
-    if (user_address==undefined) {
-      router.push('/');
-    }
-  }, [user_address]);
-  
+  // useEffect(() => {
+  //   if (user_address==undefined) {
+  //     router.push('/');
+  //   }
+  // }, [user_address]);
+
   return (
-    <div className={`m-auto ${inter.className}  ${!isSignIn ? '' : ' max-w-md  md:max-w-2xl '}`}>
+    <div className={`m-auto ${inter.className}  ${isSignIn ? '' : ' max-w-md  md:max-w-2xl '}`}>
       {children}
       {isSignIn ? null : <Navbar />}
     </div>
