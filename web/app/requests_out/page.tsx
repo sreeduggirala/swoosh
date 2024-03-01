@@ -38,27 +38,11 @@ function formatNumber(num: number): string {
 const RequestOutHeaderGroup = (props: RequestOutHeaderGroupProp) => {
   return (
     <div className="  flex w-full rounded-lg bg-gray">
-      <div className="w-1/2 p-3 px-4">
-        <p>Balance</p>
-        <p className="py-4 text-5xl font-semibold">
-          ${formatNumber(Number(props.userBalance as number) / Math.pow(10, 18))}
-        </p>
-        <div className="flex justify-center">
-          <Button
-            variant="Deposit"
-            href=""
-            onClick={() => document.getElementById('deposit_modal').showModal()}
-          />
-        </div>
-      </div>
-      <div className="w-1/2 p-3 px-4">
+      <div className="w-full p-3 px-4">
         <p>Owed</p>
         <p className="py-4 text-5xl font-semibold">
           ${formatNumber(Number(props.owned) / Math.pow(10, 18))}
         </p>
-        <div className="flex justify-center">
-          <Button variant="Withdraw" href="/" onClick={()=> document.getElementById('withdraw_modal').showModal()} />
-        </div>
         </div>
     </div>
   );
