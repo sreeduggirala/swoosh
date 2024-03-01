@@ -9,7 +9,7 @@ import React, { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import profile_icon from '../assets/logo.png';
 import Image from 'next/image';
-import { ThirdwebProvider, embeddedWallet, smartWallet, useAddress } from '@thirdweb-dev/react';
+import { ConnectWallet, ThirdwebProvider, embeddedWallet, smartWallet, useAddress } from '@thirdweb-dev/react';
 import {BaseSepoliaTestnet} from '@thirdweb-dev/chains';
 
 const Wrapper = () => {
@@ -51,6 +51,7 @@ const Wrapper = () => {
               <AccountInfoPanel /> : <div></div>
             } */}
           {/* </div> */}
+          <ConnectWallet />
           </ThirdwebProvider>
 
         </div>
