@@ -163,7 +163,7 @@ contract Swoosh is SwooshStorage, ERC20 {
 
         currentRequest.cancelled = true;
     }
-
+    
     // @notice: Create a new payment
     // @params: creditor, amount
     function pay(

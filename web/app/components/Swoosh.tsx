@@ -24,7 +24,7 @@ export default function Swoosh({
 }: Props) {
 
   return (
-    <Link className='flex flex-col items-center h-36 bg-gray justify-center rounded-swooshBR no-underline w-full h-full' href={href}>
+    <Link className='flex flex-col items-center h-36 bg-gray justify-center rounded-swooshBR no-underline w-full h-full py-4' href={href}>
       <div className='flex w-full justify-between px-4 align-center pb-10'>
         <p className=" text-lg text-semibold w-full font-Inter text-swooshText">{title}</p>
         <div>

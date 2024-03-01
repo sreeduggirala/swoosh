@@ -129,7 +129,7 @@ const RequestsInPage = () => {
     sum += Number(resultOut[i].amount);
   }
   return (
-    <div className="flex flex-col px-4 pb-28 w-screen h-screen overflow-y-hidden rounded-sm">
+    <div className="flex flex-col px-4 pb-28 h-screen overflow-y-hidden rounded-sm">
       <div className="sticky top-0 z-10 w-full bg-white pb-4">
         <Header title="Awaiting Swooshes" />
         <RequestInHeaderGroup balance={userBalance as number} owed={sum} />
