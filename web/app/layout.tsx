@@ -10,8 +10,6 @@ import Navbar from './components/Navbar';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThirdwebProvider, embeddedWallet, smartWallet, useAddress } from '@thirdweb-dev/react';
 import {BaseSepoliaTestnet} from '@thirdweb-dev/chains';
-import {PrivyProvider} from '@privy-io/react-auth';
-import {SmartAccountProvider} from "../src/hooks/SmartAccountContext";
 export const viewport = {
   width: 'device-width',
   initialScale: 1.0,
@@ -23,8 +21,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${isSignIn && 'gradient-background'} relative w-full`}>
-      <PrivyProvider {...insertYourPrivyProviderProps} >
-  <SmartAccountProvider>
         <OnchainProviders>
         <ThirdwebProvider
     activeChain={BaseSepoliaTestnet}
@@ -33,8 +29,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AppProvider isSignIn={isSignIn}>{children}</AppProvider>
           </ThirdwebProvider>
         </OnchainProviders>
-        </SmartAccountProvider>
-</PrivyProvider>
       </body>
     </html>
   );
