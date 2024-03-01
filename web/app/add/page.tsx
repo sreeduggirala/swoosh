@@ -17,10 +17,10 @@ const Add = () => {
   const [message, setMessage] = useState('');
   const [costStr, setCostStr] = useState('');
   const [members, setMembers] = useState([]);
-
+ 
   const { 
     data: hash,
-    error, 
+    error,
     isPending, 
     writeContract 
   } = useWriteContract() 
