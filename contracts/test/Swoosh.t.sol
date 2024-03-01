@@ -139,6 +139,18 @@ contract SwooshTest is Test {
         swoosh.acceptAll();
     }
 
+    function testNudge() external {
+        address[] memory from = new address[](1);
+        from[0] = sree;
+        vm.startPrank(mainUser);
+        swoosh.request(from, 1, "hi", "");
+        Swoosh.Request[] memory requestsOut = swoosh.getRequestsOut(mainUser);
+        Swoosh.Request memory currentRequest = requestsOut[
+            requestsOut.length - 1
+        ];
+        swoosh.nudge(currentRequest.debtors[0], currentRequest.id);
+    }
+
     function testCancel() external {
         address[] memory from = new address[](1);
         from[0] = sree;
