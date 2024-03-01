@@ -8,6 +8,7 @@ import { readSwooshContract } from 'app/util';
 import { DepositERC20 } from 'app/components/deposit';
 import { WithdrawERC20 } from 'app/components/Withdraw';
 import ScrollableContent from 'app/components/ScrollableContent';
+import { useAddress, useContract } from '@thirdweb-dev/react';
 
 interface RequestInHeaderGroupProp {
   balance: number;
@@ -45,27 +46,11 @@ export function formatNumber(num: number): string {
 const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
   return (
     <div className="flex w-full rounded-lg bg-gray">
-      <div className="w-1/2 p-3 px-4">
-        <p>Balance</p>
-        <p className="py-4 text-4xl font-semibold">
-          ${formatNumber(Number(props.balance) / Math.pow(10, 18))}
-        </p>
-        <div className="flex justify-center">
-          <Button
-            variant="Deposit"
-            href="/"
-            onClick={() => document.getElementById('deposit_modal').showModal()}
-          />
-        </div>
-      </div>
-      <div className="w-1/2 p-3 px-4">
+      <div className="w-full p-3 px-4">
         <p>Owed</p>
         <p className="py-4 text-4xl font-semibold">
           ${formatNumber(Number(props.owed) / Math.pow(10, 18))}
         </p>
-        <div className="flex justify-center">
-          <Button variant="Withdraw" href="/" onClick={()=> document.getElementById('withdraw_modal').showModal()} />
-        </div>
       </div>
     </div>
   );
@@ -117,52 +102,31 @@ interface Request {
 }
 
 const RequestsInPage = () => {
-  const user_address = useAccount().address;
+  const user_address = useAddress();
   const [deposit, setDeposit] = useState('');
   const [resultOut, setResultOut] = useState<Request[]>([]);
   const [userBalance, setUserBalance] = useState<number>();
-
-  let result = readSwooshContract('getBalance', [user_address], setUserBalance);
-  result = readSwooshContract('getRequestsIn', [user_address], setResultOut);
+  let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
+  // let balance = await contract.Read("", "arg1", "arg2", ...);
+  contract?.call("getBalance", [user_address]).then((data)=> {
+    console.log(data);
+    setUserBalance(data);
+  });
+  // setUserBalance(result.data);
+  // result = readSwooshContract('getRequestsIn', [user_address], setResultOut);
   let sum = 0;
   for (let i = 0; i < resultOut.length; i++) {
     sum += Number(resultOut[i].amount);
   }
   return (
-    <div className="flex flex-col px-4 pb-28 w-screen h-screen overflow-y-hidden rounded-sm">
+    <div className="flex flex-col px-4 pb-24 h-screen overflow-y-hidden rounded-sm">
       <div className="sticky top-0 z-10 w-full bg-white pb-4">
         <Header title="Awaiting Swooshes" />
         <RequestInHeaderGroup balance={userBalance as number} owed={sum} />
       </div>
       <div className="w-full h-3/5 overflow-y-scroll">
-        <ScrollableContent>
-          <RequestInGroup />
-        </ScrollableContent>
+        <RequestInGroup />
       </div>
-
-
-
-      <dialog id="deposit_modal" className="modal">
-        <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
-          <form method="dialog " className="flex w-full justify-evenly gap-2">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-
-            </form>
-          <DepositERC20/>          
-          </div>
-        
-      </dialog>    
-      <dialog id="withdraw_modal" className="modal">
-        <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
-          <form method="dialog " className="flex w-full justify-evenly gap-2">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-
-            </form>
-          <WithdrawERC20/>          
-          </div>
-        
-      </dialog>
-        
     </div>
   );
 };
