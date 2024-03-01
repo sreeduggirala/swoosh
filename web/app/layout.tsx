@@ -10,6 +10,8 @@ import Navbar from './components/Navbar';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
 import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit';
+import { ThirdwebProvider, useAddress } from '@thirdweb-dev/react';
+import {BaseSepoliaTestnet} from '@thirdweb-dev/chains';
 export const viewport = {
   width: 'device-width',
   initialScale: 1.0,
@@ -37,7 +39,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${isSignIn && 'gradient-background'} relative w-full`}>
         <OnchainProviders>
+        <ThirdwebProvider
+    activeChain={BaseSepoliaTestnet}
+      clientId="3524eeab46d7c262cb23bcf072d92d5e"
+    >
           <AppProvider isSignIn={isSignIn}>{children}</AppProvider>
+          </ThirdwebProvider>
         </OnchainProviders>
       </body>
     </html>
@@ -50,7 +57,7 @@ interface AppProviderProps {
 }
 
 function AppProvider({ children, isSignIn }: AppProviderProps) {
-  const user_address = useAccount().address;
+  const user_address = useAddress(); 
   const router = useRouter();
 
   // useEffect(() => {

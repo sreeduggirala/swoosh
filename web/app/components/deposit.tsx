@@ -5,48 +5,34 @@ import {
   useWriteContract 
 } from 'wagmi'
 import { abi } from '../../../contracts/out/Swoosh.sol/Swoosh.json';
+import { useContract, useContractWrite } from '@thirdweb-dev/react';
  
 export function DepositERC20() {
-  const { 
-    data: hash,
-    error, 
-    isPending, 
-    writeContract 
-  } = useWriteContract() 
 
+    const { contract } = useContract('0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6');
+  const { mutateAsync, isLoading, error } = useContractWrite(
+    contract,
+    "deposit",
+  );
   async function submit(e: React.FormEvent<HTMLFormElement>) { 
     e.preventDefault() 
     const formData = new FormData(e.target as HTMLFormElement) 
     const value = formData.get('value') as string 
-    writeContract({
-      address: '0x39A23022abF01500ae70B0c1774D41525A266c0C',
-      abi,
-      functionName: 'deposit',
-      args: [parseFloat(value) * 10 ** 18],
-    })
+    mutateAsync({args: [value + "000000000000000000"]});
   } 
-
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = 
-    useWaitForTransactionReceipt({ 
-      hash, 
-    }) 
-
-  return (
+  return ( 
     <div>
     <form onSubmit={submit} className="flex justify-center">
       <input name="value" placeholder="300" required className="w-32 rounded-lg bg-gray p-6 text-center text-4xl text-black h-6" />
-      <button className="btn-primary btn flex-1 text-white w-20 h-10 p-3" type="submit">{isPending ? 'Confirming...' : 'Deposit'} 
-    </button>
-
     </form>
     <p>
-      {hash && <div>Transaction Hash: {hash}</div>}
-      {isConfirming && <div>Waiting for confirmation...</div>} 
-      {isConfirmed && <div>Transaction confirmed.</div>} 
-      {error && ( 
-        <div>Error: {(error as BaseError).shortMessage || error.message}</div> 
-      )} 
+      {isLoading && <div>Waiting for confirmation...</div>} 
+      {isLoading && <div>Transaction confirmed.</div>} 
+      {error ?
+        <div>Error</div>  : null
+      } 
       </p>
       </div>
+
   )
-}
+}               
