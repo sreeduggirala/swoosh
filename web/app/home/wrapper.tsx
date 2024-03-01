@@ -23,6 +23,7 @@ interface Request {
 export default function Wrapper() {
 
   const user_address = useAddress();
+  console.log(user_address)
   // console.log(user_address);
   const [resultOut, setResultOut] = useState<Request[]>([]);
   const [resultIn, setResultIn] = useState<Request[]>([]);

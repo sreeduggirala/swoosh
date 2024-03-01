@@ -36,11 +36,14 @@ const ProfileBalanceCard = () => {
     // let result = readSwooshContract('getBalance', [user_address], setUserBalance);
     let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
     useEffect(() => {
+      if (user_address != undefined) {
       contract?.call("getBalance", [user_address]).then((data)=> {
+        // alert(data);
         console.log(data);
         setUserBalance(data);
       });
-    }, [])
+    }
+    }, [user_address])
 
     return (
         <div className="flex w-full rounded-lg bg-gray">

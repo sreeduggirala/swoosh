@@ -33,8 +33,8 @@ const HomeCard = (props: HomeCardProps) => {
   return (
     <div className="w-full rounded-lg bg-gray px-8 py-4 text-lg">
       <p>Swoosh</p>
-      <p className="text-2xl font-semibold">{props.type}</p>
-      <p className="py-2 text-4xl font-semibold">{props.num}</p>
+      <p className="text-4xl font-semibold">{props.type}</p>
+      <p className="py-2 text-6xl font-semibold">{props.num}</p>
       <Button variant="Custom" title="View All" href=""></Button>
     </div>
   );
@@ -42,7 +42,7 @@ const HomeCard = (props: HomeCardProps) => {
 
 const PercentPaidCard = (props: PercentPaidCardProps) => {
   return (
-    <div className="w-full rounded-lg bg-gray px-8 py-8 text-lg">
+    <div className="w-min rounded-lg bg-gray px-4 py-4 text-lg">
       <p>% Paid</p>
       <div className="radial-progress" style={{"--value":50}} role="progressbar">{props.percent}%</div>
     </div>
