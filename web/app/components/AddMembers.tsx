@@ -10,6 +10,7 @@ import { Address } from 'viem';
 import Input from './Input';
 import MemberNameDisplay from './MemberNameDisplay';
 
+
 interface AddMembersProps {
     members: Address[];
     setMembers: Function;
