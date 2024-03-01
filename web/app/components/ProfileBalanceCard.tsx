@@ -17,7 +17,7 @@ function formatNumber(num: number): string {
         divisor = 1e9;
         unit = 'b';
       } else if (num >= 1e6) {
-        divisor = 1e6;
+        divisor = 1e6;    
         unit = 'm';
       } else if (num >= 1e3) {
         divisor = 1e3;
@@ -32,7 +32,6 @@ function formatNumber(num: number): string {
 const ProfileBalanceCard = () => {
     const user_address = useAddress(); 
     const [userBalance, setUserBalance] = useState<number>();
-
     // let result = readSwooshContract('getBalance', [user_address], setUserBalance);
     let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
     useEffect(() => {
@@ -44,11 +43,10 @@ const ProfileBalanceCard = () => {
       });
     }
     }, [user_address])
-
     return (
         <div className="flex w-full rounded-lg bg-gray">
           <div className="w-full p-3 px-4">
-            <p>Balance</p> 
+            <p>Balance</p>  
             <p className="py-4 text-4xl font-semibold">
               ${(userBalance == undefined )? "--":  formatNumber(Number(userBalance) / Math.pow(10, 18))}
             </p>
@@ -80,7 +78,6 @@ const ProfileBalanceCard = () => {
                 <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
                 <form method="dialog " className="flex w-full justify-evenly gap-2">
                 <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-
                     </form>
                 <WithdrawERC20/>          
                 </div>

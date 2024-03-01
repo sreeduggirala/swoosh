@@ -36,7 +36,7 @@ const AddMembers: React.FC<AddMembersProps> = ({members, setMembers}) => {
     }
 
   return (
-    <div className='pt-4 max-h-[360px] lg:max-h-[180px] overflow-y-auto'>
+    <div className='pt-4 max-h-[264px] lg:max-h-[84px] overflow-y-auto'>
         <label className="block text-2xl text-blue-900 font-bold mb-2">Members:</label>
         {members.map((member, index) => {
             return (

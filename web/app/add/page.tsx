@@ -1,5 +1,5 @@
 'use client'
-
+/* global BigInt */
 import React, { useEffect, useState } from 'react'
 import { 
   type BaseError, 
@@ -13,7 +13,9 @@ import AddMembers from 'app/components/AddMembers'
 import { abi } from '../../../contracts/out/Swoosh.sol/Swoosh.json';
 import { FaPeopleGroup } from "react-icons/fa6";
 import { BsPerson } from "react-icons/bs";
-
+import { ThirdwebProvider, smartWallet, useContract, useContractWrite, embeddedWallet, toWei } from '@thirdweb-dev/react'
+import Wrapper from './Wrapper'
+import { BaseSepoliaTestnet} from '@thirdweb-dev/chains';
 
 
 
@@ -24,88 +26,70 @@ const Add = () => {
   const [members, setMembers] = useState([]);
   const [isRequesting, setIsRequesting] = useState(true);
   const [payAddress, setPayAddress] = useState('');
- 
-  const { 
-    data: hash,
-    error,
-    isPending, 
-    writeContract 
-  } = useWriteContract() 
-
-  useEffect(() => {
-    console.log(isRequesting)
-  }, [isRequesting])
-
-  async function submit(e: any) { 
-    var amount = (parseFloat(costStr) * Math.pow(10, 18) / (members.length+1));
+  const { contract } = useContract('0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6');
+  let { mutateAsync: depositMutateAsync, isLoading, error } = useContractWrite(
+    contract,
+    "request",
+  );
+    // const { 
+  //   data: hash,
+  //   error,
+  //   isPending, 
+  //   writeContract 
+  // } = useWriteContract() 
+  let { mutateAsync: payMutateAsync, isLoading: payIsLoading, error: payError } = useContractWrite(
+    contract,
+    "pay",
+  );
+    async function submit(e: any) { 
+    var amount = toWei((parseFloat(costStr) / (members.length+1)));
+    alert(amount);
     //todo: add image uri, add error handling
     if(isRequesting) {
-      writeContract({
-        address: '0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6',
-        abi,
-        functionName: 'request',
-        args: [members, amount, message, ""],
-      })
+      depositMutateAsync({args:[members, amount, message, ""]})
+      // writeContract({
+      //   address: '0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6',
+      //   abi,
+      //   functionName: 'request',
+      //   args: [members, amount, message, ""],
+      // })
     } else {
-    
-      writeContract({
-        address: '0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6',
-        abi,
-        functionName: 'pay',
-        args: [payAddress, parseFloat(costStr) * Math.pow(10, 18) , message, ""], 
-      })
+      // payMutateAsync({args:[payAddress, toWei(parseFloat(costStr)), message, ""]})
+      // writeContract({
+      //   address: '0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6',
+      //   abi,
+      //   functionName: 'pay',
+      //   args: [payAddress, parseFloat(costStr) * Math.pow(10, 18) , message, ""], 
+      // })
     }
   }  
   
-submit
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = 
-  useWaitForTransactionReceipt({ 
-    hash, 
-  }) 
+// submit
+  // const { isLoading: isConfirming, isSuccess: isConfirmed } = 
+  // useWaitForTransactionReceipt({ 
+  //   hash, 
+  // }) 
 
   return (
-    <div className='flex flex-col px-4 pb-20 max-h-screen'>
-      <div className="sticky top-0 z-10 w-full pb-4 max-h-screen mb-1"> 
-        <Header title="Make a Swoosh" />
-        <div className="w-full flex justify-center items-center space-x-3">
-          <FaPeopleGroup  className='text-4xl'/>
-          <input type="checkbox" className="toggle" onChange={e => setIsRequesting(!e.target.checked)} checked={!isRequesting} />
-          <BsPerson  className='text-3xl'/>
-        </div>
-      </div>   
-      {
-        isRequesting ? (
-          <div className='flex flex-col space-y-5 w-full h-full rounded-lg bg-gray px-4 py-3 max-h-fit'>
-            <h1 className='text-3xl text-center font-bold '>Request</h1>
-            <Input title="Message:" placeholder='Groceries' state={message} setState={setMessage}/> 
-            <Input title="Total Cost ($):" placeholder='10.99' state={costStr} setState={setCostStr}/>
-            <AddMembers members={members} setMembers={setMembers}/>
-          </div>
-        ) : (
-          <div className='flex flex-col space-y-5 w-full h-full rounded-lg bg-gray px-4 py-3 max-h-fit'>
-            <h1 className='text-3xl text-center font-bold '>Pay</h1>
-            <Input title="Message:" placeholder='Groceries' state={message} setState={setMessage}/> 
-            <Input title="Total Cost ($):" placeholder='10.99' state={costStr} setState={setCostStr}/>
-            <Input title='User Address: ' placeholder='0x...' state={payAddress} setState={setPayAddress} />
-          </div>
-        )}
-      <button 
-        className="btn btn-primary rounded-full text-white text-2xl w-full mt-4 outline"
-        onClick={submit}
-      >
-        {isPending ? 'Confirming...' : 'Sweesh!'}</button>
-      <p>
-        {hash && <div>Transaction Hash: {hash}</div>}
-        {isConfirming && <div>Waiting for confirmation...</div>} 
-        {isConfirmed && <div>Transaction confirmed.</div>} 
-        {error && ( 
-          <div>Error: {(error as BaseError).shortMessage || error.message}</div> 
-        )} 
-      </p>
-      
-      
-    </div>
-  )
+    <div>
+              <ThirdwebProvider
+    activeChain={BaseSepoliaTestnet}
+      clientId="3524eeab46d7c262cb23bcf072d92d5e"
+      supportedWallets={[
+        smartWallet(
+          embeddedWallet(), // any personal wallet
+          {
+            factoryAddress: "0xFB5dA66aE989c5B1926a70107c9c8a75D5e5cEa5", // your deployed factory address
+            gasless: true, // enable or disable gasless transactions
+          },
+        ),
+      ]}
+
+    >
+      <Wrapper></Wrapper>
+      </ThirdwebProvider>
+      </div>
+    )
 }
 
 export default Add;
