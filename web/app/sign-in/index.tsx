@@ -24,6 +24,7 @@ export default function SignInPage() {
   if (approved) {
     redirectToHomePage();
   }
+  
   const address = useAddress();
   // Redirect if connected
   console.log(address);
@@ -46,9 +47,9 @@ export default function SignInPage() {
   return (  
     <div className="  flex h-screen flex-col items-center justify-center ">
       <h1 className=" mb-32 text-6xl tracking-widest text-blue-100 ">SWOOSH</h1>
-      <div className="w-64 ">
-      <ConnectWallet />
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={()=>{mutateAsync({args:["0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6", "100000000000000000000000000000"]})}}>Approve USDC</button>
+        <div className="w-64 flex flex-col justify-center ">
+        <ConnectWallet />
+        {(!approved && address != null) ? <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4" onClick={()=>{mutateAsync({args:["0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6", "100000000000000000000000000000"]})}}>Approve USDC</button> : null}
       </div>
     </div>
   );   

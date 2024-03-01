@@ -10,7 +10,7 @@ import Wrapper from './wrapper';
 export default function HomePage() {
 
   return (
-    <div className="px-4 py-8">
+    <div className="px-4 pb-6">
     <ThirdwebProvider
     activeChain={BaseSepoliaTestnet}
       clientId="3524eeab46d7c262cb23bcf072d92d5e"

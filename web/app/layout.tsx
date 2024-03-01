@@ -67,9 +67,10 @@ function AppProvider({ children, isSignIn }: AppProviderProps) {
   // }, [user_address]);
 
   return (
-    <div className={`m-auto ${inter.className}  ${isSignIn ? '' : ' max-w-md  md:max-w-2xl max-h-screen'}`}>
+    <div className={`m-auto ${inter.className}  ${isSignIn ? '' : ' max-w-lg  md:max-w-2xl '}`}>
       {children}
       {isSignIn ? null : <Navbar />}
     </div>
   );
 }
+

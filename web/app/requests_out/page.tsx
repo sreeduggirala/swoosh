@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { Button } from '../components/Button';
 import Swoosh from '../components/Swoosh';
@@ -7,6 +7,7 @@ import { useAccount } from 'wagmi';
 import { readSwooshContract } from 'app/util';
 import {DepositERC20} from "../components/deposit";
 import { WithdrawERC20 } from 'app/components/Withdraw';
+import { useAddress, useContract } from '@thirdweb-dev/react';
 interface RequestOutHeaderGroupProp {
   userBalance: number;
   owned: number;
@@ -65,7 +66,7 @@ interface Request {
 }
 
 const RequestOutGroup = () => {
-  const user_address = useAccount().address;
+  const user_address = useAddress(); 
   const [resultOut, setResultOut] = useState<Request[]>([]);
 
   let result = readSwooshContract('getRequestsOut', [user_address], setResultOut);
@@ -74,7 +75,7 @@ const RequestOutGroup = () => {
     dataResult.push({
       title: resultOut[i].message,
       percent: resultOut[i].paid.length / (resultOut[i].debtors.length + resultOut[i].paid.length),
-      href: '/requests_out/' + resultOut[i].id,
+      href: '/requests_out/' + i,
     });
   }
   return (
@@ -82,7 +83,7 @@ const RequestOutGroup = () => {
       {dataResult.map((request) => (
         <Swoosh
           onClick={() => console.log('PAY MONEY')}
-          percent={request.percent}
+          percent={request.percent * 100}
           title={request.title}
           href={request.href}
         />
@@ -93,24 +94,31 @@ const RequestOutGroup = () => {
 
 const RequestsOutPage = () => {
   const [deposit, setDeposit] = useState();
-  const user_address = useAccount().address;
+  const user_address = useAddress();
   const [resultOut, setResultOut] = useState<Request[]>([]);
   const [userBalance, setUserBalance] = useState<number>();
   const [owned, setOwned] = useState<Number>();
 
-  let result = readSwooshContract('getBalance', [user_address], setUserBalance);
-  result = readSwooshContract('getRequestsOut', [user_address], setResultOut);
+  let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
+  useEffect(() => {
+    contract?.call("getBalance", [user_address]).then((data)=> {
+      console.log(data);
+      setUserBalance(data);
+    });
+
+  }, [userBalance])  
+  let result = readSwooshContract('getRequestsOut', [user_address], setResultOut);
   let sum = 0;
   for (let i = 0; i < resultOut.length; i++) {
     sum += Number(resultOut[i].amount) * resultOut[i].debtors.length;
   }
   return (
-    <div className="flex flex-col px-4 pb-20">
+    <div className="flex flex-col px-4 pb-24 h-screen overflow-y-hidden rounded-sm">
       <div className="sticky top-0 z-10 bg-white w-full pb-4">
         <Header title="Your Swooshes"/>
         <RequestOutHeaderGroup userBalance={userBalance as number} owned={sum} />
       </div>
-      <div className="pb-4">
+      <div className="w-full h-3/5 overflow-y-scroll">
         <RequestOutGroup/>
       </div>
       <dialog id="deposit_modal" className="modal">
