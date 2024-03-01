@@ -14,8 +14,8 @@ export function readSwooshContract(functionName: string, args: any[], setResult:
     contract,
     functionName,
     args,
-  );
-
+  ); 
+      
 
     useEffect(() => {
       if (data != null) {
@@ -23,13 +23,13 @@ export function readSwooshContract(functionName: string, args: any[], setResult:
         setResult(typedData);
         console.log("typedData");
         console.log(typedData);
-      }
+      }  
     }, [data]);
     let result = {
-      data: data,
+      data: data, 
       isLoading: isLoading,
-      error: error
-    }
+      error: error 
+    }  
     return result;
   
   }
@@ -41,11 +41,11 @@ export function readSwooshContract(functionName: string, args: any[], setResult:
       functionName,
       args,
     );
-    return data;
+    return data; 
   
   }
 export interface readSwooshContractReturn {
-    data: any,
+    data: any, 
     isLoading: boolean,
     error: any
-  } 
+  }
