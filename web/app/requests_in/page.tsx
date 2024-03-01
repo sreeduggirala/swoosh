@@ -67,6 +67,7 @@ const RequestInGroup = () => {
   const user_address = useAddress(); 
   const [resultOut, setResultOut] = useState<Request[]>([]);
   let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
+  // let []
   readSwooshContract('getRequestsIn', [user_address], setResultOut);
   let data: RequestInData[] = [];
   resultOut.map((result) => {
@@ -87,7 +88,7 @@ const RequestInGroup = () => {
   //               contract?.call("getBalance", [user_address]).then((data)=> {
   //   console.log(data);
   //   setUserBalance(data); he hee tee hee hee
-  // });
+  // });      
               contract?.call("accept", [request.id]); 
             }}
             title={request.title}
