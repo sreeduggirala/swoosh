@@ -1,17 +1,11 @@
 'use client'; // This is a client component 👈🏽
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useAccount, useReadContract } from 'wagmi';
-import swooshABI from '../../../contracts/out/Swoosh.sol/Swoosh.json';
-import { baseSepolia } from '@wagmi/core/chains';
-import Image from 'next/image';
-import GroupsDisplay from './GroupDisplay'; // Adjust the path as necessary
-import Header from './Header';
-import Navbar from 'app/components/Navbar';
-import { headers } from 'next/headers';
-import Button from 'app/components/Button';
+import HomeHeader from '../components/HomeHeader';
+import HomeGroup from '../components/HomeGroup';
+import { readSwooshContract } from 'app/util';
 
-interface RequestOut {
+interface Request {
   id: string;
   creditor: string;
   debtors: string[];
@@ -25,33 +19,28 @@ interface RequestOut {
   cancelled: boolean;
 }
 
-export default function Home() {
-  const { address } = useAccount();
-  const [result, setResult] = useState<RequestOut[]>([]);
+export default function HomePage() {
+  const user_address = useAccount().address;
+  // console.log(user_address);
+  
+  const [resultOut, setResultOut] = useState<Request[]>([]);
+  const [resultIn, setResultIn] = useState<Request[]>([]);
 
-  const { data, isLoading, error } = useReadContract({
-    abi: swooshABI.abi,
-    address: '0xE0e4f202Ddee2850Ed29E3B7b59Bd205ac107E80',
-    functionName: 'getRequestsOut',
-    args: [address],
-    chainId: baseSepolia.id,
-  });
+  let result = readSwooshContract('getRequestsOut', [user_address], setResultOut);
+  result = readSwooshContract('getRequestsIn', [user_address], setResultIn);
 
-  useEffect(() => {
-    if (data != null) {
-      const typedData = data as RequestOut[]; // Cast the data to the correct type
-      setResult(typedData);
-    }
-  }, [data]);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (result.isLoading) return <p>Loading ...</p>;
+  if (result.error) return <p>Error: {result.error.message}</p>;
 
   return (
-    <div className="py-8">
-      <Button title="test" />
-      <Header title="SWOOSH" />
-      <GroupsDisplay requests={result} />
+    <div className="px-4 py-8">
+      <HomeHeader />
+      <HomeGroup inNumber={resultIn.length} outNumber={resultOut.length} />
     </div>
   );
+
+  interface HomeGroupProp {
+    inNumber: number;
+    outNumber: number;
+  }
 }

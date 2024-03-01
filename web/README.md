@@ -29,3 +29,17 @@ yarn format
 # Lint fix
 yarn lint
 ```
+page routing
+
+/ - sign-in
+/sign-in
+
+/home - home
+/outgoing - swoosh out
+    /requestID
+/incoming - swoosh in
+    /requestID
+
+/profile
+
+
