@@ -22,7 +22,6 @@ interface Request {
 export default function HomePage() {
   const user_address = useAccount().address;
   // console.log(user_address);
-  
   const [resultOut, setResultOut] = useState<Request[]>([]);
   const [resultIn, setResultIn] = useState<Request[]>([]);
 
@@ -43,4 +42,4 @@ export default function HomePage() {
     inNumber: number;
     outNumber: number;
   }
-}
+}   
