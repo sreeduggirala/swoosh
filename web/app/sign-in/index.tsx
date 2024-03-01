@@ -5,9 +5,8 @@ import { useAccount } from 'wagmi';
 import { useRouter } from 'next/navigation';
 
 export default function SignInPage() {
+  const router = useRouter();
   const redirectToHomePage = () => {
-    const router = useRouter();
-
     // Check if running in the client-side environment
     if (typeof window !== 'undefined') {
       // Redirect to the desired page after successful authentication
