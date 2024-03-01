@@ -31,7 +31,7 @@ interface HomeGroupProp {
 
 const HomeCard = (props: HomeCardProps) => {
   return (
-    <div className="w-full rounded-lg bg-gray px-8 py-4 text-lg">
+    <div className="w-full rounded-lg bg-gray px-4 py-4 text-lg">
       <p>Swoosh</p>
       <p className="text-4xl font-semibold">{props.type}</p>
       <p className="py-2 text-6xl font-semibold">{props.num}</p>

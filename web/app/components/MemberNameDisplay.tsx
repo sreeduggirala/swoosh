@@ -7,7 +7,7 @@ interface MemberNameDisplayProps {
 
 const MemberNameDisplay:React.FC<MemberNameDisplayProps> = ({addr}) => {
   return (
-    <div className=' w-full bg-white rounded-full outline my-2 p-2 truncate'>
+    <div className='w-7/8 bg-white rounded-full outline my-2 ml-1 mr-1 p-2 truncate'>
         {addr}
     </div>
   )
