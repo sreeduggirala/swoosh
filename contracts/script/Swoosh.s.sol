@@ -10,11 +10,11 @@ contract SwooshScript is Script {
         TestERC20 erc20 = TestERC20(0x42f243d53e2368A8e6d3C8E1eA97dBC7889377f1);
         // erc20.mint(address(0x790914B66Aa57cCdA5596Da83B98c94700ECbF04), 2000 * 10 ** 18);
         // console.log(erc20.balanceOf(address(0xcfbC6d2ed767EA76ceD4518e16DeA8B6996B88Aa)));
-        // erc20.mint(address(0x31d5a8709bE7f3cE42efc21A72718acf1D57a890), 2000 * 10 ** 18);
-        Swoosh swoosh = Swoosh(0x39A23022abF01500ae70B0c1774D41525A266c0C);
+        erc20.mint(address(0x790914B66Aa57cCdA5596Da83B98c94700ECbF04), 10000 * 10 ** 18);
+        // Swoosh swoosh = Swoosh(0x39A23022abF01500ae70B0c1774D41525A266c0C);
         // swoosh.deposit(500);
-        address[] memory from = new address[](1);
-        from[0] = address(0x795fC2Fe015736cE77cA42c2173e28E80A163F09);
+        // address[] memory from = new address[](1);
+        // from[0] = address(0x795fC2Fe015736cE77cA42c2173e28E80A163F09);
         // from[1] = address(0x31d5a8709bE7f3cE42efc21A72718acf1D57a890);
         // erc20.approve(address(swoosh), 10000 * 10 ** 18);
         // swoosh.deposit(5000 * 10 ** 18);
