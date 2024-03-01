@@ -29,6 +29,7 @@ yarn format
 # Lint fix
 yarn lint
 ```
+
 page routing
 
 / - sign-in
@@ -36,10 +37,11 @@ page routing
 
 /home - home
 /outgoing - swoosh out
-    /requestID
+/requestID
 /incoming - swoosh in
-    /requestID
+/requestID
 
 /profile
 
-
+**FOR CUSTOM HOOK**
+import {useSmartAccount} from '../hooks/SmartAccountContext.tsx';
