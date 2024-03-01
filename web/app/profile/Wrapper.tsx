@@ -15,18 +15,18 @@ import {BaseSepoliaTestnet} from '@thirdweb-dev/chains';
 const Wrapper = () => {
 
   const user_address =  useAddress();
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   if (user_address==undefined) {
-  //     router.push('/');
-  //   }
-  // }, [user_address]);
+  
+  const callFaucet = async () => {
+    console.log('faucet')
+  }
 
   return (
     <div className="flex flex-col px-4 pb-28 h-screen overflow-y-hidden rounded-sm">
-      <div className="sticky top-0 z-10 h-full pb-28 bg-white">
-        <Header title="Profile" />
+        <div className="sticky top-0 z-10 h-full pb-28 bg-white">
+          <div className="py-12 pb-8 flex justify-between w-full">
+            <p className="font-Inter text-4xl tracking-widest">Profile</p>
+            <button className="text-blue-700 text-lg font-semibold bg-white rounded-full outline px-2 opacity-50" onClick={callFaucet}>Faucet (10k)</button>
+          </div>
         <div className='w-full flex justify-center'>
           <Image src={profile_icon} alt="profile picture" width={100} height={100} className='pb-4' />
         </div>
