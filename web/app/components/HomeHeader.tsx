@@ -2,12 +2,13 @@ import Image from 'next/image';
 import React from 'react';
 import profile_icon from '../assets/logo.png';
 import { useAccount } from 'wagmi';
+import { useAddress } from '@thirdweb-dev/react';
 
 
 
 const HomeHeader = () => {
   //get user address
-  const user_address = String(useAccount().address);
+  const user_address = useAddress();
   let truncated = user_address?.slice(0, 4) + '...' + user_address?.slice(-3);
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4 py-12">
