@@ -10,7 +10,7 @@ import { useContract, useContractRead } from '@thirdweb-dev/react';
 
 export function readSwooshContract(functionName: string, args: any[], setResult: any): readSwooshContractReturn {
   const { contract } = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
-  const { data, isLoading, error } = useContractRead(
+  const { data, isLoading, error } = useContractRead( 
     contract,
     functionName,
     args,

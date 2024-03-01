@@ -18,10 +18,10 @@ export function DepositERC20() {
     e.preventDefault() 
     const formData = new FormData(e.target as HTMLFormElement) 
     const value = formData.get('value') as string 
-    mutateAsync({args: [value + "000000000000000000"]});
+    mutateAsync({args: [value + "000000000000000000"]});  
   } 
   return ( 
-    <div>
+    <div> 
     <form onSubmit={submit} className="flex justify-center">
       <input name="value" placeholder="300" required className="w-32 rounded-lg bg-gray p-6 text-center text-4xl text-black h-6" />
     </form>

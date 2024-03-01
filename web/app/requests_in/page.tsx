@@ -18,6 +18,8 @@ interface RequestInHeaderGroupProp {
 interface RequestInData {
   title: string;
   amount: string;
+  debtors: string[];
+  paid: string[];
 }
 
 export function formatNumber(num: number): string {
@@ -65,7 +67,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
           ${formatNumber(Number(props.owed) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
-          <Button variant="Withdraw" href="/" onClick={()=> document.getElementById('withdraw_modal').showModal()} />
+          <Button variant="Swoosh!" href="/" onClick={()=> document.getElementById('withdraw_modal').showModal()} />
         </div>
       </div>
     </div>
@@ -75,13 +77,15 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
 const RequestInGroup = () => {
   const user_address = useAccount().address;
   const [resultOut, setResultOut] = useState<Request[]>([]);
-
+  let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
   readSwooshContract('getRequestsIn', [user_address], setResultOut);
   let data: RequestInData[] = [];
   resultOut.map((result) => {
     data.push({
       title: result.message,
       amount: result.amount,
+      debtors: result.debtors,
+      paid: result.paid,
     });
   });
 
@@ -90,13 +94,17 @@ const RequestInGroup = () => {
         {data.map((request) => (
           <Swoosh
             onClick={() => {
-              alert('sus');
+  //               contract?.call("getBalance", [user_address]).then((data)=> {
+  //   console.log(data);
+  //   setUserBalance(data); he hee tee hee hee
+  // });
+              contract?.call("") 
             }}
             title={request.title}
             href={''}
             variant="button"
             amount={Number(request.amount) / Math.pow(10, 18)}
-            percent={0}
+            percent={request.paid.length / (request.debtors.length + request.paid.length)}
           />
         ))}
       </div>

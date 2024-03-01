@@ -34,7 +34,7 @@ const Add = () => {
     var amount = (parseFloat(costStr) / members.length).toFixed(2);
     //todo: add image uri, add error handling
     writeContract({
-      address: '0x39A23022abF01500ae70B0c1774D41525A266c0C',
+      address: '0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6',
       abi,
       functionName: 'request',
       args: [members, amount, message, ""],
@@ -45,7 +45,7 @@ const Add = () => {
     var amount = (parseFloat(costStr) * Math.pow(10, 18) / (members.length+1));
     //todo: add image uri, add error handling
     writeContract({
-      address: '0x39A23022abF01500ae70B0c1774D41525A266c0C',
+      address: '0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6',
       abi,
       functionName: 'request',
       args: [members, amount, message, ""],
@@ -59,8 +59,8 @@ submit
   }) 
 
   return (
-    <div className='flex flex-col px-4 pb-20'>
-      <div className="sticky top-0 z-10 w-full pb-4">
+    <div className='flex flex-col px-4 pb-20 max-h-screen'>
+      <div className="sticky top-0 z-10 w-full pb-4 max-h-screen">
         <Header title="Make a Swoosh" />
         <div className='flex flex-col space-y-5 w-full h-full rounded-lg bg-gray px-4 py-3'>
           <Input title="Message:" placeholder='Groceries' state={message} setState={setMessage}/> 
