@@ -62,7 +62,7 @@ submit
     <div className='flex flex-col px-4 pb-20 max-h-screen'>
       <div className="sticky top-0 z-10 w-full pb-4 max-h-screen">
         <Header title="Make a Swoosh" />
-        <div className='flex flex-col space-y-5 w-full h-full rounded-lg bg-gray px-4 py-3 max-h-50vh'>
+        <div className='flex flex-col space-y-5 w-full h-full rounded-lg bg-gray px-4 py-3 max-h-fit'>
           <Input title="Message:" placeholder='Groceries' state={message} setState={setMessage}/> 
           <Input title="Total Cost ($):" placeholder='10.99' state={costStr} setState={setCostStr}/>
           <AddMembers members={members} setMembers={setMembers}/>
