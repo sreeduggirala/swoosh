@@ -4,7 +4,7 @@ import { CiBellOn } from 'react-icons/ci';
 type Props = {
   title?: string;
   href: string;
-  variant: 'Deposit' | 'Withdraw' | 'View' | 'Pay All' | 'Pending' | 'Nudge' | 'Custom';
+  variant: 'Deposit' | 'Withdraw' | 'View' | 'Pay All' | 'Pending' | 'Nudge' | 'Custom' | 'Swoosh!';
   args?: {},
   onClick?: ()=>void
 };

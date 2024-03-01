@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { Button } from '../components/Button';
 import Swoosh from 'app/components/Swoosh';
@@ -9,7 +9,7 @@ import { DepositERC20 } from 'app/components/deposit';
 import { WithdrawERC20 } from 'app/components/Withdraw';
 import ScrollableContent from 'app/components/ScrollableContent';
 import { useAddress, useContract } from '@thirdweb-dev/react';
-
+import {SwooshConfirm} from "../components/SwooshConfirm";
 interface RequestInHeaderGroupProp {
   balance: number;
   owed: number;
@@ -20,6 +20,8 @@ interface RequestInData {
   amount: string;
   debtors: string[];
   paid: string[];
+  // result: number;
+  id: number;
 }
 
 export function formatNumber(num: number): string {
@@ -49,12 +51,12 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
   return (
     <div className="flex w-full rounded-lg bg-gray">
       <div className="w-full p-3 px-4">
-        <p>Owed</p>
+        <p>Owe</p>
         <p className="py-4 text-4xl font-semibold">
           ${formatNumber(Number(props.owed) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
-          <Button variant="Swoosh!" href="/" onClick={()=> document.getElementById('withdraw_modal').showModal()} />
+          <Button variant="Swoosh!" onClick={()=> document.getElementById('swoosh_modal').showModal()} />
         </div>
       </div>
     </div>
@@ -62,7 +64,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
 };
 
 const RequestInGroup = () => {
-  const user_address = useAccount().address;
+  const user_address = useAddress(); 
   const [resultOut, setResultOut] = useState<Request[]>([]);
   let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
   readSwooshContract('getRequestsIn', [user_address], setResultOut);
@@ -73,6 +75,7 @@ const RequestInGroup = () => {
       amount: result.amount,
       debtors: result.debtors,
       paid: result.paid,
+      id: parseInt(result.id)
     });
   });
 
@@ -85,15 +88,26 @@ const RequestInGroup = () => {
   //   console.log(data);
   //   setUserBalance(data); he hee tee hee hee
   // });
-              contract?.call("") 
+              contract?.call("accept", [request.id]); 
             }}
             title={request.title}
             href={''}
             variant="button"
             amount={Number(request.amount) / Math.pow(10, 18)}
-            percent={request.paid.length / (request.debtors.length + request.paid.length)}
+            percent={request.paid.length / (request.debtors.length + request.paid.length) * 100}
           />
         ))}
+
+<dialog id="swoosh_modal" className="modal">
+        <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
+          {/* <form method="dialog " className="flex w-full justify-evenly gap-2"> */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+          <SwooshConfirm/>          
+            {/* </form> */}
+          </div>
+        
+      </dialog>
       </div>
   );
 };
@@ -118,13 +132,15 @@ const RequestsInPage = () => {
   const [resultOut, setResultOut] = useState<Request[]>([]);
   const [userBalance, setUserBalance] = useState<number>();
   let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
-  // let balance = await contract.Read("", "arg1", "arg2", ...);
-  contract?.call("getBalance", [user_address]).then((data)=> {
-    console.log(data);
-    setUserBalance(data);
-  });
+  useEffect(() => {
+    contract?.call("getBalance", [user_address]).then((data)=> {
+      console.log(data);
+      setUserBalance(data);
+    });
+
+  }, [userBalance])
   // setUserBalance(result.data);
-  // result = readSwooshContract('getRequestsIn', [user_address], setResultOut);
+  readSwooshContract('getRequestsIn', [user_address], setResultOut);
   let sum = 0;
   for (let i = 0; i < resultOut.length; i++) {
     sum += Number(resultOut[i].amount);
@@ -139,7 +155,7 @@ const RequestsInPage = () => {
         <RequestInGroup />
       </div>
     </div>
-  );
+  );    
 };
 
 export default RequestsInPage;

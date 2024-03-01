@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { readSwooshContract } from 'app/util';
 import { useAccount } from 'wagmi';
 import { Button } from './Button';
 import { DepositERC20 } from 'app/components/deposit';
 import { WithdrawERC20 } from 'app/components/Withdraw';
+import { useAddress, useContract } from '@thirdweb-dev/react';
 
 function formatNumber(num: number): string {
     if (num < 1000) {
@@ -29,18 +30,24 @@ function formatNumber(num: number): string {
   }
 
 const ProfileBalanceCard = () => {
-    const user_address = useAccount().address;
+    const user_address = useAddress(); 
     const [userBalance, setUserBalance] = useState<number>();
 
-    let result = readSwooshContract('getBalance', [user_address], setUserBalance);
-
+    // let result = readSwooshContract('getBalance', [user_address], setUserBalance);
+    let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
+    useEffect(() => {
+      contract?.call("getBalance", [user_address]).then((data)=> {
+        console.log(data);
+        setUserBalance(data);
+      });
+    }, [])
 
     return (
         <div className="flex w-full rounded-lg bg-gray">
           <div className="w-full p-3 px-4">
-            <p>Balance</p>
+            <p>Balance</p> 
             <p className="py-4 text-4xl font-semibold">
-              ${formatNumber(Number(userBalance) / Math.pow(10, 18))}
+              ${(userBalance == undefined )? "--":  formatNumber(Number(userBalance) / Math.pow(10, 18))}
             </p>
             <div className="flex justify-center space-x-2">
               <Button

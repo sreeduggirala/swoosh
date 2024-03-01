@@ -5,7 +5,7 @@ import { useAccount } from 'wagmi';
 import { AccountInfoPanel } from './AccountInfoPanel';
 
 export function AccountDropdown() {
-  const { address } = useAccount();
+  const address = useAddress();
 
   return (
     <DropdownMenu.Root>
