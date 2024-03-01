@@ -16,6 +16,7 @@ const withPWA = require('next-pwa')({
 const nextConfig = withPWA({
   reactStrictMode: false,
   images: {
+    formats: ['image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
