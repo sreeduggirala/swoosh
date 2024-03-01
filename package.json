@@ -1,5 +1,10 @@
 {
   "devDependencies": {
     "daisyui": "^4.7.2"
+  },
+  "dependencies": {
+    "@thirdweb-dev/react": "^4.4.11",
+    "@thirdweb-dev/sdk": "^4.0.38",
+    "ethers": "^5"
   }
 }

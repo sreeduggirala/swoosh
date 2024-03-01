@@ -8,6 +8,7 @@ import { readSwooshContract } from 'app/util';
 import { DepositERC20 } from 'app/components/deposit';
 import { WithdrawERC20 } from 'app/components/Withdraw';
 import ScrollableContent from 'app/components/ScrollableContent';
+import { useAddress, useContract } from '@thirdweb-dev/react';
 
 interface RequestInHeaderGroupProp {
   balance: number;
@@ -101,27 +102,30 @@ interface Request {
 }
 
 const RequestsInPage = () => {
-  const user_address = useAccount().address;
+  const user_address = useAddress();
   const [deposit, setDeposit] = useState('');
   const [resultOut, setResultOut] = useState<Request[]>([]);
   const [userBalance, setUserBalance] = useState<number>();
-
-  let result = readSwooshContract('getBalance', [user_address], setUserBalance);
-  result = readSwooshContract('getRequestsIn', [user_address], setResultOut);
+  let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
+  // let balance = await contract.Read("", "arg1", "arg2", ...);
+  contract?.call("getBalance", [user_address]).then((data)=> {
+    console.log(data);
+    setUserBalance(data);
+  });
+  // setUserBalance(result.data);
+  // result = readSwooshContract('getRequestsIn', [user_address], setResultOut);
   let sum = 0;
   for (let i = 0; i < resultOut.length; i++) {
     sum += Number(resultOut[i].amount);
   }
   return (
-    <div className="flex flex-col px-4 pb-28 w-screen h-screen overflow-y-hidden rounded-sm">
+    <div className="flex flex-col px-4 pb-24 h-screen overflow-y-hidden rounded-sm">
       <div className="sticky top-0 z-10 w-full bg-white pb-4">
         <Header title="Awaiting Swooshes" />
         <RequestInHeaderGroup balance={userBalance as number} owed={sum} />
       </div>
       <div className="w-full h-3/5 overflow-y-scroll">
-        <ScrollableContent>
-          <RequestInGroup />
-        </ScrollableContent>
+        <RequestInGroup />
       </div>
     </div>
   );
