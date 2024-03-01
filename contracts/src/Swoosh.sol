@@ -236,6 +236,23 @@ contract Swoosh is SwooshStorage, ERC20 {
         emit accepted(currentRequest.creditor, msg.sender, currentRequest.id);
     }
 
+    // @notice: Approve all incoming requests
+    function acceptAll() public {
+        uint256[] memory indices = requestsIn[msg.sender];
+        uint256 totalOwed;
+        for (uint256 i = 0; i < indices.length; i++) {
+            totalOwed += requests[indices[i]].amount;
+        }
+
+        if (balance[msg.sender] < totalOwed) {
+            revert("Insufficient balance");
+        }
+
+        for (uint256 i = 0; i < indices.length; i++) {
+            accept(indices[i]);
+        }
+    }
+
     // @notice: decline an incoming request
     // @params: request ID
     function decline(
