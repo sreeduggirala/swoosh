@@ -8,29 +8,14 @@ import { inter } from './fonts';
 import type { Metadata } from 'next';
 import Navbar from './components/Navbar';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAccount } from 'wagmi';
-import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit';
-import { ThirdwebProvider, useAddress } from '@thirdweb-dev/react';
+import { ThirdwebProvider, embeddedWallet, smartWallet, useAddress } from '@thirdweb-dev/react';
 import {BaseSepoliaTestnet} from '@thirdweb-dev/chains';
+import {PrivyProvider} from '@privy-io/react-auth';
+import {SmartAccountProvider} from "../src/hooks/SmartAccountContext";
 export const viewport = {
   width: 'device-width',
   initialScale: 1.0,
 };
-
-// export const metadata: Metadata = {
-//   manifest: '/manifest.json',
-//   other: {
-//     boat: '0.17.0',
-//   },
-// };
-
-// Stat analytics before the App renders,
-// so we can track page views and early events
-// initAnalytics();
-
-/** Root layout to define the structure of every page
- * https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts
- */
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const isSignIn = usePathname() == '/';
@@ -38,6 +23,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${isSignIn && 'gradient-background'} relative w-full`}>
+      <PrivyProvider {...insertYourPrivyProviderProps} >
+  <SmartAccountProvider>
         <OnchainProviders>
         <ThirdwebProvider
     activeChain={BaseSepoliaTestnet}
@@ -46,6 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AppProvider isSignIn={isSignIn}>{children}</AppProvider>
           </ThirdwebProvider>
         </OnchainProviders>
+        </SmartAccountProvider>
+</PrivyProvider>
       </body>
     </html>
   );

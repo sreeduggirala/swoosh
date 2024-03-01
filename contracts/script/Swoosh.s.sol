@@ -34,5 +34,5 @@ contract SwooshScript is Script {
         // swoosh.request(from, 30 * (10 ** 18), "Chinese", "");
         // swoosh.request(from, 69 * (10 ** 18), "luv yall", "");
 
-    } 
-}   
+  }
+}  

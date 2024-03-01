@@ -2,11 +2,12 @@ Features
 1. Direct payments and requests (i.e., Venmo)
 2. Bill splitting/split payments and requests (i.e., Splitwise)
 3. Metadata for payments (i.e., images, text)
+4. AA (ERC-4337) for ERC-20 gas
 
-TBD
-1. AA (ERC-4337) for ERC-20 gas
-2. ENS integration (ex. sreevanth.eth)
-3. Address book (maps wallet addresses to nicknames)
+If time permits: 
+1. ENS integration (ex. sreevanth.eth)
+
+
 
 
 
@@ -19,13 +20,12 @@ Bounties
 5. XDC - Most creative BUIDL using the XDC Network
 6. Arbitrum - Best DeFi App on Arbitrum
 7. Hedera BUIDLers Challenge: Imagine, Create, Hello Future
-8. Hedera Bounty 3 - Exceptional Ecosystem Integration
-9. ETHDenver - Defi, NFTs & Gaming Track: $15,000
-10. ETHDenver - Best of DeFi, NFTs + Gaming: $1,000
-11. ETHDenver - Best of Defi, NFTs, & Gaming: $12,500
+8. ETHDenver - Defi, NFTs & Gaming Track: $15,000
+9. ETHDenver - Best of DeFi, NFTs + Gaming: $1,000
+10. ETHDenver - Best of Defi, NFTs, & Gaming: $12,500
+11. Coinbase (Base) - Build on Account Abstraction / Paymaster
+12. Quicknode - Best use of QuickNode's QuickAlerts
 
-
-TBD
-1. Coinbase (Base) - Build on Account Abstraction / Paymaster
-2. Quicknode - Best use of QuickNode's QuickAlerts
-3. Quicknode - Best use case of QuickNode's IPFS
+If time permits:
+[X] 1. Quicknode - Best use case of QuickNode's IPFS
+[X] 2. Hedera Bounty 3 - Exceptional Ecosystem Integration
