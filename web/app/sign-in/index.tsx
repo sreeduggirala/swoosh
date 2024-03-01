@@ -10,9 +10,10 @@ export default function SignInPage() {
   );
   const [approved, useApproved] = useState(false);
 
+  const router = useRouter();
 
   const redirectToHomePage = () => {
-    const router = useRouter();
+
     // Check if running in the client-side environment
     if (typeof window !== 'undefined') {
       // Redirect to the desired page after successful authentication

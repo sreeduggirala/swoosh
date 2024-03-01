@@ -48,20 +48,7 @@ export function formatNumber(num: number): string {
 const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
   return (
     <div className="flex w-full rounded-lg bg-gray">
-      <div className="w-1/2 p-3 px-4">
-        <p>Balance</p>
-        <p className="py-4 text-4xl font-semibold">
-          ${formatNumber(Number(props.balance) / Math.pow(10, 18))}
-        </p>
-        <div className="flex justify-center">
-          <Button
-            variant="Deposit"
-            href="/"
-            onClick={() => document.getElementById('deposit_modal').showModal()}
-          />
-        </div>
-      </div>
-      <div className="w-1/2 p-3 px-4">
+      <div className="w-full p-3 px-4">
         <p>Owed</p>
         <p className="py-4 text-4xl font-semibold">
           ${formatNumber(Number(props.owed) / Math.pow(10, 18))}
@@ -151,30 +138,6 @@ const RequestsInPage = () => {
       <div className="w-full h-3/5 overflow-y-scroll">
         <RequestInGroup />
       </div>
-
-
-
-      <dialog id="deposit_modal" className="modal">
-        <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
-          <form method="dialog " className="flex w-full justify-evenly gap-2">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-
-            </form>
-          <DepositERC20/>          
-          </div>
-        
-      </dialog>    
-      <dialog id="withdraw_modal" className="modal">
-        <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
-          <form method="dialog " className="flex w-full justify-evenly gap-2">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-
-            </form>
-          <WithdrawERC20/>          
-          </div>
-        
-      </dialog>
-        
     </div>
   );
 };
