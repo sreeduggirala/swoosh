@@ -14,6 +14,12 @@ const withPWA = require('next-pwa')({
 });
 
 const nextConfig = withPWA({
+  env: {
+    // CONTRACT_ADDRESS: "0x46e97fBc46433Be476B9afbfECDE77B9633214e1",
+    // ERC20_ADDRESS: "0x6e3333012d5F0b66c61A91d8666f57624C52927E"
+    CONTRACT_ADDRESS: "0x6a9FB2DD43bDea42D332A168F2e8d227D782E2Da",
+    ERC20_ADDRESS: "0xddF708D211E453354FE5BE80EfE3147b3634DDad"
+  },
   reactStrictMode: false,
   images: {
     formats: ['image/webp'],

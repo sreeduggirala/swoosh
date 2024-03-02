@@ -19,7 +19,7 @@ export function WithdrawERC20() {
     const formData = new FormData(e.target as HTMLFormElement) 
     const value = formData.get('value') as string 
     writeContract({
-      address: '0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6',
+      address: process.env.CONTRACT_ADDRESS,
       abi,
       functionName: 'withdraw',
       args: [parseFloat(value) * 10 ** 18],
