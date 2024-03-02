@@ -43,11 +43,12 @@ contract SwooshStorage {
     );
     event newPayment(
         address creditor,
-        address[] debtors,
+        address debtor,
         uint256 indexed paymentId
     );
     event accepted(address debtor, address creditor, uint256 indexed requestId);
     event declined(address debtor, address creditor, uint256 indexed requestId);
+    event cancelled(address creditor, uint256 indexed requestId);
     event nudged(address creditor, address debtor);
     event deposited(address user, uint256 amount);
     event withdrew(address user, uint256 amount);
@@ -119,6 +120,8 @@ contract Swoosh is SwooshStorage, ERC20 {
         }
 
         requestsOut[msg.sender].push(id);
+
+        emit newRequest(msg.sender, from, id);
     }
 
     function cancel(
@@ -161,6 +164,7 @@ contract Swoosh is SwooshStorage, ERC20 {
             }
         }
 
+        emit cancelled(msg.sender, currentRequest.id);
         currentRequest.cancelled = true;
     }
 
@@ -187,6 +191,8 @@ contract Swoosh is SwooshStorage, ERC20 {
         paymentsOut[msg.sender].push(id);
         balance[msg.sender] -= amount;
         balance[to] += amount;
+
+        emit newPayment(msg.sender, to, id);
     }
 
     // @notice: Approve an incoming request
@@ -295,7 +301,7 @@ contract Swoosh is SwooshStorage, ERC20 {
         emit declined(currentRequest.creditor, msg.sender, currentRequest.id);
     }
 
-    function nudge(address debtor) public {
+    function nudge(address debtor) public validAddress(debtor) {
         emit nudged(msg.sender, debtor);
     }
 
