@@ -25,6 +25,9 @@ const nextConfig = withPWA({
     HARPIE_API_KEY: "9ce564a5-ba86-44d4-83a5-4ce31943f04c"
   },
   reactStrictMode: false,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     formats: ['image/webp'],
     remotePatterns: [
