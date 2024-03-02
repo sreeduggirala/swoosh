@@ -1,12 +1,7 @@
 'use client';
-import AccountConnect from '@/components/layout/header/AccountConnect';
-import { AccountDropdown } from '@/components/layout/header/AccountDropdown';
-import { AccountInfoPanel } from '@/components/layout/header/AccountInfoPanel';
-import Header from 'app/components/Header';
+
 import ProfileBalanceCard from 'app/components/ProfileBalanceCard';
-import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import { useAccount } from 'wagmi';
 import profile_icon from '../assets/logo.svg';
 import Image from 'next/image';
 import { ConnectWallet, ThirdwebProvider, embeddedWallet, smartWallet, toWei, useAddress, useContract, useContractWrite } from '@thirdweb-dev/react';
