@@ -76,7 +76,7 @@ contract Swoosh is SwooshStorage, ERC20 {
 
     modifier validAddress(address user) {
         if (user == address(0) || user == address(msg.sender)) {
-            revert("Invalid address"); 
+            revert("Invalid address");
         }
         _;
     }
@@ -163,7 +163,7 @@ contract Swoosh is SwooshStorage, ERC20 {
 
         currentRequest.cancelled = true;
     }
-    
+
     // @notice: Create a new payment
     // @params: creditor, amount
     function pay(
