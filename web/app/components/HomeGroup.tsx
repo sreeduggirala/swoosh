@@ -41,10 +41,11 @@ const HomeCard = (props: HomeCardProps) => {
 };
 
 const PercentPaidCard = (props: PercentPaidCardProps) => {
+  const percent = props.percent !== undefined ? props.percent : 100;
   return (
-    <div className="w-min rounded-lg bg-gray px-4 py-4 text-lg">
+    <div className="w-min rounded-lg bg-gray px-6 py-6 text-lg">
       <p>% Paid</p>
-      <div className="radial-progress" style={{"--value":50}} role="progressbar">{props.percent}%</div>
+      <div className="radial-progress" style={{"--value":percent}} role="progressbar">{percent}%</div>
     </div>
   );
 };
@@ -52,7 +53,7 @@ const PercentPaidCard = (props: PercentPaidCardProps) => {
 
 const HomeGroup = (props: HomeGroupProp) => {
   return (
-    <div className="flex flex-wrap w-full justify-evenly gap-4 overflow-y-auto">
+    <div className="flex flex-wrap w-full justify-evenly gap-6 overflow-y-auto">
       <Link href="/requests_in" className="w-2/5 no-underline">
         <HomeCard type="In" num={props.inNumber} />
       </Link>
