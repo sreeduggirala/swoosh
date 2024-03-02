@@ -3,6 +3,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { clsx } from 'clsx';
 import { useAddress, useContract } from '@thirdweb-dev/react';
 import { AccountInfoPanel } from './AccountInfoPanel';
+import { Address } from 'viem';
 
 export function AccountDropdown() {
   const address = useAddress() as Address;
