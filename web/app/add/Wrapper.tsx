@@ -16,6 +16,8 @@ import { BsPerson } from "react-icons/bs";
 import { toWei, useAddress, useContract, useContractWrite } from '@thirdweb-dev/react'
 import { Address } from '@thirdweb-dev/react'
 
+let axios = require('axios');
+
 const Wrapper = () => {
 
   const [message, setMessage] = useState('');
@@ -29,6 +31,11 @@ const Wrapper = () => {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [showAddressErrorToast, setShowAddressErrorToast] = useState(false);
+  const [showVerifyToast, setShowVerifyToast] = useState(false);
+  const [verificationLoading, setVerificationLoading] = useState(false);
+  const [threatSummary, setThreatSummary] = useState('');
+
+
   const user_address = useAddress();
 
   let { mutateAsync: requestMutateAsync, isLoading, error } = useContractWrite(
@@ -102,7 +109,39 @@ const Wrapper = () => {
   // useWaitForTransactionReceipt({ 
   //   hash, 
   // }) 
+  const verifyAddress = async () => {
+    let data = JSON.stringify({
+      "address": payAddress,
+      "apiKey": process.env.HARPIE_API_KEY
+    });
 
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://api.harpie.io/v2/validateAddress',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+
+    setVerificationLoading(true);
+    axios.request(config)
+    .then((response: any) => {
+      console.log(response.data['summary']);
+      setThreatSummary(response.data['summary']);
+    })
+    .catch((error: any) => {
+      console.log(error);
+    });
+    setVerificationLoading(false);
+
+    setShowVerifyToast(true);
+    setTimeout(() => {
+      setShowVerifyToast(false);
+    }, 3000);
+
+  }
   return (
     <div className='flex flex-col px-4 pb-20 max-h-screen'>
       <div className="sticky top-0 z-10 w-full pb-4 max-h-screen mb-1"> 
@@ -129,6 +168,14 @@ const Wrapper = () => {
             <Input title='User Address: ' placeholder='0x...' state={payAddress} setState={setPayAddress} />
           </div>
         )}
+        {!isRequesting ? (
+        <button 
+          className="btn bg-blue-700 rounded-full text-white text-2xl w-full mt-4"
+          onClick={() => verifyAddress()}
+        >
+          {verificationLoading ? 'Verifying...' : 'Verify Address'}
+        </button>)
+      : null}
       <button 
         className="btn btn-primary rounded-full text-white text-2xl w-full mt-4 outline"
         onClick={submit}
@@ -158,6 +205,15 @@ const Wrapper = () => {
             </div>
           </div>
         )}
+        {showVerifyToast && (
+          <div className="toast toast-top toast-center z-20">
+            <div role="alert" className="alert alert-info">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span>{threatSummary}</span>
+            </div>
+          </div>
+        )}
+        
 
       <p>
         {/* {hash && <div>Transaction Hash: {hash}</div>} */}
