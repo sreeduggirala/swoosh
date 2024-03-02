@@ -149,7 +149,7 @@ contract SwooshTest is Test {
         Swoosh.Request memory currentRequest = requestsOut[
             requestsOut.length - 1
         ];
-        swoosh.nudge(currentRequest.debtors[0], currentRequest.id);
+        swoosh.nudge(currentRequest.debtors[0]);
     }
 
     function testCancel() external {

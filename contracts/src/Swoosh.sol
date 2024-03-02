@@ -48,7 +48,7 @@ contract SwooshStorage {
     );
     event accepted(address debtor, address creditor, uint256 indexed requestId);
     event declined(address debtor, address creditor, uint256 indexed requestId);
-    event nudged(address creditor, address debtor, uint256 indexed requestId);
+    event nudged(address creditor, address debtor);
     event deposited(address user, uint256 amount);
     event withdrew(address user, uint256 amount);
 }
@@ -295,8 +295,8 @@ contract Swoosh is SwooshStorage, ERC20 {
         emit declined(currentRequest.creditor, msg.sender, currentRequest.id);
     }
 
-    function nudge(address debtor, uint256 requestId) public {
-        emit nudged(msg.sender, debtor, requestId);
+    function nudge(address debtor) public {
+        emit nudged(msg.sender, debtor);
     }
 
     // @notice: Deposit funds to app
