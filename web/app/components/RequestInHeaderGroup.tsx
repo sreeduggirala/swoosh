@@ -29,6 +29,20 @@ export function formatNumber(num: number): string {
     balance: number;
     owed: number;
   }
+
+  const openDepositModal = () => {
+    var depositModal = document.getElementById('deposit_modal') as HTMLDialogElement;
+    if(depositModal) {
+      depositModal.showModal();
+    }
+  }
+
+  const openWithdrawModal = () => {
+    var withdrawModal = document.getElementById('withdraw_modal') as HTMLDialogElement;
+    if(withdrawModal) {
+      withdrawModal.showModal();
+    }
+  }
   
   const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
     return (
@@ -42,7 +56,7 @@ export function formatNumber(num: number): string {
             <Button
               variant="Deposit"
               href="/"
-              onClick={() => document.getElementById('deposit_modal').showModal()}
+              onClick={() => openDepositModal()}
             />
           </div>
         </div>
@@ -52,7 +66,7 @@ export function formatNumber(num: number): string {
             ${formatNumber(Number(props.owed) / Math.pow(10, 18))}
           </p>
           <div className="flex justify-center">
-            <Button variant="Withdraw" href="/" onClick={()=> document.getElementById('withdraw_modal').showModal()} />
+            <Button variant="Withdraw" href="/" onClick={()=> openWithdrawModal()} />
           </div>
         </div>
       </div>

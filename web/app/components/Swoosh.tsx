@@ -10,7 +10,8 @@ type Props = {
   variant?: "progress bar" | "button";
   amount?: number
   onClick?: () => void;
-  args?: {}
+  args?: {},
+  img?: string
 
 };
 
@@ -20,6 +21,7 @@ export default function Swoosh({
   href = "/",
   variant = "progress bar",
   amount,
+  img,
   onClick
 }: Props) {
 

@@ -45,6 +45,20 @@ export function formatNumber(num: number): string {
   }
 }
 
+const openSwooshModal = () => {
+  var swooshModal = document.getElementById('swoosh_modal') as HTMLDialogElement;
+  if(swooshModal) {
+    swooshModal.showModal();
+  }
+}
+
+const closeSwooshModal = () => {
+  var swooshModal = document.getElementById('swoosh_modal') as HTMLDialogElement;
+  if(swooshModal) {
+    swooshModal.close();
+  }
+}
+
 const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
   return (
     <div className="flex w-full rounded-lg bg-gray">
@@ -54,7 +68,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
           ${formatNumber(Number(props.owed) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
-          <Button title="Swoosh!" href={"/"} variant="Custom" onClick={()=> document.getElementById('swoosh_modal').showModal()} />
+          <Button title="Swoosh!" href={"/"} variant="Custom" onClick={()=> openSwooshModal()} />
         </div>
       </div>
     </div>
@@ -84,7 +98,7 @@ const RequestInGroup = () => {
     contract,
     "acceptAll",
   );
-  async function submit(e: React.FormEvent<HTMLFormElement>) { 
+  async function submit() { 
     // e.preventDefault() 
     // alert(1);
     mutateAsync({
@@ -106,6 +120,7 @@ const RequestInGroup = () => {
               acceptMutateAsync({args:[request.id]}); 
               setSelectedId(request.id);
             }}
+            img=""
             title={request.message}
             href={''}
             variant="button"
@@ -121,7 +136,7 @@ const RequestInGroup = () => {
           <p className="font-Inter text-center font-semibold text-white pb-4">Confirm to pay back all your Swooshes</p>
           <div>
             <div className="flex flex-row justify-evenly gap-4 pt-6">
-              <Button href={''} title="Cancel" variant={'Custom'} onClick={() => document.getElementById('swoosh_modal').close()}/>
+              <Button href={''} title="Cancel" variant={'Custom'} onClick={() => closeSwooshModal()}/>
               <Button href={''} title="Confirm" variant={'Custom'} onClick={() => submit()}></Button>
             </div>
           </div>
@@ -153,12 +168,15 @@ const Wrapper = () => {
   const [userBalance, setUserBalance] = useState<number>();
   let {contract} = useContract(process.env.CONTRACT_ADDRESS);
   useEffect(() => {
-    contract?.call("getBalance", [user_address]).then((data)=> {
-      console.log(data);
-      setUserBalance(data);
-    }); 
-
-  }, [])
+    if (user_address !== undefined) {
+      contract?.call("getBalance", [user_address]).then((data) => {
+        console.log(data);
+        // Assuming data can be converted to a number directly. You might need additional parsing.
+        const balance = Number(data);
+        setUserBalance(balance);
+      });
+    }
+  }, [user_address]);
   // setUserBalance(result.data);
   readSwooshContract('getRequestsIn', [user_address], setResultOut);
   let sum = 0;

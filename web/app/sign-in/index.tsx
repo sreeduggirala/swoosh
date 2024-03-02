@@ -15,13 +15,17 @@ export default function SignInPage() {
   const {data, isLoading: allowance_isLoading, error: allowance_error} = useContractRead(contract,'allowance',[address, process.env.CONTRACT_ADDRESS])
 
   useEffect(() => {
-    if (address != undefined) {
-      contract?.call("allowance", [address, process.env.CONTRACT_ADDRESS]).then((data)=> {
+    if (address !== undefined) {
+      contract?.call("allowance", [address, process.env.CONTRACT_ADDRESS]).then((data) => {
         // alert(data);
-        setUserAllowance(data);
+        console.log(data);
+        // Convert `data` to the expected type for setUserAllowance, for example, a number
+        const allowance = Number(data);
+        setUserAllowance(allowance);
       });
     }
   }, [address]);
+  
   // useEffect
   if (address != null && userAllowance as number > 0) {  
     router.push('/home');

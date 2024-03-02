@@ -32,6 +32,8 @@ const AddMembers: React.FC<AddMembersProps> = ({members, setMembers}) => {
         writeContract
     } = useWriteContract();
 
+
+
     const addMember = () => {
         //type check to make sure the address is valid (starts with 0x and is 42 characters long)
         if(addressToAdd.length !== 42 || !addressToAdd.startsWith('0x') || addressToAdd === user_address) {
@@ -45,12 +47,14 @@ const AddMembers: React.FC<AddMembersProps> = ({members, setMembers}) => {
 
         setMembers([...members, addressToAdd]);
         setAddressToAdd('');
-        document.getElementById('add_member_modal').close()
+        var dialog = document.getElementById('add_member_modal') as HTMLDialogElement;
+        if(dialog)
+            dialog.close();
         // todo: react toast and error handling
         // document.getElementById('input-id').value = '';
     }
 
-    const removeMember = (index) => {
+    const removeMember = (index: number) => {
         console.log('removing', index);
         // Create a copy of the members array
         const updatedMembers = [...members];
@@ -58,6 +62,12 @@ const AddMembers: React.FC<AddMembersProps> = ({members, setMembers}) => {
         updatedMembers.splice(index, 1);
         // Update the state with the modified copy
         setMembers(updatedMembers);
+    }
+
+    const showAddMemberModal = () => {
+        var dialog = document.getElementById('add_member_modal') as HTMLDialogElement;
+        if(dialog)
+            dialog.showModal();
     }
 
   return (
@@ -80,7 +90,7 @@ const AddMembers: React.FC<AddMembersProps> = ({members, setMembers}) => {
         })}
         <div className='w-full flex justify-center mt-4'>
             <div className=' bg-slate-200 p-3 rounded-full'>
-                <IoPersonAdd onClick={() => document.getElementById('add_member_modal').showModal()}  className='cursor-pointer text-3xl '/>
+                <IoPersonAdd onClick={() => showAddMemberModal()}  className='cursor-pointer text-3xl '/>
             </div>
         </div>
 

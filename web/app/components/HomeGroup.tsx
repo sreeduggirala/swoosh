@@ -29,7 +29,6 @@ interface PercentPaidCardProps {
 interface HomeGroupProp {
   inNumber: number;
   outNumber: number;
-  percentPaid: number;
 }
 
 const HomeCard = (props: HomeCardProps) => {
@@ -48,10 +47,14 @@ const HomeCard = (props: HomeCardProps) => {
 
 const PercentPaidCard = (props: PercentPaidCardProps) => {
   const percent = props.percent !== undefined ? props.percent : 100;
+  const style: React.CSSProperties & { '--value': string } = {
+    '--value': `${percent}%` // Ensure percent is a string, and append '%' if necessary
+  };
+
   return (
     <div className="w-2/3 h-full rounded-lg scale-150 p-4 m-5 mt-10 text-lg text-center ">
       <p>Requests Completed</p>
-      <div className="radial-progress w-50 h-50" style={{"--value":percent}} role="progressbar">{percent}%</div>
+      <div className="radial-progress w-50 h-50" style={style} role="progressbar">{percent}%</div>
     </div>
   );
 };

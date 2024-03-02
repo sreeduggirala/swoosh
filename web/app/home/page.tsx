@@ -53,7 +53,7 @@ export default function HomePage() {
     <div className=" pb-6 h-screen ">
         <div className=" py-8">
           <HomeHeader />
-          <HomeGroup inNumber={resultInLength as number} outNumber={resultOut.length} percentPaid={50}  />
+          <HomeGroup inNumber={resultInLength as number} outNumber={resultOut.length}  />
         </div>
     </div>
   );

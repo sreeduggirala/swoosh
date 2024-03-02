@@ -1,16 +1,16 @@
 import { useCallback } from 'react';
 import { Avatar, Name } from '@coinbase/onchainkit';
 import { ExitIcon } from '@radix-ui/react-icons';
-// import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 import { getSlicedAddress } from '@/utils/address';
 import { useAddress } from '@thirdweb-dev/react';
   
 export function AccountInfoPanel() {
   const address = useAddress();
-  // const { disconnect } = useDisconnect();
-  // const handleDisconnectWallet = useCallback(() => {
-  //   disconnect();
-  // }, [disconnect]);
+  const { disconnect } = useDisconnect();
+  const handleDisconnectWallet = useCallback(() => {
+    disconnect();
+  }, [disconnect]);
 
   if (!address) return null;
 
@@ -29,12 +29,12 @@ export function AccountInfoPanel() {
       </div>
       <hr className="h-px self-stretch border-transparent bg-zinc-400 bg-opacity-20" />
       <div className="flex justify-center">
-        {/* <button
+        <button
           type="button"
           aria-label="Disconnect"
           className="my-4 inline-flex items-center justify-between self-stretch"
           onClick={handleDisconnectWallet}
-        > */}
+        >
           <span className="font-inter w-32 text-left text-base font-medium text-white">
             Log out
           </span>

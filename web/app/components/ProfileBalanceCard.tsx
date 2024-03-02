@@ -38,15 +38,16 @@ const ProfileBalanceCard = () => {
     // let result = readSwooshContract('getBalance', [user_address], setUserBalance);
     let {contract} = useContract(process.env.CONTRACT_ADDRESS);
     useEffect(() => {
-      if (user_address != undefined) {
-      contract?.call("getBalance", [user_address]).then((data)=> {
-        // alert(data);
-        console.log(data);
-        setUserBalance(data);
-      });
-    }
-    }, [user_address])
-
+      if (user_address !== undefined) {
+        contract?.call("getBalance", [user_address]).then((data) => {
+          // Assuming data can be directly set as a number, but you might need to parse or transform it
+          const balance = Number(data); // Convert data to a number, if necessary
+          console.log(balance);
+          setUserBalance(balance);
+        }).catch(error => console.error("Failed to fetch balance:", error));
+      }
+    }, [user_address]);
+    
     // deposit form START
     const { mutateAsync: depositMutateAsync, isLoading: depositIsLoading, error: depositError } = useContractWrite(
       contract,
@@ -111,6 +112,34 @@ const ProfileBalanceCard = () => {
     } 
     // withdraw form END
 
+    const openDepositModal = () => {
+      var depositModal = document.getElementById('deposit_modal') as HTMLDialogElement;
+      if(depositModal) {
+        depositModal.showModal();
+      }
+    }
+
+    const openWithdrawModal = () => {
+      var withdrawModal = document.getElementById('withdraw_modal') as HTMLDialogElement;
+      if(withdrawModal) {
+        withdrawModal.showModal();
+      }
+    }
+
+    const closeDepositModal = () => {
+      var depositModal = document.getElementById('deposit_modal') as HTMLDialogElement;
+      if(depositModal) {
+        depositModal.close();
+      }
+    }
+
+    const closeWithdrawModal = () => {
+      var withdrawModal = document.getElementById('withdraw_modal') as HTMLDialogElement;
+      if(withdrawModal) {
+        withdrawModal.close();
+      }
+    }
+
     return (
         <div className="flex w-full rounded-lg bg-gray">
           <div className="w-full p-3 px-4">
@@ -122,12 +151,12 @@ const ProfileBalanceCard = () => {
               <Button
                 variant="Deposit"
                 href="/"
-                onClick={() => document.getElementById('deposit_modal').showModal()}
+                onClick={() => openDepositModal()}
               />
               <Button
                 variant='Withdraw'
                 href="/"
-                onClick={() => document.getElementById('withdraw_modal').showModal()}
+                onClick={() => openWithdrawModal()}
               />
             </div>
           </div>
@@ -140,7 +169,7 @@ const ProfileBalanceCard = () => {
                     <input name="value" placeholder="300" className="w-32 rounded-lg bg-gray p-6 text-center text-4xl text-black h-6 justify-center" onChange={e => setDepositValue(e.target.value)} />
                   </div>
                   <div className="flex flex-row justify-evenly gap-4 pt-6">
-                    <Button href={''} title="Cancel" variant={'Custom'} onClick={() => document.getElementById('deposit_modal').close()}/>
+                    <Button href={''} title="Cancel" variant={'Custom'} onClick={() => closeDepositModal()}/>
                     <Button href={''} title={depositIsLoading ? 'Confirming...' : 'Confirm'} variant={'Custom'} onClick={() => {submitDeposit()}}></Button>
                   </div>
                 </div>
@@ -158,7 +187,7 @@ const ProfileBalanceCard = () => {
                     <input name="value" placeholder="300" className="w-32 rounded-lg bg-gray p-6 text-center text-4xl text-black h-6 justify-center" onChange={e => setWithdrawValue(e.target.value)} />
                   </div>
                   <div className="flex flex-row justify-evenly gap-4 pt-6">
-                    <Button href={''} title="Cancel" variant={'Custom'} onClick={() => document.getElementById('withdraw_modal').close()}/>
+                    <Button href={''} title="Cancel" variant={'Custom'} onClick={() => closeWithdrawModal()}/>
                     <Button href={''} title={withdrawIsLoading ? 'Confirming...' : 'Confirm'} variant={'Custom'} onClick={() => submitWithdraw()}></Button>
                   </div>
                 </div>

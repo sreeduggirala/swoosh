@@ -79,6 +79,7 @@ const RequestOutGroup = () => {
     <div className="mt-8 grid grid-cols-2 gap-4">
       {dataResult.map((request) => (
         <Swoosh
+          img=''
           onClick={() => console.log('PAY MONEY')}
           percent={request.percent * 100}
           title={request.title}
@@ -97,13 +98,18 @@ const RequestsOutPage = () => {
   const [owned, setOwned] = useState<Number>();
 
   let {contract} = useContract(process.env.CONTRACT_ADDRESS);
-  useEffect(() => {
-    contract?.call("getBalance", [user_address]).then((data)=> {
-      console.log(data);
-      setUserBalance(data);
-    });
 
-  }, [userBalance])  
+
+  useEffect(() => {
+    if (user_address !== undefined) {
+      contract?.call("getBalance", [user_address]).then((data) => {
+        console.log(data);
+        // Assuming data can be converted to a number directly. You might need additional parsing.
+        const balance = Number(data);
+        setUserBalance(balance);
+      });
+    }
+  }, [user_address]);
   let result = readSwooshContract('getRequestsOut', [user_address], setResultOut);
   let sum = 0;
   for (let i = 0; i < resultOut.length; i++) {

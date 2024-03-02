@@ -1,11 +1,12 @@
 import { Avatar } from '@coinbase/onchainkit';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { clsx } from 'clsx';
-import { useAccount } from 'wagmi';
+import { useAddress, useContract } from '@thirdweb-dev/react';
 import { AccountInfoPanel } from './AccountInfoPanel';
+import { Address } from 'viem';
 
 export function AccountDropdown() {
-  const address = useAddress();
+  const address = useAddress() as Address;
 
   return (
     <DropdownMenu.Root>

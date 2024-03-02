@@ -28,6 +28,7 @@ const GroupsDisplay: React.FC<GroupsDisplayProps> = ({ requests }) => {
     <div className="groups-display">
       {requests.map((request, index) => (
         <Swoosh
+          href='#'
           key={index}
           img={request.imageURI} // Assuming you want to use imageURI as img
           percent={50} // You'll need to decide how to calculate or determine this value based on your data
