@@ -26,7 +26,7 @@ const Add = () => {
   const [members, setMembers] = useState([]);
   const [isRequesting, setIsRequesting] = useState(true);
   const [payAddress, setPayAddress] = useState('');
-  const { contract } = useContract('0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6');
+  const { contract } = useContract(process.env.CONTRACT_ADDRESS);
   let { mutateAsync: depositMutateAsync, isLoading, error } = useContractWrite(
     contract,
     "request",

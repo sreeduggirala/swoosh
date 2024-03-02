@@ -66,7 +66,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
 const RequestInGroup = () => {
   const user_address = useAddress(); 
   const [resultOut, setResultOut] = useState<Request[]>([]);
-  let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
+  let {contract} = useContract(process.env.CONTRACT_ADDRESS);
   // let []
   readSwooshContract('getRequestsIn', [user_address], setResultOut);
   let data: RequestInData[] = [];
@@ -132,7 +132,7 @@ const Wrapper = () => {
   const [deposit, setDeposit] = useState('');
   const [resultOut, setResultOut] = useState<Request[]>([]);
   const [userBalance, setUserBalance] = useState<number>();
-  let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
+  let {contract} = useContract(process.env.CONTRACT_ADDRESS);
   useEffect(() => {
     contract?.call("getBalance", [user_address]).then((data)=> {
       console.log(data);

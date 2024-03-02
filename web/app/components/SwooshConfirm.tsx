@@ -5,7 +5,7 @@ import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
  
 export function SwooshConfirm() {
 
-  const { contract } = useContract('0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6');
+  const { contract } = useContract(process.env.CONTRACT_ADDRESS);
   const { mutateAsync, isLoading, error } = useContractWrite(
     contract,
     "acceptAll",

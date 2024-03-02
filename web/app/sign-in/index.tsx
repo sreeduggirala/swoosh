@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ConnectWallet, useAddress, useContract, useUser, useContractWrite, useContractRead} from "@thirdweb-dev/react";
 export default function SignInPage() {
-  const { contract } = useContract('0x42f243d53e2368A8e6d3C8E1eA97dBC7889377f1');
+  const { contract } = useContract(process.env.ERC20_ADDRESS);
   const { mutateAsync, isLoading, error } = useContractWrite(
     contract,
     "approve",
@@ -29,7 +29,7 @@ export default function SignInPage() {
   // Redirect if connected
   console.log(address);
   if (address != null) { 
-    contract?.call("allowance", [address, "0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6"]).then((data)=> {
+    contract?.call("allowance", [address, process.env.CONTRACT_ADDRESS]).then((data)=> {
       // if (data)
       console.log('data : ');
       console.log(data);
@@ -49,7 +49,7 @@ export default function SignInPage() {
       <h1 className=" mb-32 text-6xl tracking-widest text-blue-100 ">SWOOSH</h1>
         <div className="w-64 flex flex-col justify-center ">
         <ConnectWallet />
-        {(!approved && address != null) ? <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4" onClick={()=>{mutateAsync({args:["0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6", "100000000000000000000000000000"]})}}>Approve USDC</button> : null}
+        {(!approved && address != null) ? <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4" onClick={()=>{mutateAsync({args:[process.env.CONTRACT_ADDRESS, "100000000000000000000000000000"]})}}>Approve USDC</button> : null}
       </div>
     </div>
   );   

@@ -33,7 +33,7 @@ const ProfileBalanceCard = () => {
     const user_address = useAddress(); 
     const [userBalance, setUserBalance] = useState<number>();
     // let result = readSwooshContract('getBalance', [user_address], setUserBalance);
-    let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
+    let {contract} = useContract(process.env.CONTRACT_ADDRESS);
     useEffect(() => {
       if (user_address != undefined) {
       contract?.call("getBalance", [user_address]).then((data)=> {

@@ -9,15 +9,20 @@ import React, { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import profile_icon from '../assets/logo.png';
 import Image from 'next/image';
-import { ConnectWallet, ThirdwebProvider, embeddedWallet, smartWallet, useAddress } from '@thirdweb-dev/react';
+import { ConnectWallet, ThirdwebProvider, embeddedWallet, smartWallet, toWei, useAddress, useContract, useContractWrite } from '@thirdweb-dev/react';
 import {BaseSepoliaTestnet} from '@thirdweb-dev/chains';
 
 const Wrapper = () => {
 
   const user_address =  useAddress();
-  
+  const { contract } = useContract(process.env.ERC20_ADDRESS);
+  let { mutateAsync: depositMutateAsync, isLoading, error } = useContractWrite(
+    contract,
+    "mint",
+  );
+ 
   const callFaucet = async () => {
-    console.log('faucet')
+    depositMutateAsync({args:[user_address, toWei(10000)]});
   }
 
   return (
