@@ -4,9 +4,6 @@ Features
 3. Metadata for payments (i.e., images, text)
 4. AA (ERC-4337) for ERC-20 gas
 
-If time permits: 
-1. ENS integration (ex. sreevanth.eth)
-
 
 
 
@@ -29,4 +26,3 @@ Bounties
 
 If time permits:
 [X] 1. Quicknode - Best use case of QuickNode's IPFS
-[X] 2. Hedera Bounty 3 - Exceptional Ecosystem Integration
