@@ -7,7 +7,7 @@ import ProfileBalanceCard from 'app/components/ProfileBalanceCard';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useAccount } from 'wagmi';
-import profile_icon from '../assets/logo.png';
+import profile_icon from '../assets/logo.svg';
 import Image from 'next/image';
 import { ThirdwebProvider, embeddedWallet, smartWallet, useAddress } from '@thirdweb-dev/react';
 import Wrapper from "./Wrapper";

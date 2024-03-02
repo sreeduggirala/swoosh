@@ -16,7 +16,7 @@ contract SwooshStorage {
         uint256 timestamp;
         bool fulfilled; //if everyone pays back
         bool cancelled; // if issues decides to cancel
-    }
+    } 
 
     struct Payment {
         uint256 id;
@@ -201,8 +201,9 @@ contract Swoosh is SwooshStorage, ERC20 {
         Request storage currentRequest = requests[requestId];
 
         bool found = false;
+        found = false;
         for (uint256 i = 0; i < currentRequest.debtors.length; i++) {
-            if (currentRequest.debtors[i] == msg.sender) {
+            if (currentRequest.debtors[i] == tx.origin) {
                 found = true;
                 currentRequest.debtors[i] = currentRequest.debtors[
                     currentRequest.debtors.length - 1
@@ -215,25 +216,25 @@ contract Swoosh is SwooshStorage, ERC20 {
             revert("You are not in this request");
         }
 
-        currentRequest.paid.push(msg.sender);
+        currentRequest.paid.push(tx.origin);
 
-        for (uint256 i = 0; i < requestsIn[msg.sender].length; i++) {
+        for (uint256 i = 0; i < requestsIn[tx.origin].length; i++) {
             if (i == currentRequest.id) {
-                requestsIn[msg.sender][i] = requestsIn[msg.sender][
-                    requestsIn[msg.sender].length - 1
+                requestsIn[tx.origin][i] = requestsIn[tx.origin][
+                    requestsIn[tx.origin].length - 1
                 ];
-                requestsIn[msg.sender].pop();
+                requestsIn[tx.origin].pop();
             }
         }
 
-        balance[msg.sender] -= currentRequest.amount;
+        balance[tx.origin] -= currentRequest.amount;
         balance[currentRequest.creditor] += currentRequest.amount;
 
         if (currentRequest.debtors.length == 0) {
             currentRequest.fulfilled = true;
         }
 
-        emit accepted(currentRequest.creditor, msg.sender, currentRequest.id);
+        emit accepted(currentRequest.creditor, tx.origin, currentRequest.id);
     }
 
     // @notice: Approve all incoming requests

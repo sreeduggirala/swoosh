@@ -5,8 +5,6 @@ import { Button } from '../components/Button';
 import Swoosh from '../components/Swoosh';
 import { useAccount } from 'wagmi';
 import { readSwooshContract } from 'app/util';
-import {DepositERC20} from "../components/deposit";
-import { WithdrawERC20 } from 'app/components/Withdraw';
 import { useAddress, useContract } from '@thirdweb-dev/react';
 interface RequestOutHeaderGroupProp {
   userBalance: number;
@@ -48,7 +46,6 @@ const RequestOutHeaderGroup = (props: RequestOutHeaderGroupProp) => {
     </div>
   );
 };
-
 
 
 interface Request {
@@ -99,7 +96,7 @@ const RequestsOutPage = () => {
   const [userBalance, setUserBalance] = useState<number>();
   const [owned, setOwned] = useState<Number>();
 
-  let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
+  let {contract} = useContract(process.env.CONTRACT_ADDRESS);
   useEffect(() => {
     contract?.call("getBalance", [user_address]).then((data)=> {
       console.log(data);
@@ -121,27 +118,6 @@ const RequestsOutPage = () => {
       <div className="w-full h-3/5 overflow-y-scroll">
         <RequestOutGroup/>
       </div>
-      <dialog id="deposit_modal" className="modal">
-        <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
-          <form method="dialog " className="flex w-full justify-evenly gap-2">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-
-            </form>
-          <DepositERC20/>          
-          </div>
-        
-      </dialog>
-
-      <dialog id="withdraw_modal" className="modal">
-        <div className="modal-box font-Inter w-11/12 max-w-xl bg-blue-300 text-white ">
-          <form method="dialog " className="flex w-full justify-evenly gap-2">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-
-            </form>
-          <WithdrawERC20/>          
-          </div>
-        
-      </dialog>
     </div>
   );
 };

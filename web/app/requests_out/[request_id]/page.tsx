@@ -30,8 +30,8 @@ function RequestPage_Out({ params }: { params: { request_id: string } }) {
   const [userBalance, setUserBalance] = useState<number>();
   const [owned, setOwned] = useState<Number>();
 
-  let {contract} = useContract("0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6");
-  useEffect(() => {
+  let {contract} = useContract(process.env.CONTRACT_ADDRESS);
+  useEffect(() => { 
     contract?.call("getBalance", [user_address]).then((data)=> {
       console.log(data);
       setUserBalance(data);
@@ -47,7 +47,7 @@ function RequestPage_Out({ params }: { params: { request_id: string } }) {
     <div className="px-4">
       <Header title={resultOut[parseInt(params.request_id)]?.message} />
       <Total percent={100 * resultOut[parseInt(params.request_id)]?.paid.length / (resultOut[parseInt(params.request_id)]?.paid.length + resultOut[parseInt(params.request_id)]?.debtors.length)} price={resultOut[parseInt(params.request_id)]?.debtors.length * parseInt(resultOut[parseInt(params.request_id)]?.amount) / Math.pow(10, 18) }/>
-      <MembersList debtMembers={resultOut[parseInt(params.request_id)]?.debtors} paidMembers={resultOut[parseInt(params.request_id)]?.paid} total={resultOut[parseInt(params.request_id)]?.debtors.length * parseInt(resultOut[parseInt(params.request_id)]?.amount) / Math.pow(10, 18)}/>
+      <MembersList debtMembers={resultOut[parseInt(params.request_id)]?.debtors} paidMembers={resultOut[parseInt(params.request_id)]?.paid} total={(resultOut[parseInt(params.request_id)]?.debtors.length + resultOut[parseInt(params.request_id)]?.paid.length) * parseInt(resultOut[parseInt(params.request_id)]?.amount) / Math.pow(10, 18)}/>
     </div> 
   );
 } 

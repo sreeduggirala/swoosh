@@ -1,56 +1,35 @@
 import AccountConnect from '@/components/layout/header/AccountConnect';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ConnectWallet, useAddress, useContract, useUser, useContractWrite, useContractRead} from "@thirdweb-dev/react";
+import { ConnectWallet, useAddress, useContract, useContractWrite, useContractRead} from "@thirdweb-dev/react";
+
 export default function SignInPage() {
-  const { contract } = useContract('0x42f243d53e2368A8e6d3C8E1eA97dBC7889377f1');
-  const { mutateAsync, isLoading, error } = useContractWrite(
+  const router = useRouter();
+  const address = useAddress();
+  const { contract } = useContract(process.env.ERC20_ADDRESS); 
+  const { mutateAsync, isLoading: approve_isLoading, error: approve_error } = useContractWrite(
     contract,
     "approve",
   );
-  const [approved, useApproved] = useState(false);
+  const {data, isLoading: allowance_isLoading, error: allowance_error} = useContractRead(contract,'allowance',[address, process.env.CONTRACT_ADDRESS])
 
-
-  const redirectToHomePage = () => {
-    const router = useRouter();
-    // Check if running in the client-side environment
-    if (typeof window !== 'undefined') {
-      // Redirect to the desired page after successful authentication
-      router.push('/home');
-    }
-  }; 
-  
-
-  if (approved) {
-    redirectToHomePage();
-  }
-  
-  const address = useAddress();
-  // Redirect if connected
-  console.log(address);
-  if (address != null) { 
-    contract?.call("allowance", [address, "0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6"]).then((data)=> {
-      // if (data)
-      console.log('data : ');
-      console.log(data);
-      if (data > 0) {
-        useApproved(true);
+  const handleApprove = () => {
+    mutateAsync({args:[process.env.CONTRACT_ADDRESS, "10000000000000000000000"]}).then(data=>{
+      if (address != null && contract != null && data.receipt != undefined) {  
+        router.push('/home');
       }
-    });
-
-
-
+    })
   }
-
-
 
   return (  
     <div className="  flex h-screen flex-col items-center justify-center ">
       <h1 className=" mb-32 text-6xl tracking-widest text-blue-100 ">SWOOSH</h1>
-        <div className="w-64 flex flex-col justify-center ">
-        <ConnectWallet />
-        {(!approved && address != null) ? <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4" onClick={()=>{mutateAsync({args:["0x3FAb56c7E446777ee1045C5a9B6D7BdA23a82bD6", "100000000000000000000000000000"]})}}>Approve USDC</button> : null}
+        <div className="w-64 flex flex-col justify-center gap-2 ">
+        <ConnectWallet  modalSize='wide' hideSwitchToPersonalWallet={true} hideSendButton={true} hideReceiveButton={true}/>
+        {(address != null) ?  <button className="  btn btn-square btn-primary bg-blue-100 text-blue-300 btn-wide" disabled={approve_isLoading} onClick={handleApprove}> {approve_isLoading ?   <span className="loading loading-spinner"/> :"Approve USDC"}</button> : null}
       </div>
     </div>
   );   
 }
+
+

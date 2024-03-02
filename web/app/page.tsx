@@ -21,21 +21,7 @@ import { base } from 'viem/chains';
  */
 export default function Page() {
   return (
-    <ThirdwebProvider
-    activeChain={BaseSepoliaTestnet}
-      clientId="3524eeab46d7c262cb23bcf072d92d5e"
-      supportedWallets={[
-        smartWallet(
-          embeddedWallet(), // any personal wallet
-          {
-            factoryAddress: "0xFB5dA66aE989c5B1926a70107c9c8a75D5e5cEa5", // your deployed factory address
-            gasless: true, // enable or disable gasless transactions
-          },
-        ), 
-      ]}
 
-    >
       <SignInPage />
-    </ThirdwebProvider>
   );
 }  

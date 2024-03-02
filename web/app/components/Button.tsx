@@ -7,6 +7,7 @@ type Props = {
   href: string;
   variant: 'Deposit' | 'Withdraw' | 'View' | 'Pay All' | 'Pending' | 'Nudge' | 'Custom' | 'Swoosh!';
   args?: {},
+  disabled?: boolean,
   onClick?: ()=>void
 };
 
@@ -16,12 +17,13 @@ export function Button({
   href = '/',
   args,
   onClick,
+  disabled
 }: Props) {
   const buttonClass = variant === 'Pending' ? 'bg-blue-200 opacity-50' : 
                       variant === 'Nudge' ? 'bg-blue-200 w-min': 'bg-blue-200';
 
   return (
-    <button onClick={onClick} className={`${buttonClass} rounded-full w-full hover:scale-105 duration-200`}>
+    <button onClick={onClick} className={`${buttonClass} rounded-full w-full hover:scale-105 duration-200 disabled ${disabled ? 'disabled' : ""}`}>
         {variant === 'Nudge' ? (
             <div className="flex items-center text-xl justify-center px-2 py-2">
               <CiBellOn className="text-white" />
