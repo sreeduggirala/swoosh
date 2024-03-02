@@ -54,7 +54,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
           ${formatNumber(Number(props.owed) / Math.pow(10, 18))}
         </p>
         <div className="flex justify-center">
-          <Button variant="Swoosh!" onClick={()=> document.getElementById('swoosh_modal').showModal()} />
+          <Button title="Swoosh!" href={"/"} variant="Custom" onClick={()=> document.getElementById('swoosh_modal').showModal()} />
         </div>
       </div>
     </div>
@@ -64,6 +64,7 @@ const RequestInHeaderGroup = (props: RequestInHeaderGroupProp) => {
 const RequestInGroup = () => {
   const user_address = useAddress(); 
   const [resultOut, setResultOut] = useState<Request[]>([]);
+  const [selectedId, setSelectedId] = useState<string>();
   let {contract} = useContract(process.env.CONTRACT_ADDRESS);
   // let []
   readSwooshContract('getRequestsIn', [user_address], setResultOut);
@@ -85,24 +86,30 @@ const RequestInGroup = () => {
   );
   async function submit(e: React.FormEvent<HTMLFormElement>) { 
     // e.preventDefault() 
-    alert(1);
+    // alert(1);
     mutateAsync({
     args:[]
     })
   } 
-  
+  const { contract:acceptCon } = useContract(process.env.CONTRACT_ADDRESS);
+  let { mutateAsync: acceptMutateAsync, isLoading:acceptIsLoading, error:acceptError } = useContractWrite(
+    contract,
+    "accept",
+  ); 
   return (
       <div className=" mt-8d grid max-h-screen grid-cols-2 gap-4 overflow-y-auto">
-        {data.map((request) => ( 
+        {resultOut.map((request, index) => ( 
           (!request.paid.includes(user_address as string)) ? 
           <Swoosh
+            key={index}
             onClick={() => {  
-              contract?.call("accept", [request.id]); 
+              acceptMutateAsync({args:[request.id]}); 
+              setSelectedId(request.id);
             }}
-            title={request.title}
+            title={request.message}
             href={''}
             variant="button"
-            amount={Number((Number((request.amount)) / Math.pow(10, 18)).toFixed(2))}
+            amount={(acceptIsLoading && request.id == selectedId) ? -1 : Number((Number((request.amount)) / Math.pow(10, 18)).toFixed(2))}
             percent={request.paid.length / (request.debtors.length + request.paid.length) * 100}
           /> : null
 
@@ -145,13 +152,13 @@ const Wrapper = () => {
   const [resultOut, setResultOut] = useState<Request[]>([]);
   const [userBalance, setUserBalance] = useState<number>();
   let {contract} = useContract(process.env.CONTRACT_ADDRESS);
-  // useEffect(() => {
-  //   contract?.call("getBalance", [user_address]).then((data)=> {
-  //     console.log(data);
-  //     setUserBalance(data);
-  //   }); 
+  useEffect(() => {
+    contract?.call("getBalance", [user_address]).then((data)=> {
+      console.log(data);
+      setUserBalance(data);
+    }); 
 
-  // }, [userBalance])
+  }, [])
   // setUserBalance(result.data);
   readSwooshContract('getRequestsIn', [user_address], setResultOut);
   let sum = 0;

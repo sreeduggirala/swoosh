@@ -31,13 +31,13 @@ function RequestPage_Out({ params }: { params: { request_id: string } }) {
   const [owned, setOwned] = useState<Number>();
 
   let {contract} = useContract(process.env.CONTRACT_ADDRESS);
-  useEffect(() => { 
-    contract?.call("getBalance", [user_address]).then((data)=> {
-      console.log(data);
-      setUserBalance(data);
-    });
+  // useEffect(() => { 
+  //   contract?.call("getBalance", [user_address]).then((data)=> {
+  //     console.log(data);
+  //     setUserBalance(data);
+  //   });
 
-  }, [userBalance])  
+  // }, [userBalance])  
   let result = readSwooshContract("getRequestsOut", [user_address], setResultOut);
   // let chosenResult = resultOut[parseInt(params.request_id)]; 
   // console.log('chosen result : ')

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Button} from './Button';
 import { useAddress, smartWallet, useContract, useContractWrite, embeddedWallet, toWei } from '@thirdweb-dev/react'
 import { Address } from '@thirdweb-dev/react';
@@ -15,7 +15,7 @@ const MembersList = (props: MembersListProps) => {
     <div className="mt-8 flex flex-col gap-2 ">
       {(props.debtMembers != null) ? props.debtMembers.map((i) => (
         <Member
-          address={formatAddress(i)}
+          debtor={i}
           isPending={true}
           amount={parseFloat((props.total / (props.debtMembers.length + props.paidMembers.length)).toFixed(2))}
         />
@@ -23,7 +23,7 @@ const MembersList = (props: MembersListProps) => {
       {
         props.paidMembers != null ? props.paidMembers.map((i) => (
           <Member
-            address={formatAddress(i)}
+            debtor={i}
             isPending={false}
             amount={parseFloat((props.total / (props.debtMembers.length + props.paidMembers.length)).toFixed(2))}
           />
@@ -45,14 +45,21 @@ const formatAddress = (address: string): string => {
 
 
 interface MemberProps {
-  address: string;
+  debtor: string;
   isPending: boolean;
   amount: number;
 }
 
 const Member = (props: MemberProps) => {
+
   const { contract } = useContract(process.env.CONTRACT_ADDRESS);
   const creditor = useAddress();
+
+
+  useEffect(() => {
+    console.log(props);
+  }, [])
+
   let { mutateAsync: nudgeMutateAsync, isLoading, error } = useContractWrite(
     contract,
     "nudge",
@@ -67,9 +74,9 @@ const Member = (props: MemberProps) => {
     <div className="bg-gray flex items-center justify-between rounded-lg p-4  text-center">
       <div className="flex gap-4">
         <div className="w-20">
-          <p className="text-lg font-semibold">{props.address}</p>
+          <p className="text-lg font-semibold">{formatAddress(props.debtor)}</p>
         </div>
-        {props.isPending ? null : <Button variant="Nudge" href="/" onClick={() => nudgePerson(props.address)} />}
+        {!props.isPending ? null : <Button variant="Nudge" href="/" onClick={() => nudgePerson(props.debtor)} />}
       </div>
       <div className="flex items-center gap-4">
         <p>${props.amount} USDC</p>

@@ -131,12 +131,13 @@ contract SwooshTest is Test {
 
         address[] memory from = new address[](1);
         from[0] = address(mainUser);
-        swoosh.request(from, 1, "hi", "");
-        swoosh.request(from, 2, "hi 2", "");
+        swoosh.request(from, 5, "hi", "");
+        swoosh.request(from, 10, "hi 2", "");
         vm.stopPrank();
         vm.startPrank(mainUser);
-        swoosh.deposit(10);
+        swoosh.deposit(100);
         swoosh.acceptAll();
+        assertEq(swoosh.getBalance(mainUser), 85);
     }
 
     function testNudge() external {
@@ -148,7 +149,7 @@ contract SwooshTest is Test {
         Swoosh.Request memory currentRequest = requestsOut[
             requestsOut.length - 1
         ];
-        swoosh.nudge(currentRequest.debtors[0], currentRequest.id);
+        swoosh.nudge(currentRequest.debtors[0]);
     }
 
     function testCancel() external {

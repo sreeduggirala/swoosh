@@ -25,7 +25,11 @@ const Wrapper = () => {
   const [payAddress, setPayAddress] = useState('');
   const { contract } = useContract(process.env.CONTRACT_ADDRESS);
   const [prevIsLoading, setPrevIsLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+  const [prevPayIsLoading, setPrevPayIsLoading] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [showAddressErrorToast, setShowAddressErrorToast] = useState(false);
+  const user_address = useAddress();
 
   let { mutateAsync: requestMutateAsync, isLoading, error } = useContractWrite(
     contract,
@@ -38,20 +42,46 @@ const Wrapper = () => {
   );
   
   useEffect(() => {
-    console.log(error);
     if (prevIsLoading && !isLoading) {
-      setShowToast(true);
+      setShowSuccessToast(true);
       setTimeout(() => {
-        setShowToast(false);
+        setShowSuccessToast(false);
       }, 3000);
       resetInputs();
     }
     setPrevIsLoading(isLoading);
   }, [isLoading, prevIsLoading]);
 
+  useEffect(() => {
+    if (prevPayIsLoading && !payIsLoading) {
+      setShowSuccessToast(true);
+      setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 3000);
+      resetInputs();
+    }
+    setPrevPayIsLoading(payIsLoading);
+  }, [payIsLoading, prevPayIsLoading]);
+
   async function submit(e: any) { 
+    if (message.trim()  == '' || costStr.trim() == '' || (members.length == 0 && isRequesting)) {
+      setShowErrorToast(true);
+      setTimeout(() => {
+        setShowErrorToast(false);
+      }, 3000);
+      return;
+    }
+
+    if (!isRequesting && (payAddress.trim().length !== 42 || !payAddress.trim().startsWith('0x') || payAddress.trim() === user_address)) {
+      setShowAddressErrorToast(true);
+      setTimeout(() => {
+        setShowAddressErrorToast(false);
+      }, 3000);
+      return;
+    }
+
     var amount = toWei((parseFloat(costStr) / (members.length+1)));
-        
+
     //todo: add image uri, add error handling
     if(isRequesting) {
       requestMutateAsync({args:[members, amount, message, ""]})
@@ -103,12 +133,28 @@ const Wrapper = () => {
         className="btn btn-primary rounded-full text-white text-2xl w-full mt-4 outline"
         onClick={submit}
       >
-        {isLoading ? 'Confirming...' : 'Sweesh!'}</button>
-        {showToast && (
+        {isLoading || payIsLoading ? 'Confirming...' : 'Sweesh!'}</button>
+        {showSuccessToast && (
           <div className="toast toast-top toast-center z-20">
             <div role="alert" className="alert alert-success">
               <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               <span>Swoosh request successfully sent!</span>
+            </div>
+          </div>
+        )}
+        {showAddressErrorToast && (
+          <div className="toast toast-top toast-center z-20">
+            <div role="alert" className="alert alert-error">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span>Invalid pay address!</span>
+            </div>
+          </div>
+        )}
+        {showErrorToast && (
+          <div className="toast toast-top toast-center z-20">
+            <div role="alert" className="alert alert-error">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span>Swoosh request failed!</span>
             </div>
           </div>
         )}

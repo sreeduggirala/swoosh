@@ -66,7 +66,7 @@ const HomeGroup = (props: HomeGroupProp) => {
       <Link href="/requests_out" className="w-5/12 no-underline">
         <HomeCard type="Out" num={props.outNumber} />
       </Link>
-      <PercentPaidCard percent={props.percentPaid}/>
+      {/* <PercentPaidCard percent={props.percentPaid}/> */}
     </div>
   ); 
 };

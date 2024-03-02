@@ -32,6 +32,8 @@ const ProfileBalanceCard = () => {
     const [userBalance, setUserBalance] = useState<number>();
     const [depositValue, setDepositValue] = useState<string>('');
     const [withdrawValue, setWithdrawValue] = useState<string>('');
+    const [showSuccessToast, setShowSuccessToast] = useState(false);
+    const [showErrorToast, setShowErrorToast] = useState(false);
 
     // let result = readSwooshContract('getBalance', [user_address], setUserBalance);
     let {contract} = useContract(process.env.CONTRACT_ADDRESS);
@@ -50,14 +52,30 @@ const ProfileBalanceCard = () => {
       contract,
       "deposit",
     );
+    useEffect(()=> {
+      if (!depositIsLoading) {
+        const modal = document.getElementById('deposit_modal') as HTMLDialogElement | null;
+        if (modal && !depositIsLoading) {
+          modal.close();
+        }
+        }
+    }, [depositIsLoading]);
     async function submitDeposit() { 
-      const value = parseFloat(depositValue)
-      depositMutateAsync({args: [toWei(value)]});  
-      setDepositValue('');
-      const modal = document.getElementById('deposit_modal') as HTMLDialogElement | null;
-      if (modal) {
-        modal.close();
+      if (depositValue.trim()  == '') {
+        setShowErrorToast(true);
+        setTimeout(() => {
+          setShowErrorToast(false);
+        }, 3000);
+        return;
       }
+      const value = parseFloat(depositValue)
+      setShowSuccessToast(true);
+      setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 3000);
+      await depositMutateAsync({args: [toWei(value)]});  
+      setDepositValue('');
+      window.location.reload();
     } 
     // deposit form END
 
@@ -66,14 +84,30 @@ const ProfileBalanceCard = () => {
       contract,
       "withdraw",
     );
-    async function submitWithdraw() { 
-      const value = parseFloat(withdrawValue)
-      withdrawMutateAsync({args: [toWei(value)]});
-      setWithdrawValue('');
-      const modal = document.getElementById('withdraw_modal') as HTMLDialogElement | null;
-      if (modal) {
+    useEffect(()=> {
+      if (!withdrawIsLoading) {
+        const modal = document.getElementById('withdraw_modal') as HTMLDialogElement | null;
+        if (modal) {
           modal.close();
+        }
+        }
+    }, [withdrawIsLoading]);
+    async function submitWithdraw() { 
+      if (withdrawValue.trim()  == '') {
+        setShowErrorToast(true);
+        setTimeout(() => {
+          setShowErrorToast(false);
+        }, 3000);
+        return;
       }
+      const value = parseFloat(withdrawValue)
+      setShowSuccessToast(true);
+      setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 3000);
+      await withdrawMutateAsync({args: [toWei(value)]});
+      setWithdrawValue('');
+      window.location.reload();
     } 
     // withdraw form END
 
@@ -107,16 +141,9 @@ const ProfileBalanceCard = () => {
                   </div>
                   <div className="flex flex-row justify-evenly gap-4 pt-6">
                     <Button href={''} title="Cancel" variant={'Custom'} onClick={() => document.getElementById('deposit_modal').close()}/>
-                    <Button href={''} title="Confirm" variant={'Custom'} onClick={() => {submitDeposit()}}></Button>
+                    <Button href={''} title={depositIsLoading ? 'Confirming...' : 'Confirm'} variant={'Custom'} onClick={() => {submitDeposit()}}></Button>
                   </div>
                 </div>
-                <p>
-                  {depositIsLoading && <p>Waiting for confirmation...</p>} 
-                  {depositIsLoading && <p>Transaction confirmed.</p>} 
-                  {depositError ?
-                    <p>Error</p>  : null
-                  } 
-                </p>
               </div>
               <form method="dialog" className="modal-backdrop">
                 <button>close</button>
@@ -132,22 +159,32 @@ const ProfileBalanceCard = () => {
                   </div>
                   <div className="flex flex-row justify-evenly gap-4 pt-6">
                     <Button href={''} title="Cancel" variant={'Custom'} onClick={() => document.getElementById('withdraw_modal').close()}/>
-                    <Button href={''} title="Confirm" variant={'Custom'} onClick={() => submitWithdraw()}></Button>
+                    <Button href={''} title={withdrawIsLoading ? 'Confirming...' : 'Confirm'} variant={'Custom'} onClick={() => submitWithdraw()}></Button>
                   </div>
                 </div>
-                <p>
-                  {withdrawIsLoading && <p>Waiting for confirmation...</p>} 
-                  {withdrawIsLoading && <p>Transaction confirmed.</p>} 
-                  {withdrawError ?
-                    <p>Error</p>  : null
-                  } 
-                </p>
               </div>
               <form method="dialog" className="modal-backdrop">
                 <button>close</button>
               </form>
             </dialog> 
-        </div>
+
+            {showSuccessToast && (
+              <div className="toast toast-top toast-center">
+                <div role="alert" className="alert alert-success">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span>Transaction sent!</span>
+                </div>
+              </div>
+            )}
+            {showErrorToast && (
+              <div className="toast toast-top toast-center">
+                <div role="alert" className="alert alert-error">
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span>Request failed!</span>
+                </div>
+              </div>
+            )}
+            </div>
       );
 }
 

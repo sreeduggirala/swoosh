@@ -31,7 +31,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             activeChain={BaseSepoliaTestnet}
             clientId={process.env.CLIENT_ID}
             
-            supportedWallets={[metamaskWallet({ recommended: true }),
+            supportedWallets={[
+              metamaskWallet({ recommended: true }),
               coinbaseWallet(),
               walletConnect(),
               smartWallet(

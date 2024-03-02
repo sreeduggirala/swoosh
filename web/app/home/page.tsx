@@ -6,7 +6,6 @@ import HomeGroup from '../components/HomeGroup';
 import { readSwooshContract } from 'app/util';
 import { ThirdwebProvider, embeddedWallet, smartWallet, useAddress } from '@thirdweb-dev/react';
 import { BaseSepoliaTestnet } from '@thirdweb-dev/chains';
-// import Wrapper from './wrapper';
 
 interface Request {
   id: string;
@@ -40,16 +39,21 @@ export default function HomePage() {
   let result = readSwooshContract('getRequestsOut', [user_address], setResultOut);
   result = readSwooshContract('getRequestsIn', [user_address], setResultIn);
 
+  function getPercentPaid(){
+    console.log(resultOut);
+    
+    // return resultOut
+  }
+
 
   if (result.isLoading) return <p>Loading ...</p>;
   if (result.error) return <p>Error: {result.error.message}</p>;
-
+  
   return (
     <div className=" pb-6 h-screen ">
         <div className=" py-8">
           <HomeHeader />
-          <HomeGroup inNumber={resultInLength as number} outNumber={resultOut.length} percentPaid={resultIn.map(i=>console.log(i))
-          }  />
+          <HomeGroup inNumber={resultInLength as number} outNumber={resultOut.length} percentPaid={50}  />
         </div>
     </div>
   );

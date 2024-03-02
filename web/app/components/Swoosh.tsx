@@ -36,7 +36,7 @@ export default function Swoosh({
           <SwooshProgressBar percent={percent}/>
         )}
         {variant === "button" && (
-          <Button onClick={onClick} variant={'Custom'} href={''} title={`Pay $${amount}`} args={{request_id:""}} />
+          <Button onClick={onClick} variant={'Custom'} href={''} title={amount == -1 ? 'Confirming' : `Pay $${amount}`} args={{request_id:""}} />
         )}
       </div>
     </Link>

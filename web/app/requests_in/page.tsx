@@ -6,16 +6,19 @@ import Swoosh from 'app/components/Swoosh';
 import { useAccount } from 'wagmi';
 import { readSwooshContract } from 'app/util';
 import ScrollableContent from 'app/components/ScrollableContent';
-import { ThirdwebProvider, embeddedWallet, smartWallet, useAddress, useContract } from '@thirdweb-dev/react';
+import { ThirdwebProvider, embeddedWallet, metamaskWallet, smartWallet, useAddress, useContract, walletConnect } from '@thirdweb-dev/react';
 import Wrapper from "./Wrapper";
 import {BaseSepoliaTestnet} from '@thirdweb-dev/chains';
 const RequestsInPage = () => {
   return (
     <div>
-              <ThirdwebProvider
+    {/* <ThirdwebProvider
     activeChain={BaseSepoliaTestnet}
       clientId="3524eeab46d7c262cb23bcf072d92d5e"
       supportedWallets={[
+        metamaskWallet({ recommended: true }),
+        // coinbaseWallet(),
+        walletConnect(),
         smartWallet(
           embeddedWallet(), // any personal wallet
           {
@@ -23,11 +26,11 @@ const RequestsInPage = () => {
             gasless: true, // enable or disable gasless transactions
           },  
         ),
-      ]}
+      ]} */}
 
-      >
+      {/* > */}
       <Wrapper></Wrapper>
-      </ThirdwebProvider>
+      {/* </ThirdwebProvider> */}
       </div>
   );    
 };
