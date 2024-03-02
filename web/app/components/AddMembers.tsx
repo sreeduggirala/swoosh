@@ -4,7 +4,7 @@ import {
   useWaitForTransactionReceipt, 
   useWriteContract 
 } from 'wagmi'
-import { abi } from '../../../contracts/out/Swoosh.sol/Swoosh.json';
+import { abi } from '../Swoosh.json';
 import { IoPersonAdd } from "react-icons/io5";
 import { Address } from 'viem';
 import Input from './Input';

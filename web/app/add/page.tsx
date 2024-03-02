@@ -10,7 +10,7 @@ import {
 import Header from '../components/Header'
 import Input from 'app/components/Input'
 import AddMembers from 'app/components/AddMembers'
-import { abi } from '../../../contracts/out/Swoosh.sol/Swoosh.json';
+import { abi } from '../Swoosh.json';
 import { FaPeopleGroup } from "react-icons/fa6";
 import { BsPerson } from "react-icons/bs";
 import { ThirdwebProvider, smartWallet, useContract, useContractWrite, embeddedWallet, toWei } from '@thirdweb-dev/react'
